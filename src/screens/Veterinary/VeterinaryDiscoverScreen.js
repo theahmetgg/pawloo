@@ -1,297 +1,303 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from 'react-native';
-import SafeAreaContainer from '../../components/layout/SafeAreaContainer';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
+
+// Mock data
+const mockClinics = [
+  {
+    id: 1,
+    name: "Pati Veteriner Kliniği",
+    address: "Merkez Mah. 123",
+    city: "İstanbul",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400",
+    verified: true,
+    rating: 4.9,
+    emergency247: true,
+    cardiology: true,
+    orthopedics: true,
+    surgery: true,
+    status: "Açık",
+  },
+  {
+    id: 2,
+    name: "VetPlus Hastanesi",
+    address: "Atatürk Cad. 456",
+    city: "Ankara",
+    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400",
+    verified: true,
+    rating: 5.0,
+    emergency247: true,
+    cardiology: true,
+    orthopedics: false,
+    surgery: true,
+    status: "Açık",
+  },
+  {
+    id: 3,
+    name: "Pet Care Klinik",
+    address: "Cumhuriyet Sok. 789",
+    city: "İzmir",
+    image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400",
+    verified: false,
+    rating: 4.7,
+    emergency247: false,
+    cardiology: true,
+    orthopedics: true,
+    surgery: false,
+    status: "Kapalı",
+  },
+  {
+    id: 4,
+    name: "Animal Hospital",
+    address: "Bahçe Cad. 321",
+    city: "Bursa",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400",
+    verified: true,
+    rating: 4.8,
+    emergency247: true,
+    cardiology: true,
+    orthopedics: true,
+    surgery: true,
+    status: "Açık",
+  },
+];
 
 const VeterinaryDiscoverScreen = ({ navigation }) => {
-  const [selectedSpecialty, setSelectedSpecialty] = useState('all');
-  const [favorites, setFavorites] = useState([]);
+  const insets = useSafeAreaInsets();
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
-  const specialties = [
-    { id: 'all', label: 'Hepsi', icon: 'apps' },
-    { id: 'general', label: 'Genel', icon: 'medical' },
-    { id: 'surgery', label: 'Cerrahi', icon: 'cut' },
-    { id: 'dental', label: 'Diş', icon: 'fitness' },
-    { id: 'emergency', label: 'Acil', icon: 'alert-circle' },
+  const filterOptions = [
+    { id: "all", label: "Tümü", icon: "apps" },
+    { id: "emergency", label: "7/24", icon: "medical" },
+    { id: "cardiology", label: "Kardiyoloji", icon: "heart" },
+    { id: "surgery", label: "Cerrahi", icon: "cut" },
   ];
 
-  const veterinarians = [
-    {
-      id: '1',
-      name: 'Dr. Ayşe Yılmaz',
-      title: 'Veteriner Hekim',
-      specialty: ['Genel Muayene', 'Cerrahi', 'Diş Sağlığı'],
-      rating: 4.9,
-      reviewCount: 234,
-      experience: '15 yıl',
-      distance: '1.2 km',
-      clinic: 'Pati Veteriner Kliniği',
-      address: 'İstanbul, Kadıköy',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800',
-      available: true,
-      nextAvailable: '14:00',
-      price: 300,
-      verified: true,
-      languages: ['Türkçe', 'İngilizce'],
-    },
-    {
-      id: '2',
-      name: 'Dr. Mehmet Demir',
-      title: 'Veteriner Cerrahi Uzmanı',
-      specialty: ['Ortopedi', 'Yumuşak Doku Cerrahisi', 'Acil Cerrahi'],
-      rating: 5.0,
-      reviewCount: 189,
-      experience: '20 yıl',
-      distance: '2.8 km',
-      clinic: 'VetPlus Hayvan Hastanesi',
-      address: 'İstanbul, Beşiktaş',
-      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800',
-      available: false,
-      nextAvailable: 'Yarın 09:00',
-      price: 500,
-      verified: true,
-      languages: ['Türkçe'],
-    },
-    {
-      id: '3',
-      name: 'Dr. Zeynep Kaya',
-      title: 'Veteriner İç Hastalıklar Uzmanı',
-      specialty: ['İç Hastalıklar', 'Kardiyoloji', 'Nefroloji'],
-      rating: 4.8,
-      reviewCount: 156,
-      experience: '12 yıl',
-      distance: '3.5 km',
-      clinic: 'Pet Care Veteriner',
-      address: 'İstanbul, Şişli',
-      image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800',
-      available: true,
-      nextAvailable: '16:30',
-      price: 350,
-      verified: true,
-      languages: ['Türkçe', 'İngilizce', 'Almanca'],
-    },
-  ];
+  const cardWidth = (width - 48) / 2;
 
-  const toggleFavorite = (vetId) => {
-    setFavorites(prev =>
-      prev.includes(vetId)
-        ? prev.filter(id => id !== vetId)
-        : [...prev, vetId]
-    );
-  };
-
-  const renderVetCard = (vet) => (
+  const renderClinicCard = clinic => (
     <TouchableOpacity
-      key={vet.id}
-      className="bg-white rounded-2xl overflow-hidden shadow-md"
+      key={clinic.id}
       activeOpacity={0.9}
-      onPress={() => navigation.navigate('VeterinaryDetail', { vetId: vet.id })}
+      onPress={() => navigation.navigate("VeterinaryDetail", { clinic })}
+      className='bg-white rounded-2xl mb-4 shadow-md overflow-hidden'
+      style={{ width: cardWidth }}
     >
-      <View className="relative">
-        <Image source={{ uri: vet.image }} className="w-full h-[140px]" />
+      {/* Clinic Image */}
+      <View className='relative' style={{ height: cardWidth * 1.2 }}>
+        <Image source={{ uri: clinic.image }} className='w-full h-full' />
 
-        {/* Verified Badge */}
-        {vet.verified && (
-          <View className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white items-center justify-center">
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-          </View>
-        )}
+        {/* Gradient Overlay */}
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          className='absolute bottom-0 left-0 right-0 h-2/5'
+        />
 
-        {/* Favorite Button */}
-        <TouchableOpacity
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white items-center justify-center"
-          onPress={() => toggleFavorite(vet.id)}
+        {/* Status Badge */}
+        <View
+          className={`absolute top-2 right-2 px-2 py-1 rounded-lg ${
+            clinic.status === "Kapalı" ? "bg-gray-400" : "bg-green-500"
+          }`}
         >
-          <Ionicons
-            name={favorites.includes(vet.id) ? 'heart' : 'heart-outline'}
-            size={20}
-            color={favorites.includes(vet.id) ? '#EF4444' : '#6B7280'}
-          />
-        </TouchableOpacity>
+          <Text className='text-white text-[10px] font-bold'>{clinic.status}</Text>
+        </View>
+
+        {/* Rating Badge */}
+        <View className='absolute bottom-2 right-2 px-2 py-1 rounded-full bg-black/50 flex-row items-center gap-1'>
+          <Ionicons name='star' size={12} color='#FFF' />
+          <Text className='text-white text-[10px] font-bold'>{clinic.rating}</Text>
+        </View>
       </View>
 
-      <View className="p-4">
-        {/* Name & Title */}
-        <Text className="text-xl font-bold text-gray-900 mb-1">{vet.name}</Text>
-        <Text className="text-sm text-green-500 font-semibold mb-2">{vet.title}</Text>
-
-        {/* Rating & Experience */}
-        <View className="flex-row gap-4 mb-2">
-          <View className="flex-row items-center gap-1">
-            <Ionicons name="star" size={14} color="#F59E0B" />
-            <Text className="text-sm font-semibold text-gray-900">{vet.rating}</Text>
-            <Text className="text-xs text-gray-500">({vet.reviewCount})</Text>
-          </View>
-          <View className="flex-row items-center gap-1">
-            <Ionicons name="briefcase-outline" size={14} color="#10B981" />
-            <Text className="text-sm text-gray-500">{vet.experience}</Text>
-          </View>
+      {/* Card Content */}
+      <View className='p-3'>
+        {/* Clinic Name & Verified */}
+        <View className='flex-row items-center mb-1 gap-1'>
+          <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
+            {clinic.name}
+          </Text>
+          {clinic.verified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
         </View>
 
-        {/* Specialties */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          className="mb-2"
-          contentContainerStyle={{ gap: 4 }}
-        >
-          {vet.specialty.map((spec, index) => (
-            <View key={index} className="bg-green-50 px-2 py-1.5 rounded-lg">
-              <Text className="text-xs text-green-500 font-medium">{spec}</Text>
-            </View>
-          ))}
-        </ScrollView>
+        {/* Address */}
+        <Text className='text-xs text-gray-500 mb-2' numberOfLines={1}>
+          {clinic.address}
+        </Text>
 
-        {/* Clinic Info */}
-        <View className="flex-row items-center gap-1.5 mb-1">
-          <Ionicons name="business-outline" size={14} color="#6B7280" />
-          <Text className="text-sm text-gray-900 font-medium">{vet.clinic}</Text>
-        </View>
-
-        <View className="flex-row items-center gap-1.5 mb-4">
-          <Ionicons name="location-outline" size={14} color="#6B7280" />
-          <Text className="text-xs text-gray-500">{vet.address} • {vet.distance}</Text>
-        </View>
-
-        {/* Availability & Price */}
-        <View className="flex-row items-center justify-between mb-2">
-          <View className="flex-row items-center gap-1.5">
-            <View className={`w-2 h-2 rounded-full ${vet.available ? 'bg-green-500' : 'bg-red-500'}`} />
-            <Text className="text-sm text-gray-900">
-              {vet.available ? `Bugün ${vet.nextAvailable}` : vet.nextAvailable}
+        {/* Info Row */}
+        <View className='flex-row items-center mb-2 gap-2'>
+          <View className='bg-blue-100 px-2 py-1 rounded-md'>
+            <Text className='text-[10px] font-semibold text-blue-700'>
+              {clinic.emergency247 ? "7/24" : "Randevu"}
             </Text>
           </View>
-          <View className="bg-green-50 px-2 py-1.5 rounded-lg">
-            <Text className="text-base font-bold text-green-500">₺{vet.price}</Text>
+          <View className='flex-1 flex-row items-center gap-1'>
+            <Ionicons name='location' size={12} color='#6B7280' />
+            <Text className='text-[11px] text-gray-500 flex-1' numberOfLines={1}>
+              {clinic.city}
+            </Text>
           </View>
         </View>
 
-        {/* Book Button */}
-        <LinearGradient
-          colors={['#10B981', '#059669']}
-          className="rounded-[10px] overflow-hidden"
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <TouchableOpacity
-            className="flex-row items-center justify-center py-2 gap-1.5"
-            onPress={() => navigation.navigate('VeterinaryDetail', { vetId: vet.id })}
-          >
-            <Ionicons name="calendar-outline" size={18} color="#FFF" />
-            <Text className="text-sm font-bold text-white">Randevu Al</Text>
-          </TouchableOpacity>
-        </LinearGradient>
+        {/* Badges */}
+        <View className='flex-row gap-1'>
+          {clinic.cardiology && (
+            <View className='w-5 h-5 rounded-full bg-blue-100 items-center justify-center'>
+              <Ionicons name='heart' size={10} color='#3B82F6' />
+            </View>
+          )}
+          {clinic.orthopedics && (
+            <View className='w-5 h-5 rounded-full bg-amber-100 items-center justify-center'>
+              <Ionicons name='fitness' size={10} color='#F59E0B' />
+            </View>
+          )}
+          {clinic.surgery && (
+            <View className='w-5 h-5 rounded-full bg-green-100 items-center justify-center'>
+              <Ionicons name='cut' size={10} color='#10B981' />
+            </View>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );
 
-  // Header Component
-  const renderHeader = () => (
-    <LinearGradient
-      colors={['#10B981', '#059669']}
-      className="px-4 pb-4"
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-    >
-      <View className="flex-row justify-between items-center mb-4">
-        <View>
-          <Text className="text-3xl font-bold text-white">Veteriner Hekim</Text>
-          <Text className="text-base text-white opacity-90 mt-1">Uzman sağlık desteği</Text>
-        </View>
-        <TouchableOpacity className="w-11 h-11 rounded-full bg-red-500 items-center justify-center">
-          <Ionicons name="call" size={24} color="#FFF" />
+  return (
+    <View className='flex-1 bg-white/5' style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
+      {/* Header */}
+      <View className='flex-row items-center px-5 pt-12 pb-4 gap-3'>
+        <TouchableOpacity
+          className='w-10 h-10 rounded-xl bg-gray-100 items-center justify-center'
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name='arrow-back' size={24} color='#111827' />
         </TouchableOpacity>
+
+        <View className='flex-1'>
+          <Text className='text-xs text-gray-500 font-medium'>Sağlık Hizmetleri</Text>
+          <Text className='text-2xl font-bold text-gray-800 mt-0.5'>Veteriner</Text>
+        </View>
+
+        <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
+          <LinearGradient colors={["#3B82F6", "#2563EB"]} className='flex-1 items-center justify-center'>
+            <Ionicons name='medical' size={24} color='#FFF' />
+          </LinearGradient>
+        </View>
+      </View>
+
+      {/* Stats Banner */}
+      <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
+        <LinearGradient colors={["#3B82F6", "#2563EB"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
+          <View className='flex-row justify-around'>
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>{mockClinics.length}</Text>
+              <Text className='text-white/90 text-xs mt-1'>Aktif Klinik</Text>
+            </View>
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockClinics.filter(c => c.emergency247).length}
+              </Text>
+              <Text className='text-white/90 text-xs mt-1'>7/24 Açık</Text>
+            </View>
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockClinics.filter(c => c.verified).length}
+              </Text>
+              <Text className='text-white/90 text-xs mt-1'>Uzman</Text>
+            </View>
+          </View>
+        </LinearGradient>
       </View>
 
       {/* Search Bar */}
-      <View className="flex-row items-center bg-white rounded-xl px-4 py-2 gap-2">
-        <Ionicons name="search" size={20} color="#6B7280" />
-        <Text className="flex-1 text-base text-gray-500">Veteriner veya klinik ara...</Text>
-        <TouchableOpacity>
-          <Ionicons name="options-outline" size={20} color="#6B7280" />
+      <View className='flex-row px-5 mb-4 gap-3'>
+        <View className='flex-1 flex-row items-center bg-gray-50 rounded-xl px-4 py-3.5 gap-3'>
+          <Ionicons name='search' size={20} color='#9CA3AF' />
+          <Text className='text-sm text-gray-400'>Bölge veya hizmet ara...</Text>
+        </View>
+        <TouchableOpacity className='w-12 h-12 rounded-xl bg-blue-500 items-center justify-center shadow-md'>
+          <Ionicons name='options' size={20} color='#FFF' />
         </TouchableOpacity>
       </View>
-    </LinearGradient>
-  );
 
-  return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className='flex-1 bg-green-50'>
-      {renderHeader()}
-
-      {/* Specialties Filter */}
+      {/* Filter Chips */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="max-h-[60px] mt-4"
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8, gap: 8 }}
+        className='mb-4 py-4'
+        style={{ height: 64 }}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          columnGap: 10,
+          alignItems: "center",
+          paddingBottom: 2,
+        }}
       >
-        {specialties.map((specialty) => (
-          <TouchableOpacity
-            key={specialty.id}
-            className={`flex-row items-center px-4 py-2 rounded-full mr-2 border ${
-              selectedSpecialty === specialty.id
-                ? 'bg-green-500 border-green-500 shadow-md'
-                : 'bg-white border-gray-200'
-            }`}
-            onPress={() => setSelectedSpecialty(specialty.id)}
-            activeOpacity={0.7}
-          >
-            <Ionicons
-              name={specialty.icon}
-              size={18}
-              color={selectedSpecialty === specialty.id ? '#FFF' : '#10B981'}
-            />
-            <Text
-              className={`text-[13px] font-semibold ml-1.5 ${
-                selectedSpecialty === specialty.id ? 'text-white' : 'text-green-500'
-              }`}
+        {filterOptions.map(filter => {
+          const active = selectedFilter === filter.id;
+          return (
+            <Pressable
+              key={filter.id}
+              onPress={() => setSelectedFilter(filter.id)}
+              android_ripple={{
+                color: active ? "rgba(255,255,255,0.15)" : "rgba(59,130,246,0.10)",
+                borderless: false,
+              }}
+              className={[
+                "flex-row items-center rounded-full px-4",
+                "min-h-[36px] mr-1.5 border",
+                active ? "bg-blue-500 border-blue-500" : "bg-blue-50 border-blue-200",
+              ].join(" ")}
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.9 : 1 },
+                active && {
+                  shadowColor: "#3B82F6",
+                  shadowOpacity: 0.25,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 3,
+                },
+              ]}
+              hitSlop={6}
             >
-              {specialty.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
+              <Ionicons
+                name={filter.icon}
+                size={16}
+                color={active ? "#FFFFFF" : "#2563EB"}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                className={["text-[13px] font-semibold", active ? "text-white" : "text-blue-700"].join(" ")}
+                numberOfLines={1}
+              >
+                {filter.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </ScrollView>
 
-      {/* Quick Stats */}
-      <View className="flex-row bg-white mx-4 mt-4 rounded-2xl p-2 gap-1">
-        <View className="flex-1 items-center py-2">
-          <Ionicons name="people" size={20} color="#10B981" />
-          <Text className="text-xl font-bold text-gray-900 mt-1">{veterinarians.length}</Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Hekim</Text>
-        </View>
-        <View className="flex-1 items-center py-2">
-          <Ionicons name="star" size={20} color="#F59E0B" />
-          <Text className="text-xl font-bold text-gray-900 mt-1">4.9</Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Ort. Puan</Text>
-        </View>
-        <View className="flex-1 items-center py-2">
-          <Ionicons name="time" size={20} color="#3B82F6" />
-          <Text className="text-xl font-bold text-gray-900 mt-1">
-            {veterinarians.filter(v => v.available).length}
-          </Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Bugün Müsait</Text>
-        </View>
+      {/* Info Banner */}
+      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
+        <Ionicons name='information-circle' size={20} color='#14B8A6' />
+        <Text className='flex-1 text-xs text-teal-900 font-medium'>
+          Tüm veterinerler lisanslı ve acil müdahale sertifikalıdır
+        </Text>
       </View>
 
-      {/* Veterinarians List */}
+      {/* Clinic Cards Grid */}
       <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ padding: 16, gap: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 + insets.bottom }}
       >
-        {veterinarians.map(renderVetCard)}
+        <View className='flex-row flex-wrap justify-between'>{mockClinics.map(clinic => renderClinicCard(clinic))}</View>
       </ScrollView>
-    </SafeAreaContainer>
+    </View>
   );
 };
 

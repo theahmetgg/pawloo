@@ -1,226 +1,299 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, StatusBar } from "react-native";
-import SafeAreaContainer from "../../components/layout/SafeAreaContainer";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
+
+const { width } = Dimensions.get("window");
+
+// Mock data
+const mockSalons = [
+  {
+    id: 1,
+    name: "Pati Güzellik Salonu",
+    address: "Merkez Mah. 123",
+    city: "İstanbul",
+    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400",
+    verified: true,
+    rating: 4.9,
+    haircut: true,
+    spa: true,
+    bath: true,
+    status: "Müsait",
+  },
+  {
+    id: 2,
+    name: "Pet Spa & Grooming",
+    address: "Atatürk Cad. 456",
+    city: "Ankara",
+    image: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400",
+    verified: true,
+    rating: 5.0,
+    haircut: true,
+    spa: true,
+    bath: true,
+    status: "Müsait",
+  },
+  {
+    id: 3,
+    name: "Happy Paws Kuaför",
+    address: "Cumhuriyet Sok. 789",
+    city: "İzmir",
+    image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400",
+    verified: false,
+    rating: 4.7,
+    haircut: true,
+    spa: false,
+    bath: true,
+    status: "Dolu",
+  },
+  {
+    id: 4,
+    name: "Luxury Pet Care",
+    address: "Bahçe Cad. 321",
+    city: "Bursa",
+    image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400",
+    verified: true,
+    rating: 4.8,
+    haircut: true,
+    spa: true,
+    bath: true,
+    status: "Müsait",
+  },
+];
 
 const PetGroomingDiscoverScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [selectedService, setSelectedService] = useState("all");
-  const [favorites, setFavorites] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
-  const serviceTypes = [
-    { id: "all", label: "Hepsi", icon: "apps" },
-    { id: "bath", label: "Banyo", icon: "water" },
+  const filterOptions = [
+    { id: "all", label: "Tümü", icon: "apps" },
     { id: "haircut", label: "Tıraş", icon: "cut" },
-    { id: "full", label: "Tam Bakım", icon: "star" },
+    { id: "spa", label: "Spa", icon: "sparkles" },
+    { id: "bath", label: "Banyo", icon: "water" },
   ];
 
-  const groomers = [
-    {
-      id: "1",
-      name: "Pati Güzellik Salonu",
-      rating: 4.8,
-      reviewCount: 156,
-      distance: "1.5 km",
-      location: "İstanbul, Kadıköy",
-      image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
-      packages: [
-        { name: "Banyo", price: 150 },
-        { name: "Tıraş", price: 200 },
-        { name: "Tam Bakım", price: 350 },
-      ],
-      features: ["Evde Hizmet", "Doğal Ürünler", "Deneyimli Ekip"],
-      mobile: true,
-      verified: true,
-    },
-    {
-      id: "2",
-      name: "Pet Spa & Grooming",
-      rating: 4.9,
-      reviewCount: 203,
-      distance: "2.8 km",
-      location: "İstanbul, Beşiktaş",
-      image: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800",
-      packages: [
-        { name: "Lüks Banyo", price: 250 },
-        { name: "Stil Tıraş", price: 300 },
-        { name: "VIP Bakım", price: 500 },
-      ],
-      features: ["Spa", "Masaj", "Özel Şampuan"],
-      mobile: false,
-      verified: true,
-    },
-  ];
+  const cardWidth = (width - 48) / 2;
 
-  const toggleFavorite = id => setFavorites(p => (p.includes(id) ? p.filter(x => x !== id) : [...p, id]));
+  const renderSalonCard = salon => (
+    <TouchableOpacity
+      key={salon.id}
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate("PetGroomingDetail", { salon })}
+      className='bg-white rounded-2xl mb-4 shadow-md overflow-hidden'
+      style={{ width: cardWidth }}
+    >
+      {/* Salon Image */}
+      <View className='relative' style={{ height: cardWidth * 1.2 }}>
+        <Image source={{ uri: salon.image }} className='w-full h-full' />
 
-  return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className="flex-1 bg-pink-50">
-      <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
-      <LinearGradient
-        colors={["#EC4899", "#DB2777"]}
-        className="px-4 pb-4"
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      >
-        <View className="flex-row justify-between items-center mb-4">
-          <View>
-            <Text className="text-3xl font-bold text-white mt-6">Pet Kuaför</Text>
-            <Text className="text-base text-white opacity-90 mt-1">Tüy bakımı ve güzellik</Text>
-          </View>
-          <TouchableOpacity className="w-11 h-11 rounded-full bg-white/20 items-center justify-center">
-            <Ionicons name='options-outline' size={24} color='#FFF' />
-          </TouchableOpacity>
-        </View>
-        <View className="flex-row items-center bg-white rounded-xl px-4 py-2 gap-2">
-          <Ionicons name='search' size={20} color='#6B7280' />
-          <Text className="flex-1 text-base text-gray-500">Kuaför ara...</Text>
-        </View>
-      </LinearGradient>
+        {/* Gradient Overlay */}
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          className='absolute bottom-0 left-0 right-0 h-2/5'
+        />
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        className="max-h-[60px] mt-4"
-        contentContainerClassName="px-4 py-2 gap-2"
-      >
-        {serviceTypes.map(t => (
-          <TouchableOpacity
-            key={t.id}
-            className={`flex-row items-center px-4 py-2 rounded-full mr-2 border ${
-              selectedService === t.id
-                ? 'bg-pink-500 border-pink-500 shadow-md'
-                : 'bg-white border-gray-200'
-            }`}
-            onPress={() => setSelectedService(t.id)}
-            activeOpacity={0.7}
-          >
-            <Ionicons name={t.icon} size={18} color={selectedService === t.id ? "#FFF" : "#EC4899"} />
-            <Text className={`ml-1.5 text-[13px] font-semibold ${
-              selectedService === t.id ? 'text-white' : 'text-pink-500'
-            }`}>{t.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+        {/* Status Badge */}
+        <View
+          className={`absolute top-2 right-2 px-2 py-1 rounded-lg ${
+            salon.status === "Dolu" ? "bg-gray-400" : "bg-green-500"
+          }`}
+        >
+          <Text className='text-white text-[10px] font-bold'>{salon.status}</Text>
+        </View>
 
-      <View className="flex-row bg-white mx-4 mt-4 rounded-2xl p-2 gap-1">
-        <View className="flex-1 items-center py-2">
-          <Ionicons name='cut' size={20} color='#EC4899' />
-          <Text className="text-xl font-bold text-gray-900 mt-1">{groomers.length}</Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Kuaför</Text>
-        </View>
-        <View className="flex-1 items-center py-2">
-          <Ionicons name='star' size={20} color='#F59E0B' />
-          <Text className="text-xl font-bold text-gray-900 mt-1">4.9</Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Ort. Puan</Text>
-        </View>
-        <View className="flex-1 items-center py-2">
-          <Ionicons name='home' size={20} color='#10B981' />
-          <Text className="text-xl font-bold text-gray-900 mt-1">{groomers.filter(g => g.mobile).length}</Text>
-          <Text className="text-xs text-gray-500 mt-0.5">Evde Hizmet</Text>
+        {/* Rating Badge */}
+        <View className='absolute bottom-2 right-2 px-2 py-1 rounded-full bg-black/50 flex-row items-center gap-1'>
+          <Ionicons name='star' size={12} color='#FFF' />
+          <Text className='text-white text-[10px] font-bold'>{salon.rating}</Text>
         </View>
       </View>
 
+      {/* Card Content */}
+      <View className='p-3'>
+        {/* Salon Name & Verified */}
+        <View className='flex-row items-center mb-1 gap-1'>
+          <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
+            {salon.name}
+          </Text>
+          {salon.verified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
+        </View>
+
+        {/* Address */}
+        <Text className='text-xs text-gray-500 mb-2' numberOfLines={1}>
+          {salon.address}
+        </Text>
+
+        {/* Info Row */}
+        <View className='flex-row items-center mb-2 gap-2'>
+          <View className='bg-cyan-100 px-2 py-1 rounded-md'>
+            <Text className='text-[10px] font-semibold text-cyan-700'>
+              {salon.rating} ★
+            </Text>
+          </View>
+          <View className='flex-1 flex-row items-center gap-1'>
+            <Ionicons name='location' size={12} color='#6B7280' />
+            <Text className='text-[11px] text-gray-500 flex-1' numberOfLines={1}>
+              {salon.city}
+            </Text>
+          </View>
+        </View>
+
+        {/* Badges */}
+        <View className='flex-row gap-1'>
+          {salon.haircut && (
+            <View className='w-5 h-5 rounded-full bg-cyan-100 items-center justify-center'>
+              <Ionicons name='cut' size={10} color='#06B6D4' />
+            </View>
+          )}
+          {salon.spa && (
+            <View className='w-5 h-5 rounded-full bg-purple-100 items-center justify-center'>
+              <Ionicons name='sparkles' size={10} color='#8B5CF6' />
+            </View>
+          )}
+          {salon.bath && (
+            <View className='w-5 h-5 rounded-full bg-blue-100 items-center justify-center'>
+              <Ionicons name='water' size={10} color='#3B82F6' />
+            </View>
+          )}
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View className='flex-1 bg-white/5' style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
+      {/* Header */}
+      <View className='flex-row items-center px-5 pt-12 pb-4 gap-3'>
+        <TouchableOpacity
+          className='w-10 h-10 rounded-xl bg-gray-100 items-center justify-center'
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name='arrow-back' size={24} color='#111827' />
+        </TouchableOpacity>
+
+        <View className='flex-1'>
+          <Text className='text-xs text-gray-500 font-medium'>Profesyonel Bakım</Text>
+          <Text className='text-2xl font-bold text-gray-800 mt-0.5'>Pet Kuaför</Text>
+        </View>
+
+        <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
+          <LinearGradient colors={["#06B6D4", "#0891B2"]} className='flex-1 items-center justify-center'>
+            <Ionicons name='cut' size={24} color='#FFF' />
+          </LinearGradient>
+        </View>
+      </View>
+
+      {/* Stats Banner */}
+      <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
+        <LinearGradient colors={["#06B6D4", "#0891B2"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
+          <View className='flex-row justify-around'>
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>{mockSalons.length}</Text>
+              <Text className='text-white/90 text-xs mt-1'>Aktif Salon</Text>
+            </View>
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockSalons.filter(s => s.status === "Müsait").length}
+              </Text>
+              <Text className='text-white/90 text-xs mt-1'>Müsait</Text>
+            </View>
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockSalons.filter(s => s.verified).length}
+              </Text>
+              <Text className='text-white/90 text-xs mt-1'>Uzman</Text>
+            </View>
+          </View>
+        </LinearGradient>
+      </View>
+
+      {/* Search Bar */}
+      <View className='flex-row px-5 mb-4 gap-3'>
+        <View className='flex-1 flex-row items-center bg-gray-50 rounded-xl px-4 py-3.5 gap-3'>
+          <Ionicons name='search' size={20} color='#9CA3AF' />
+          <Text className='text-sm text-gray-400'>Hizmet veya bölge ara...</Text>
+        </View>
+        <TouchableOpacity className='w-12 h-12 rounded-xl bg-cyan-500 items-center justify-center shadow-md'>
+          <Ionicons name='options' size={20} color='#FFF' />
+        </TouchableOpacity>
+      </View>
+
+      {/* Filter Chips */}
       <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: 100 }}
-        contentContainerClassName="p-4 gap-4"
-        showsVerticalScrollIndicator={false}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className='mb-4 py-4'
+        style={{ height: 64 }}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          columnGap: 10,
+          alignItems: "center",
+          paddingBottom: 2,
+        }}
       >
-        {groomers.map(g => (
-          <TouchableOpacity
-            key={g.id}
-            className="bg-white rounded-2xl overflow-hidden shadow-lg"
-            style={{
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 3,
-            }}
-            activeOpacity={0.9}
-            onPress={() => navigation.navigate("PetGroomingDetail", { groomerId: g.id })}
-          >
-            <View className="w-full h-[180px] relative">
-              <Image source={{ uri: g.image }} className="w-full h-full" />
-              {g.mobile && (
-                <View className="absolute top-3 left-3 flex-row items-center px-2.5 py-1.5 rounded-xl bg-green-500 gap-1">
-                  <Ionicons name='home' size={14} color='#FFF' />
-                  <Text className="text-xs font-bold text-white">Evde Hizmet</Text>
-                </View>
-              )}
-              <TouchableOpacity
-                className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/30 items-center justify-center"
-                onPress={() => toggleFavorite(g.id)}
+        {filterOptions.map(filter => {
+          const active = selectedFilter === filter.id;
+          return (
+            <Pressable
+              key={filter.id}
+              onPress={() => setSelectedFilter(filter.id)}
+              android_ripple={{
+                color: active ? "rgba(255,255,255,0.15)" : "rgba(6,182,212,0.10)",
+                borderless: false,
+              }}
+              className={[
+                "flex-row items-center rounded-full px-4",
+                "min-h-[36px] mr-1.5 border",
+                active ? "bg-cyan-500 border-cyan-500" : "bg-cyan-50 border-cyan-200",
+              ].join(" ")}
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.9 : 1 },
+                active && {
+                  shadowColor: "#06B6D4",
+                  shadowOpacity: 0.25,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 3,
+                },
+              ]}
+              hitSlop={6}
+            >
+              <Ionicons
+                name={filter.icon}
+                size={16}
+                color={active ? "#FFFFFF" : "#0891B2"}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                className={["text-[13px] font-semibold", active ? "text-white" : "text-cyan-700"].join(" ")}
+                numberOfLines={1}
               >
-                <Ionicons
-                  name={favorites.includes(g.id) ? "heart" : "heart-outline"}
-                  size={22}
-                  color={favorites.includes(g.id) ? "#EF4444" : "#FFF"}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View className="p-4">
-              <View className="flex-row items-center gap-1.5 mb-2">
-                <Text className="flex-1 text-xl font-bold text-gray-900">{g.name}</Text>
-                {g.verified && <Ionicons name='checkmark-circle' size={18} color='#EC4899' />}
-              </View>
-
-              <View className="flex-row justify-between mb-2">
-                <View className="flex-row items-center gap-1">
-                  <Ionicons name='star' size={14} color='#F59E0B' />
-                  <Text className="text-sm font-semibold text-gray-900">{g.rating}</Text>
-                  <Text className="text-xs text-gray-500">({g.reviewCount})</Text>
-                </View>
-                <View className="flex-row items-center gap-1">
-                  <Ionicons name='location' size={14} color='#6B7280' />
-                  <Text className="text-sm text-gray-500">{g.distance}</Text>
-                </View>
-              </View>
-
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                className="mb-4"
-                contentContainerClassName="gap-1"
-              >
-                {g.features.map((f, i) => (
-                  <View key={i} className="bg-pink-50 px-2 py-1.5 rounded-lg">
-                    <Text className="text-xs text-pink-500 font-medium">{f}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-
-              <Text className="text-base font-bold text-gray-900 mb-2">Hizmet Paketleri</Text>
-              {g.packages.map((p, i) => (
-                <View key={i} className="flex-row justify-between bg-gray-50 p-2 rounded-lg mb-1.5">
-                  <Text className="text-sm text-gray-900">{p.name}</Text>
-                  <Text className="text-sm font-bold text-pink-500">₺{p.price}</Text>
-                </View>
-              ))}
-
-              <LinearGradient
-                colors={["#EC4899", "#DB2777"]}
-                className="rounded-xl overflow-hidden mt-2"
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <TouchableOpacity
-                  className="flex-row items-center justify-center py-2 gap-1.5"
-                  onPress={() => navigation.navigate("PetGroomingDetail", { groomerId: g.id })}
-                >
-                  <Ionicons name='calendar-outline' size={18} color='#FFF' />
-                  <Text className="text-sm font-bold text-white">Randevu Al</Text>
-                </TouchableOpacity>
-              </LinearGradient>
-            </View>
-          </TouchableOpacity>
-        ))}
+                {filter.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </ScrollView>
-    </SafeAreaContainer>
+
+      {/* Info Banner */}
+      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
+        <Ionicons name='information-circle' size={20} color='#14B8A6' />
+        <Text className='flex-1 text-xs text-teal-900 font-medium'>
+          Tüm kuaförler sertifikalı ve hijyenik ekipman kullanır
+        </Text>
+      </View>
+
+      {/* Salon Cards Grid */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 + insets.bottom }}
+      >
+        <View className='flex-row flex-wrap justify-between'>{mockSalons.map(salon => renderSalonCard(salon))}</View>
+      </ScrollView>
+    </View>
   );
 };
 

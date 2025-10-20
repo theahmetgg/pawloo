@@ -22,12 +22,12 @@ const AnimatedFooterTabBar = ({ state, descriptors, navigation }) => {
   const getLabel = (routeName) => {
     const labelMap = {
       Home: "Ana Sayfa",
-      PlayMate: "Oyun Arkadaşı",
+      PlayMate: "Arkadaş",
       Breeding: "Çiftleştirme",
-      Adoption: "Sahiplendirme",
+      Adoption: "Sahiplendir",
       HotelCare: "Otel & Bakım",
       Veterinary: "Veteriner",
-      PetGrooming: "Pet Kuaför",
+      PetGrooming: "Kuaför",
     };
     return labelMap[routeName] || routeName;
   };

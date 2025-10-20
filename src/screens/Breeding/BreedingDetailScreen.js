@@ -307,7 +307,7 @@ const BreedingDetailScreen = ({ route, navigation }) => {
   ];
 
   return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className='flex-1 bg-gray-50'>
+    <SafeAreaContainer>
       <StatusBar barStyle='light-content' backgroundColor='transparent' translucent />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>

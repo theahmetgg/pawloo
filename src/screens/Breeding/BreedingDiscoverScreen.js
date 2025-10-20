@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Image, TouchableOpacity, StatusBar, Dimensions } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { SearchBar } from "../../components/common";
-import SafeAreaContainer from "../../components/layout/SafeAreaContainer";
+import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get("window");
 
@@ -78,7 +76,6 @@ const mockBreedingPets = [
 
 const BreedingDiscoverScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
 
   const filterOptions = [
@@ -88,194 +85,225 @@ const BreedingDiscoverScreen = ({ navigation }) => {
     { id: "available", label: "Müsait", icon: "checkmark-circle" },
   ];
 
+  const cardWidth = (width - 48) / 2;
+
   const renderPetCard = pet => (
     <TouchableOpacity
       key={pet.id}
       activeOpacity={0.9}
       onPress={() => navigation.navigate("BreedingDetail", { pet })}
-      className='bg-white rounded-2xl mb-4 overflow-hidden shadow-md'
+      className='bg-white rounded-2xl mb-4 shadow-md overflow-hidden'
+      style={{ width: cardWidth }}
     >
-      <View className='flex-row'>
-        {/* Pet Image */}
-        <View className='w-[120px] h-[160px] relative'>
-          <Image source={{ uri: pet.image }} className='w-full h-full' resizeMode='cover' />
+      {/* Pet Image */}
+      <View className='relative' style={{ height: cardWidth * 1.2 }}>
+        <Image source={{ uri: pet.image }} className='w-full h-full' />
 
-          {/* Availability Badge */}
-          <View
-            className={`absolute top-2 left-2 px-2 py-1 rounded-lg ${
-              pet.availability === "Rezerve" ? "bg-gray-400" : "bg-green-500"
-            }`}
-          >
-            <Text className='text-white text-xs font-bold'>{pet.availability}</Text>
+        {/* Gradient Overlay */}
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          className='absolute bottom-0 left-0 right-0 h-2/5'
+        />
+
+        {/* Availability Badge */}
+        <View
+          className={`absolute top-2 right-2 px-2 py-1 rounded-lg ${
+            pet.availability === "Rezerve" ? "bg-gray-400" : "bg-green-500"
+          }`}
+        >
+          <Text className='text-white text-[10px] font-bold'>{pet.availability}</Text>
+        </View>
+
+        {/* Gender Badge */}
+        <View className='absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black/50 items-center justify-center'>
+          <Ionicons name={pet.gender === "Erkek" ? "male" : "female"} size={16} color='#FFF' />
+        </View>
+      </View>
+
+      {/* Card Content */}
+      <View className='p-3'>
+        {/* Pet Name & Verified */}
+        <View className='flex-row items-center mb-1 gap-1'>
+          <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
+            {pet.name}
+          </Text>
+          {pet.ownerVerified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
+        </View>
+
+        {/* Breed */}
+        <Text className='text-xs text-gray-500 mb-2' numberOfLines={1}>
+          {pet.breed}
+        </Text>
+
+        {/* Info Row */}
+        <View className='flex-row items-center mb-2 gap-2'>
+          <View className='bg-amber-100 px-2 py-1 rounded-md'>
+            <Text className='text-[10px] font-semibold text-amber-700'>{pet.age} yaş</Text>
           </View>
-
-          {/* Gender Icon */}
-          <View className='absolute bottom-2 left-2 w-7 h-7 rounded-full bg-black/50 items-center justify-center'>
-            <Ionicons name={pet.gender === "Erkek" ? "male" : "female"} size={16} color='white' />
+          <View className='flex-1 flex-row items-center gap-1'>
+            <Ionicons name='location' size={12} color='#6B7280' />
+            <Text className='text-[11px] text-gray-500 flex-1' numberOfLines={1}>
+              {pet.city}
+            </Text>
           </View>
         </View>
 
-        {/* Pet Info */}
-        <View className='flex-1 p-3'>
-          <View className='flex-row justify-between items-start mb-1'>
-            <View className='flex-row items-center gap-1 flex-1'>
-              <Text className='text-xl font-bold text-gray-800'>{pet.name}</Text>
-              {pet.ownerVerified && <Ionicons name='checkmark-circle' size={18} color='#FFFFFF' />}
+        {/* Badges */}
+        <View className='flex-row gap-1'>
+          {pet.pedigree && (
+            <View className='w-5 h-5 rounded-full bg-amber-100 items-center justify-center'>
+              <Ionicons name='ribbon' size={10} color='#D97706' />
             </View>
-            <View className='bg-amber-100 px-2 py-1 rounded-lg'>
-              <Text className='text-amber-800 text-xs font-semibold'>{pet.age} yaş</Text>
+          )}
+          {pet.vaccinated && (
+            <View className='w-5 h-5 rounded-full bg-green-100 items-center justify-center'>
+              <Ionicons name='shield-checkmark' size={10} color='#10B981' />
             </View>
-          </View>
-
-          <Text className='text-sm text-gray-500 mb-2'>{pet.breed}</Text>
-
-          {/* Certifications */}
-          <View className='flex-row flex-wrap gap-1 mb-3'>
-            {pet.pedigree && (
-              <View className='flex-row items-center bg-amber-50 px-2 py-1 rounded-lg gap-1'>
-                <Ionicons name='ribbon' size={14} color='#D97706' />
-                <Text className='text-xs text-gray-600 font-medium'>Soy Ağacı</Text>
-              </View>
-            )}
-            {pet.vaccinated && (
-              <View className='flex-row items-center bg-green-50 px-2 py-1 rounded-lg gap-1'>
-                <Ionicons name='shield-checkmark' size={14} color='#10B981' />
-                <Text className='text-xs text-gray-600 font-medium'>Aşılı</Text>
-              </View>
-            )}
-            {pet.healthCheck && (
-              <View className='flex-row items-center bg-pink-50 px-2 py-1 rounded-lg gap-1'>
-                <Ionicons name='heart' size={14} color='#EC4899' />
-                <Text className='text-xs text-gray-600 font-medium'>Sağlık</Text>
-              </View>
-            )}
-          </View>
-
-          {/* Footer */}
-          <View className='flex-row justify-between items-center'>
-            <View className='flex-row items-center gap-1'>
-              <Ionicons name='location-outline' size={16} color='#6B7280' />
-              <Text className='text-sm text-gray-500 font-medium'>{pet.city}</Text>
+          )}
+          {pet.healthCheck && (
+            <View className='w-5 h-5 rounded-full bg-pink-100 items-center justify-center'>
+              <Ionicons name='heart' size={10} color='#EC4899' />
             </View>
-
-            <TouchableOpacity className='rounded-xl overflow-hidden'>
-              <LinearGradient
-                colors={["#F59E0B", "#D97706"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                className='flex-row items-center px-3 py-2 gap-1'
-              >
-                <Text className='text-white text-sm font-semibold'>İletişim</Text>
-                <Ionicons name='arrow-forward' size={16} color='white' />
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+          )}
         </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className='flex-1 bg-[#FEF3E2]'>
-      <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
-
+    <View className='flex-1 bg-white/5' style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       {/* Header */}
-      <View className='flex-row justify-between items-center px-4 pb-4'>
-        <View className='mt-8'>
-          <Text className='text-sm text-gray-600 font-medium'>Güvenilir Eşleştirme</Text>
-          <Text className='text-3xl font-bold text-gray-800 mt-1'>Çiftleştirme</Text>
+      <View className='flex-row items-center px-5 pt-12 pb-4 gap-3'>
+        <TouchableOpacity
+          className='w-10 h-10 rounded-xl bg-gray-100 items-center justify-center'
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name='arrow-back' size={24} color='#111827' />
+        </TouchableOpacity>
+
+        <View className='flex-1'>
+          <Text className='text-xs text-gray-500 font-medium'>Güvenilir Eşleştirme</Text>
+          <Text className='text-2xl font-bold text-gray-800 mt-0.5'>Çiftleştirme</Text>
         </View>
-        <View className='w-14 h-14 rounded-full overflow-hidden shadow-md'>
-          <LinearGradient colors={["#F59E0B", "#D97706"]} className='flex-1 items-center justify-center'>
-            <Ionicons name='ribbon' size={28} color='white' />
+
+        <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
+          <LinearGradient colors={["#F43F5E", "#DB2777"]} className='flex-1 items-center justify-center'>
+            <Ionicons name='heart' size={24} color='#FFF' />
           </LinearGradient>
         </View>
       </View>
 
-      {/* Statistics Banner */}
-      <View className='mx-4 mb-4'>
-        <LinearGradient
-          colors={["#FFFFFF", "#0D9488"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          className='rounded-2xl p-4'
-        >
+      {/* Stats Banner */}
+      <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
+        <LinearGradient colors={["#F43F5E", "#DB2777"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
           <View className='flex-row justify-around'>
             <View className='items-center'>
-              <Text className='text-white text-2xl font-bold'>{mockBreedingPets.length}</Text>
-              <Text className='text-white/80 text-xs mt-1'>Aktif İlan</Text>
+              <Text className='text-white text-3xl font-bold'>{mockBreedingPets.length}</Text>
+              <Text className='text-white/90 text-xs mt-1'>Aktif İlan</Text>
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-2xl font-bold'>
+              <Text className='text-white text-3xl font-bold'>
                 {mockBreedingPets.filter(p => p.availability === "Müsait").length}
               </Text>
-              <Text className='text-white/80 text-xs mt-1'>Müsait</Text>
+              <Text className='text-white/90 text-xs mt-1'>Müsait</Text>
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-2xl font-bold'>
+              <Text className='text-white text-3xl font-bold'>
                 {mockBreedingPets.filter(p => p.ownerVerified).length}
               </Text>
-              <Text className='text-white/80 text-xs mt-1'>Onaylı</Text>
+              <Text className='text-white/90 text-xs mt-1'>Onaylı</Text>
             </View>
           </View>
         </LinearGradient>
       </View>
 
       {/* Search Bar */}
-      <View className='px-4 mb-3'>
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder='Cins veya şehir ara...'
-          onFilterPress={() => console.log("Filter pressed")}
-        />
+      <View className='flex-row px-5 mb-4 gap-3'>
+        <View className='flex-1 flex-row items-center bg-gray-50 rounded-xl px-4 py-3.5 gap-3'>
+          <Ionicons name='search' size={20} color='#9CA3AF' />
+          <Text className='text-sm text-gray-400'>Cins veya şehir ara...</Text>
+        </View>
+        <TouchableOpacity className='w-12 h-12 rounded-xl bg-rose-500 items-center justify-center shadow-md'>
+          <Ionicons name='options' size={20} color='#FFF' />
+        </TouchableOpacity>
       </View>
 
       {/* Filter Chips */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className='mb-6 py-2'
-        contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
+        className='mb-4 py-4'
+        style={{ height: 64 }} // chip’lerin altı görünür olsun
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          columnGap: 10,
+          alignItems: "center", // dikey hizala (clip’i önler)
+          paddingBottom: 2,
+        }}
       >
         {filterOptions.map(filter => {
           const active = selectedFilter === filter.id;
           return (
-            <TouchableOpacity
+            <Pressable
               key={filter.id}
               onPress={() => setSelectedFilter(filter.id)}
-              activeOpacity={0.7}
-              className={`flex-row items-center justify-center min-h-[36px] px-4 py-2.5 rounded-full mr-2 border-2 ${
-                active ? "bg-amber-500 border-amber-500 shadow-md" : "bg-white border-amber-500 shadow-sm"
-              }`}
+              android_ripple={{
+                color: active ? "rgba(255,255,255,0.15)" : "rgba(244,63,94,0.10)",
+                borderless: false,
+              }}
+              className={[
+                "flex-row items-center rounded-full px-4",
+                "min-h-[36px] mr-1.5 border",
+                active ? "bg-rose-500 border-rose-500" : "bg-rose-50 border-rose-200",
+              ].join(" ")}
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.9 : 1 },
+                active && {
+                  // soft glow (iOS) + elevation (Android)
+                  shadowColor: "#f43f5e",
+                  shadowOpacity: 0.25,
+                  shadowRadius: 12,
+                  shadowOffset: { width: 0, height: 6 },
+                  elevation: 3,
+                },
+              ]}
+              hitSlop={6}
             >
-              <Ionicons name={filter.icon} size={18} color={active ? "white" : "#D97706"} style={{ marginRight: 8 }} />
-              <Text className={`text-sm font-semibold ${active ? "text-white" : "text-amber-800"}`}>
+              <Ionicons
+                name={filter.icon}
+                size={16}
+                color={active ? "#FFFFFF" : "#BE185D"}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                className={["text-[13px] font-semibold", active ? "text-white" : "text-rose-700"].join(" ")}
+                numberOfLines={1}
+              >
                 {filter.label}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </ScrollView>
 
       {/* Info Banner */}
-      <View className='flex-row items-center bg-white mx-4 mb-4 px-4 py-3 rounded-2xl gap-2 border-l-4 border-teal-500 shadow-sm'>
-        <Ionicons name='information-circle' size={20} color='#FFFFFF' />
-        <Text className='flex-1 text-sm text-gray-800 font-medium'>
+      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
+        <Ionicons name='information-circle' size={20} color='#14B8A6' />
+        <Text className='flex-1 text-xs text-teal-900 font-medium'>
           Tüm hayvanlar veteriner kontrolünden geçmiştir
         </Text>
       </View>
 
-      {/* Pet Cards */}
+      {/* Pet Cards Grid */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 + insets.bottom }}
       >
-        {mockBreedingPets.map(pet => renderPetCard(pet))}
+        <View className='flex-row flex-wrap justify-between'>{mockBreedingPets.map(pet => renderPetCard(pet))}</View>
       </ScrollView>
-    </SafeAreaContainer>
+    </View>
   );
 };
 

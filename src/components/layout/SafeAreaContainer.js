@@ -1,31 +1,42 @@
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from "react";
+import { View, Platform } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 /**
- * SafeAreaContainer - Consistent safe area wrapper for all screens
+ * SafeAreaContainer - Geliştirilmiş güvenli alan sarmalayıcısı
  *
- * @param {Array} edges - Which edges to apply safe area ['top', 'bottom', 'left', 'right']
- * @param {Object|Array} style - Custom styles
- * @param {string} className - NativeWind classes
- * @param {ReactNode} children - Child components
+ * ✅ Otomatik olarak üst boşluğu (status bar / notch) ekler
+ * ✅ Alt kenarda tab bar varsa gereksiz boşluğu kaldırır
+ * ✅ NativeWind className + style birlikte çalışır
  *
- * Default: Protects top and bottom edges for consistent iOS/Android behavior
- *
- * Usage:
- * - Full screen: edges={['top', 'bottom']}
- * - With tab bar: edges={['top', 'right', 'left']} (bottom handled by tab bar)
- * - Immersive: edges={[]} or edges={['bottom']}
- * - Modal: edges={['bottom']}
+ * Props:
+ * - edges: ['top','bottom','left','right'] (varsayılan: ['top','bottom'])
+ * - withPadding?: boolean → true ise otomatik iç padding ekler
  */
 export default function SafeAreaContainer({
-  edges = ['top', 'bottom'],
+  edges = ["top", "bottom"],
   style,
-  className = 'flex-1',
-  children
+  className = "flex-1 bg-white",
+  withPadding = false,
+  children,
 }) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView edges={edges} style={style} className={className}>
-      {children}
+    <SafeAreaView
+      edges={edges}
+      style={[
+        {
+          paddingTop: insets.top,
+          paddingBottom: edges.includes("bottom") && Platform.OS === "android" ? insets.bottom + 4 : insets.bottom,
+          paddingHorizontal: withPadding ? 16 : 0,
+          flex: 1,
+        },
+        style,
+      ]}
+      className={className}
+    >
+      <View className='flex-1'>{children}</View>
     </SafeAreaView>
   );
 }
