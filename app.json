@@ -15,7 +15,7 @@
     },
     "androidStatusBar": {
       "translucent": true,
-      "backgroundColor": "transparent",
+      "backgroundColor": "#00000000",
       "barStyle": "light-content"
     },
     "androidNavigationBar": {
@@ -42,8 +42,11 @@
     },
     "extra": {
       "eas": {
-        "projectId": "8c8cddb9-de75-4ac6-b3c5-53fd2523e3cb"
+        "projectId": "e2c2887a-9a18-45d4-b4d0-94defa00d8c4"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
