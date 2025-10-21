@@ -170,6 +170,7 @@ const AppNavigator = () => {
           tabBarHideOnKeyboard: true,
           contentStyle: { backgroundColor: "transparent" },
         }}
+        initialRouteName='MainApp'
       >
         <RootStack.Screen
           name='Welcome'

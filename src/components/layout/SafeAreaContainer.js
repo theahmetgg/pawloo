@@ -1,42 +1,31 @@
 import React from "react";
-import { View, Platform } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { Platform } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-/**
- * SafeAreaContainer - Geliştirilmiş güvenli alan sarmalayıcısı
- *
- * ✅ Otomatik olarak üst boşluğu (status bar / notch) ekler
- * ✅ Alt kenarda tab bar varsa gereksiz boşluğu kaldırır
- * ✅ NativeWind className + style birlikte çalışır
- *
- * Props:
- * - edges: ['top','bottom','left','right'] (varsayılan: ['top','bottom'])
- * - withPadding?: boolean → true ise otomatik iç padding ekler
- */
 export default function SafeAreaContainer({
-  edges = ["top", "bottom"],
-  style,
+  edges = ["top", "right", "bottom", "left"],
   className = "flex-1 bg-white",
+  style,
   withPadding = false,
+  extraTop = 0,
+  extraBottom = 0,
+  androidBottomSoft = 4, // alt yumuşatma (opsiyonel)
   children,
 }) {
-  const insets = useSafeAreaInsets();
-
   return (
     <SafeAreaView
       edges={edges}
+      className={className}
       style={[
+        { flex: 1, paddingHorizontal: withPadding ? 16 : 0 },
         {
-          paddingTop: insets.top,
-          paddingBottom: edges.includes("bottom") && Platform.OS === "android" ? insets.bottom + 4 : insets.bottom,
-          paddingHorizontal: withPadding ? 16 : 0,
-          flex: 1,
+          paddingTop: extraTop,
+          paddingBottom: extraBottom + (Platform.OS === "android" && edges.includes("bottom") ? androidBottomSoft : 0),
         },
         style,
       ]}
-      className={className}
     >
-      <View className='flex-1'>{children}</View>
+      {children}
     </SafeAreaView>
   );
 }
