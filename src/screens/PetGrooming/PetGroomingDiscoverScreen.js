@@ -127,9 +127,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
         {/* Info Row */}
         <View className='flex-row items-center mb-2 gap-2'>
           <View className='bg-cyan-100 px-2 py-1 rounded-md'>
-            <Text className='text-[10px] font-semibold text-cyan-700'>
-              {salon.rating} ★
-            </Text>
+            <Text className='text-[10px] font-semibold text-cyan-700'>{salon.rating} ★</Text>
           </View>
           <View className='flex-1 flex-row items-center gap-1'>
             <Ionicons name='location' size={12} color='#6B7280' />
@@ -201,9 +199,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-3xl font-bold'>
-                {mockSalons.filter(s => s.verified).length}
-              </Text>
+              <Text className='text-white text-3xl font-bold'>{mockSalons.filter(s => s.verified).length}</Text>
               <Text className='text-white/90 text-xs mt-1'>Uzman</Text>
             </View>
           </View>
@@ -226,7 +222,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         className='mb-4 py-4'
-        style={{ height: 64 }}
+        style={{ height: 74 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,

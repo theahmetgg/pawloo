@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  Pressable,
-} from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -95,22 +87,22 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
 
   const cardWidth = (width - 48) / 2;
 
-  const renderPetCard = (pet) => (
+  const renderPetCard = pet => (
     <TouchableOpacity
       key={pet.id}
       activeOpacity={0.9}
       onPress={() => navigation.navigate("PlayMateDetail", { pet })}
-      className="bg-white rounded-2xl mb-4 shadow-md overflow-hidden"
+      className='bg-white rounded-2xl mb-4 shadow-md overflow-hidden'
       style={{ width: cardWidth }}
     >
       {/* Pet Image */}
-      <View className="relative" style={{ height: cardWidth * 1.2 }}>
-        <Image source={{ uri: pet.image }} className="w-full h-full" />
+      <View className='relative' style={{ height: cardWidth * 1.2 }}>
+        <Image source={{ uri: pet.image }} className='w-full h-full' />
 
         {/* Gradient Overlay */}
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.7)"]}
-          className="absolute bottom-0 left-0 right-0 h-2/5"
+          className='absolute bottom-0 left-0 right-0 h-2/5'
         />
 
         {/* Status Badge */}
@@ -119,61 +111,59 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
             pet.status === "Meşgul" ? "bg-gray-400" : "bg-green-500"
           }`}
         >
-          <Text className="text-white text-[10px] font-bold">{pet.status}</Text>
+          <Text className='text-white text-[10px] font-bold'>{pet.status}</Text>
         </View>
 
         {/* Distance Badge */}
-        <View className="absolute bottom-2 right-2 px-2 py-1 rounded-full bg-black/50 flex-row items-center gap-1">
-          <Ionicons name="navigate" size={12} color="#FFF" />
-          <Text className="text-white text-[10px] font-bold">{pet.distance}</Text>
+        <View className='absolute bottom-2 right-2 px-2 py-1 rounded-full bg-black/50 flex-row items-center gap-1'>
+          <Ionicons name='navigate' size={12} color='#FFF' />
+          <Text className='text-white text-[10px] font-bold'>{pet.distance}</Text>
         </View>
       </View>
 
       {/* Card Content */}
-      <View className="p-3">
+      <View className='p-3'>
         {/* Pet Name & Verified */}
-        <View className="flex-row items-center mb-1 gap-1">
-          <Text className="text-base font-bold text-gray-800 flex-1" numberOfLines={1}>
+        <View className='flex-row items-center mb-1 gap-1'>
+          <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
             {pet.name}
           </Text>
-          {pet.ownerVerified && (
-            <Ionicons name="checkmark-circle" size={16} color="#14B8A6" />
-          )}
+          {pet.ownerVerified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
         </View>
 
         {/* Breed */}
-        <Text className="text-xs text-gray-500 mb-2" numberOfLines={1}>
+        <Text className='text-xs text-gray-500 mb-2' numberOfLines={1}>
           {pet.breed}
         </Text>
 
         {/* Info Row */}
-        <View className="flex-row items-center mb-2 gap-2">
-          <View className="bg-teal-100 px-2 py-1 rounded-md">
-            <Text className="text-[10px] font-semibold text-teal-700">{pet.age} yaş</Text>
+        <View className='flex-row items-center mb-2 gap-2'>
+          <View className='bg-teal-100 px-2 py-1 rounded-md'>
+            <Text className='text-[10px] font-semibold text-teal-700'>{pet.age} yaş</Text>
           </View>
-          <View className="flex-1 flex-row items-center gap-1">
-            <Ionicons name="location" size={12} color="#6B7280" />
-            <Text className="text-[11px] text-gray-500 flex-1" numberOfLines={1}>
+          <View className='flex-1 flex-row items-center gap-1'>
+            <Ionicons name='location' size={12} color='#6B7280' />
+            <Text className='text-[11px] text-gray-500 flex-1' numberOfLines={1}>
               {pet.city}
             </Text>
           </View>
         </View>
 
         {/* Badges */}
-        <View className="flex-row gap-1">
+        <View className='flex-row gap-1'>
           {pet.friendly && (
-            <View className="w-5 h-5 rounded-full bg-teal-100 items-center justify-center">
-              <Ionicons name="happy" size={10} color="#14B8A6" />
+            <View className='w-5 h-5 rounded-full bg-teal-100 items-center justify-center'>
+              <Ionicons name='happy' size={10} color='#14B8A6' />
             </View>
           )}
           {pet.vaccinated && (
-            <View className="w-5 h-5 rounded-full bg-green-100 items-center justify-center">
-              <Ionicons name="shield-checkmark" size={10} color="#10B981" />
+            <View className='w-5 h-5 rounded-full bg-green-100 items-center justify-center'>
+              <Ionicons name='shield-checkmark' size={10} color='#10B981' />
             </View>
           )}
           {pet.energyLevel && (
-            <View className="w-5 h-5 rounded-full bg-amber-100 items-center justify-center">
-              <Ionicons name="flash" size={10} color="#F59E0B" />
+            <View className='w-5 h-5 rounded-full bg-amber-100 items-center justify-center'>
+              <Ionicons name='flash' size={10} color='#F59E0B' />
             </View>
           )}
         </View>
@@ -182,62 +172,62 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
   );
 
   return (
-    <View className="flex-1 bg-white/5" style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
+    <View className='flex-1 bg-white/5' style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       {/* Header */}
-      <View className="flex-row items-center px-5 pt-12 pb-4 gap-3">
+      <View className='flex-row items-center px-5 pt-12 pb-4 gap-3'>
         <TouchableOpacity
-          className="w-10 h-10 rounded-xl bg-gray-100 items-center justify-center"
+          className='w-10 h-10 rounded-xl bg-gray-100 items-center justify-center'
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#111827" />
+          <Ionicons name='arrow-back' size={24} color='#111827' />
         </TouchableOpacity>
 
-        <View className="flex-1">
-          <Text className="text-xs text-gray-500 font-medium">Yakınındaki Dostlar</Text>
-          <Text className="text-2xl font-bold text-gray-800 mt-0.5">Oyun Arkadaşı</Text>
+        <View className='flex-1'>
+          <Text className='text-xs text-gray-500 font-medium'>Yakınındaki Dostlar</Text>
+          <Text className='text-2xl font-bold text-gray-800 mt-0.5'>Oyun Arkadaşı</Text>
         </View>
 
-        <View className="w-12 h-12 rounded-full overflow-hidden shadow-lg">
-          <LinearGradient colors={["#14B8A6", "#0D9488"]} className="flex-1 items-center justify-center">
-            <Ionicons name="paw" size={24} color="#FFF" />
+        <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
+          <LinearGradient colors={["#14B8A6", "#0D9488"]} className='flex-1 items-center justify-center'>
+            <Ionicons name='paw' size={24} color='#FFF' />
           </LinearGradient>
         </View>
       </View>
 
       {/* Stats Banner */}
-      <View className="mx-5 mb-5 rounded-2xl overflow-hidden shadow-md">
-        <LinearGradient colors={["#14B8A6", "#0D9488"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className="p-5">
-          <View className="flex-row justify-around">
-            <View className="items-center">
-              <Text className="text-white text-3xl font-bold">{mockPlayMates.length}</Text>
-              <Text className="text-white/90 text-xs mt-1">Aktif Üye</Text>
+      <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
+        <LinearGradient colors={["#14B8A6", "#0D9488"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
+          <View className='flex-row justify-around'>
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>{mockPlayMates.length}</Text>
+              <Text className='text-white/90 text-xs mt-1'>Aktif Üye</Text>
             </View>
-            <View className="w-px bg-white/30" />
-            <View className="items-center">
-              <Text className="text-white text-3xl font-bold">
-                {mockPlayMates.filter((p) => p.status === "Müsait").length}
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockPlayMates.filter(p => p.status === "Müsait").length}
               </Text>
-              <Text className="text-white/90 text-xs mt-1">Müsait</Text>
+              <Text className='text-white/90 text-xs mt-1'>Müsait</Text>
             </View>
-            <View className="w-px bg-white/30" />
-            <View className="items-center">
-              <Text className="text-white text-3xl font-bold">
-                {mockPlayMates.filter((p) => p.ownerVerified).length}
+            <View className='w-px bg-white/30' />
+            <View className='items-center'>
+              <Text className='text-white text-3xl font-bold'>
+                {mockPlayMates.filter(p => p.ownerVerified).length}
               </Text>
-              <Text className="text-white/90 text-xs mt-1">Onaylı</Text>
+              <Text className='text-white/90 text-xs mt-1'>Onaylı</Text>
             </View>
           </View>
         </LinearGradient>
       </View>
 
       {/* Search Bar */}
-      <View className="flex-row px-5 mb-4 gap-3">
-        <View className="flex-1 flex-row items-center bg-gray-50 rounded-xl px-4 py-3.5 gap-3">
-          <Ionicons name="search" size={20} color="#9CA3AF" />
-          <Text className="text-sm text-gray-400">Cins veya mesafe ara...</Text>
+      <View className='flex-row px-5 mb-4 gap-3'>
+        <View className='flex-1 flex-row items-center bg-gray-50 rounded-xl px-4 py-3.5 gap-3'>
+          <Ionicons name='search' size={20} color='#9CA3AF' />
+          <Text className='text-sm text-gray-400'>Cins veya mesafe ara...</Text>
         </View>
-        <TouchableOpacity className="w-12 h-12 rounded-xl bg-teal-500 items-center justify-center shadow-md">
-          <Ionicons name="options" size={20} color="#FFF" />
+        <TouchableOpacity className='w-12 h-12 rounded-xl bg-teal-500 items-center justify-center shadow-md'>
+          <Ionicons name='options' size={20} color='#FFF' />
         </TouchableOpacity>
       </View>
 
@@ -245,8 +235,8 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="mb-4 py-4"
-        style={{ height: 64 }}
+        className='mb-4 py-4'
+        style={{ height: 74 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,
@@ -254,7 +244,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
           paddingBottom: 2,
         }}
       >
-        {filterOptions.map((filter) => {
+        {filterOptions.map(filter => {
           const active = selectedFilter === filter.id;
           return (
             <Pressable
@@ -299,9 +289,9 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
       </ScrollView>
 
       {/* Info Banner */}
-      <View className="flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500">
-        <Ionicons name="information-circle" size={20} color="#14B8A6" />
-        <Text className="flex-1 text-xs text-teal-900 font-medium">
+      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
+        <Ionicons name='information-circle' size={20} color='#14B8A6' />
+        <Text className='flex-1 text-xs text-teal-900 font-medium'>
           Tüm evcil hayvanlar aşılı ve sosyalleşme eğitimi almıştır
         </Text>
       </View>
@@ -311,7 +301,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 + insets.bottom }}
       >
-        <View className="flex-row flex-wrap justify-between">{mockPlayMates.map((pet) => renderPetCard(pet))}</View>
+        <View className='flex-row flex-wrap justify-between'>{mockPlayMates.map(pet => renderPetCard(pet))}</View>
       </ScrollView>
     </View>
   );

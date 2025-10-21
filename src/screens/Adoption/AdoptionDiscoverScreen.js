@@ -230,8 +230,8 @@ const AdoptionDiscoverScreen = ({ navigation }) => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className='mb-4 py-4'
-        style={{ height: 64 }}
+        className='mb-4'
+        style={{ height: 74 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,

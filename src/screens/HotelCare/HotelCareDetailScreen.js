@@ -350,13 +350,14 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
 
           <View
             style={{
-              position: 'absolute',
+              position: "absolute",
               right: 16,
               bottom: 16,
-              backgroundColor: 'rgba(0,0,0,0.7)',
+              backgroundColor: "rgba(255,255,255,0.6)",
               paddingHorizontal: 12,
-              paddingVertical: 6,
-              borderRadius: 20,
+              height: 24,
+              justifyContent: "center",
+              borderRadius: 12,
             }}
           >
             <Text style={{ color: theme.text, fontSize: 12, fontWeight: '600' }}>

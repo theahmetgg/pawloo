@@ -131,9 +131,7 @@ const VeterinaryDiscoverScreen = ({ navigation }) => {
         {/* Info Row */}
         <View className='flex-row items-center mb-2 gap-2'>
           <View className='bg-blue-100 px-2 py-1 rounded-md'>
-            <Text className='text-[10px] font-semibold text-blue-700'>
-              {clinic.emergency247 ? "7/24" : "Randevu"}
-            </Text>
+            <Text className='text-[10px] font-semibold text-blue-700'>{clinic.emergency247 ? "7/24" : "Randevu"}</Text>
           </View>
           <View className='flex-1 flex-row items-center gap-1'>
             <Ionicons name='location' size={12} color='#6B7280' />
@@ -198,16 +196,12 @@ const VeterinaryDiscoverScreen = ({ navigation }) => {
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-3xl font-bold'>
-                {mockClinics.filter(c => c.emergency247).length}
-              </Text>
+              <Text className='text-white text-3xl font-bold'>{mockClinics.filter(c => c.emergency247).length}</Text>
               <Text className='text-white/90 text-xs mt-1'>7/24 Açık</Text>
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-3xl font-bold'>
-                {mockClinics.filter(c => c.verified).length}
-              </Text>
+              <Text className='text-white text-3xl font-bold'>{mockClinics.filter(c => c.verified).length}</Text>
               <Text className='text-white/90 text-xs mt-1'>Uzman</Text>
             </View>
           </View>
@@ -230,7 +224,7 @@ const VeterinaryDiscoverScreen = ({ navigation }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         className='mb-4 py-4'
-        style={{ height: 64 }}
+        style={{ height: 74 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,
@@ -295,7 +289,9 @@ const VeterinaryDiscoverScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 + insets.bottom }}
       >
-        <View className='flex-row flex-wrap justify-between'>{mockClinics.map(clinic => renderClinicCard(clinic))}</View>
+        <View className='flex-row flex-wrap justify-between'>
+          {mockClinics.map(clinic => renderClinicCard(clinic))}
+        </View>
       </ScrollView>
     </View>
   );

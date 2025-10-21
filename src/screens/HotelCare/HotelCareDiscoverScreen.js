@@ -203,9 +203,7 @@ const HotelCareDiscoverScreen = ({ navigation }) => {
             </View>
             <View className='w-px bg-white/30' />
             <View className='items-center'>
-              <Text className='text-white text-3xl font-bold'>
-                {mockHotels.filter(h => h.rating === 5.0).length}
-              </Text>
+              <Text className='text-white text-3xl font-bold'>{mockHotels.filter(h => h.rating === 5.0).length}</Text>
               <Text className='text-white/90 text-xs mt-1'>5 Yıldız</Text>
             </View>
           </View>
@@ -228,7 +226,7 @@ const HotelCareDiscoverScreen = ({ navigation }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         className='mb-4 py-4'
-        style={{ height: 64 }}
+        style={{ height: 74 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,

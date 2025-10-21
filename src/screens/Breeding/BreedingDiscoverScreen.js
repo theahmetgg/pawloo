@@ -235,7 +235,7 @@ const BreedingDiscoverScreen = ({ navigation }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         className='mb-4 py-4'
-        style={{ height: 64 }} // chip’lerin altı görünür olsun
+        style={{ height: 74 }} // chip’lerin altı görünür olsun
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,
