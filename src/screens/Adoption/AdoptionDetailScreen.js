@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,26 @@ import {
   Dimensions,
   Modal,
   TextInput,
-  StatusBar
+  StatusBar,
+  Animated,
 } from 'react-native';
-import SafeAreaContainer from '../../components/layout/SafeAreaContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SafeAreaContainer from '../../components/shared/SafeAreaContainer';
+import HeaderOverlay from '../../components/shared/HeaderOverlay';
+import DetailSection from '../../components/shared/DetailSection';
+import useThemeColors from '../../hooks/useThemeColors';
 
 const { width } = Dimensions.get('window');
+const HERO_HEIGHT = Math.min(420, Math.round(width * 0.9));
 
 const AdoptionDetailScreen = ({ navigation, route }) => {
+  const theme = useThemeColors('adoption');
+  const insets = useSafeAreaInsets();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('story');
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [applicationForm, setApplicationForm] = useState({
@@ -27,9 +37,8 @@ const AdoptionDetailScreen = ({ navigation, route }) => {
     experience: '',
     reason: '',
   });
-  const insets = useSafeAreaInsets();
 
-  // Mock data - gerçekte API'den gelecek
+  // Mock data
   const pet = {
     id: '1',
     name: 'Luna',
@@ -39,7 +48,8 @@ const AdoptionDetailScreen = ({ navigation, route }) => {
     gender: 'Dişi',
     location: 'İstanbul, Kadıköy',
     distance: '2.5 km',
-    story: 'Luna, 3 aylıkken bir yağmurlu akşam sokakta bulundu. İlk günler çok çekingen ve korkaklı. Ama şimdi tamamen değişti! Artık çok sevecen, oyuncu ve insanlara güveniyor. Mama kabı dolduğunda koşarak geliyor, sonra minnet dolu gözlerle bakıyor. Geceleri yorganın içine girip mırıldayarak uyuyor. Çok özel bir kedi, hak ettiği sıcak bir yuva arıyor.',
+    story:
+      'Luna, 3 aylıkken bir yağmurlu akşam sokakta bulundu. İlk günler çok çekingen ve korkaktı. Ama şimdi tamamen değişti! Artık çok sevecen, oyuncu ve insanlara güveniyor. Mama kabı dolduğunda koşarak geliyor, sonra minnet dolu gözlerle bakıyor. Geceleri yorganın içine girip mırıldayarak uyuyor. Çok özel bir kedi, hak ettiği sıcak bir yuva arıyor.',
     urgent: true,
     healthStatus: 'Aşılı, Kısırlaştırılmış',
     images: [
@@ -56,12 +66,7 @@ const AdoptionDetailScreen = ({ navigation, route }) => {
       { trait: 'Sakin', icon: 'leaf', color: '#4ADE80' },
       { trait: 'İnsanlara Açık', icon: 'people', color: '#60A5FA' },
     ],
-    requirements: [
-      'Kapalı balkon',
-      'Deneyimli sahip',
-      'Diğer hayvanlarla uyumlu',
-      'Düzenli veteriner kontrolü',
-    ],
+    requirements: ['Kapalı balkon', 'Deneyimli sahip', 'Diğer hayvanlarla uyumlu', 'Düzenli veteriner kontrolü'],
     health: {
       vaccinations: [
         { name: 'Triple Aşı', date: '15 Mart 2024', status: 'Yapıldı' },
@@ -80,435 +85,470 @@ const AdoptionDetailScreen = ({ navigation, route }) => {
     ],
   };
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const onGalleryScroll = (e) => {
+    const x = e.nativeEvent.contentOffset.x;
+    const idx = Math.round(x / width);
+    if (idx !== activeImageIndex) setActiveImageIndex(idx);
+  };
+
+  const handleShare = () => {
+    // Share functionality
+  };
+
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
+  const tabs = [
+    { id: 'story', label: 'Hikaye', icon: 'book' },
+    { id: 'health', label: 'Sağlık', icon: 'heart' },
+    { id: 'requirements', label: 'Şartlar', icon: 'list' },
+  ];
 
   const renderStoryTab = () => (
-    <View className="pb-24">
+    <View>
       {/* Story Card */}
-      <View className="bg-orange-50 p-4 rounded-2xl mb-4">
-        <View className="flex-row items-center gap-2 mb-3">
-          <Ionicons name="book" size={24} color="#FB923C" />
-          <Text className="text-xl font-bold text-gray-800">Hikayesi</Text>
+      <DetailSection title="Hikayesi" icon="book-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View style={{ backgroundColor: theme.accentLight }} className="p-4 rounded-xl">
+          <Text style={{ color: theme.text, fontSize: 15, lineHeight: 24 }}>
+            {pet.story}
+          </Text>
         </View>
-        <Text className="text-base text-gray-800 leading-6">{pet.story}</Text>
-      </View>
+      </DetailSection>
 
       {/* Personality */}
-      <View className="mb-6">
-        <Text className="text-xl font-bold text-gray-800 mb-3">Kişilik Özellikleri</Text>
+      <DetailSection title="Kişilik Özellikleri" icon="star-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
         <View className="flex-row flex-wrap gap-3">
           {pet.personality.map((trait, index) => (
-            <View key={index} className="w-[48%] bg-gray-100 p-3 rounded-xl flex-row items-center gap-2">
+            <View key={index} style={{ backgroundColor: theme.bg, minWidth: '47%' }} className="flex-1 p-3 rounded-xl flex-row items-center gap-2">
               <View
                 className="w-10 h-10 rounded-full items-center justify-center"
-                style={{ backgroundColor: trait.color + '20' }}
+                style={{ backgroundColor: trait.color + '30' }}
               >
                 <Ionicons name={trait.icon} size={20} color={trait.color} />
               </View>
-              <Text className="text-sm font-medium text-gray-800 flex-1">{trait.trait}</Text>
+              <Text style={{ color: theme.text, fontSize: 14, fontWeight: '600' }} className="flex-1">{trait.trait}</Text>
             </View>
           ))}
         </View>
-      </View>
+      </DetailSection>
 
       {/* Timeline */}
-      <View className="mb-6">
-        <Text className="text-xl font-bold text-gray-800 mb-3">Zaman Çizelgesi</Text>
-        <View className="mt-2">
+      <DetailSection title="Zaman Çizelgesi" icon="time-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
           {pet.timeline.map((item, index) => (
-            <View key={index} className="flex-row mb-3">
+            <View key={index} className="flex-row">
               <View className="items-center mr-3">
-                <View className="w-8 h-8 rounded-full bg-orange-50 items-center justify-center">
-                  <Ionicons name={item.icon} size={16} color="#FB923C" />
+                <View style={{ backgroundColor: theme.accentLight }} className="w-9 h-9 rounded-full items-center justify-center">
+                  <Ionicons name={item.icon} size={18} color={theme.accent} />
                 </View>
                 {index < pet.timeline.length - 1 && (
-                  <View className="w-0.5 flex-1 bg-orange-200 mt-1" />
+                  <View style={{ width: 2, flex: 1, backgroundColor: theme.border, marginTop: 4 }} />
                 )}
               </View>
               <View className="flex-1 pb-2">
-                <Text className="text-xs text-gray-500 mb-1">{item.date}</Text>
-                <Text className="text-base text-gray-800 font-medium">{item.event}</Text>
+                <Text style={{ color: theme.textSecondary, fontSize: 12, marginBottom: 4 }}>{item.date}</Text>
+                <Text style={{ color: theme.text, fontSize: 15, fontWeight: '600' }}>{item.event}</Text>
               </View>
             </View>
           ))}
         </View>
-      </View>
+      </DetailSection>
     </View>
   );
 
   const renderHealthTab = () => (
-    <View className="pb-24">
+    <View>
       {/* Vaccinations */}
-      <View className="mb-6">
-        <View className="flex-row items-center gap-2 mb-3">
-          <Ionicons name="shield-checkmark" size={22} color="#4ADE80" />
-          <Text className="text-xl font-bold text-gray-800">Aşılar</Text>
+      <DetailSection title="Aşılar" icon="shield-checkmark-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
+          {pet.health.vaccinations.map((vac, index) => (
+            <View key={index} style={{ backgroundColor: theme.bg }} className="flex-row items-center p-3 rounded-xl">
+              <View style={{ backgroundColor: '#4ADE8030' }} className="w-11 h-11 rounded-full items-center justify-center mr-3">
+                <Ionicons name="medical" size={20} color="#4ADE80" />
+              </View>
+              <View className="flex-1">
+                <Text style={{ color: theme.text, fontSize: 15, fontWeight: '600', marginBottom: 2 }}>{vac.name}</Text>
+                <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{vac.date}</Text>
+              </View>
+              <View style={{ backgroundColor: '#4ADE8020' }} className="px-3 py-1 rounded-full">
+                <Text style={{ color: '#4ADE80', fontSize: 12, fontWeight: '700' }}>{vac.status}</Text>
+              </View>
+            </View>
+          ))}
         </View>
-        {pet.health.vaccinations.map((vac, index) => (
-          <View key={index} className="flex-row items-center justify-between bg-gray-100 p-3 rounded-xl mb-2">
-            <View className="flex-row items-center gap-2 flex-1">
-              <View className="w-10 h-10 rounded-full bg-green-100 items-center justify-center">
-                <Ionicons name="medical" size={18} color="#4ADE80" />
-              </View>
-              <View>
-                <Text className="text-base font-semibold text-gray-800">{vac.name}</Text>
-                <Text className="text-xs text-gray-500 mt-0.5">{vac.date}</Text>
-              </View>
-            </View>
-            <View className="flex-row items-center bg-green-100 px-2 py-1.5 rounded-lg gap-1">
-              <Ionicons name="checkmark-circle" size={16} color="#4ADE80" />
-              <Text className="text-xs text-green-500 font-medium">{vac.status}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
+      </DetailSection>
 
       {/* Treatments */}
-      <View className="mb-6">
-        <View className="flex-row items-center gap-2 mb-3">
-          <Ionicons name="fitness" size={22} color="#60A5FA" />
-          <Text className="text-xl font-bold text-gray-800">Tedaviler</Text>
+      <DetailSection title="Tedaviler" icon="medkit-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
+          {pet.health.treatments.map((treatment, index) => (
+            <View key={index} style={{ backgroundColor: theme.bg }} className="flex-row items-center p-3 rounded-xl">
+              <View style={{ backgroundColor: theme.accentLight }} className="w-11 h-11 rounded-full items-center justify-center mr-3">
+                <Ionicons name="medkit" size={20} color={theme.accent} />
+              </View>
+              <View className="flex-1">
+                <Text style={{ color: theme.text, fontSize: 15, fontWeight: '600', marginBottom: 2 }}>{treatment.name}</Text>
+                <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{treatment.date}</Text>
+              </View>
+              <View style={{ backgroundColor: '#4ADE8020' }} className="px-3 py-1 rounded-full">
+                <Text style={{ color: '#4ADE80', fontSize: 12, fontWeight: '700' }}>{treatment.status}</Text>
+              </View>
+            </View>
+          ))}
         </View>
-        {pet.health.treatments.map((treat, index) => (
-          <View key={index} className="flex-row items-center justify-between bg-gray-100 p-3 rounded-xl mb-2">
-            <View className="flex-row items-center gap-2 flex-1">
-              <View className="w-10 h-10 rounded-full bg-blue-100 items-center justify-center">
-                <Ionicons name="fitness" size={18} color="#60A5FA" />
-              </View>
-              <View>
-                <Text className="text-base font-semibold text-gray-800">{treat.name}</Text>
-                <Text className="text-xs text-gray-500 mt-0.5">{treat.date}</Text>
-              </View>
-            </View>
-            <View className="flex-row items-center bg-blue-100 px-2 py-1.5 rounded-lg gap-1">
-              <Ionicons name="checkmark-circle" size={16} color="#60A5FA" />
-              <Text className="text-xs text-blue-500 font-medium">{treat.status}</Text>
-            </View>
+      </DetailSection>
+
+      {/* Health Summary */}
+      <DetailSection title="Sağlık Durumu" icon="heart-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View style={{ backgroundColor: theme.accentLight }} className="p-4 rounded-xl flex-row items-center gap-3">
+          <View style={{ backgroundColor: theme.accent }} className="w-14 h-14 rounded-full items-center justify-center">
+            <Ionicons name="checkmark-circle" size={28} color="#FFF" />
           </View>
-        ))}
-      </View>
+          <View className="flex-1">
+            <Text style={{ color: theme.accent, fontSize: 17, fontWeight: '700', marginBottom: 2 }}>Sağlıklı</Text>
+            <Text style={{ color: theme.text, fontSize: 13 }}>{pet.healthStatus}</Text>
+          </View>
+        </View>
+      </DetailSection>
     </View>
   );
 
   const renderRequirementsTab = () => (
-    <View className="pb-24">
-      <View className="mb-6">
-        <View className="items-center mb-4">
-          <Ionicons name="list-circle" size={28} color="#FB923C" />
-          <Text className="text-2xl font-bold text-gray-800 mt-2 mb-1">Sahiplenme Koşulları</Text>
-          <Text className="text-sm text-gray-500 text-center">
-            {pet.name}'yı sahiplenmek için aşağıdaki koşulları sağlamanız gerekmektedir
-          </Text>
+    <View>
+      {/* Shelter Info */}
+      <DetailSection title="Sahiplendiren Kuruluş" icon="home-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="flex-row items-center">
+          <View style={{ backgroundColor: theme.accentLight }} className="w-16 h-16 rounded-full items-center justify-center mr-4">
+            <Ionicons name="home" size={32} color={theme.accent} />
+          </View>
+          <View className="flex-1">
+            <View className="flex-row items-center gap-2 mb-1">
+              <Text style={{ color: theme.text, fontSize: 17, fontWeight: '700' }}>{pet.shelter}</Text>
+              {pet.shelterVerified && (
+                <Ionicons name="checkmark-circle" size={18} color={theme.accent} />
+              )}
+            </View>
+            <Text style={{ color: theme.textSecondary, fontSize: 13, marginBottom: 6 }}>Hayvan Koruma Derneği</Text>
+            <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{pet.shelterContact}</Text>
+          </View>
+          <TouchableOpacity
+            style={{ backgroundColor: theme.accentLight }}
+            className="w-11 h-11 rounded-full items-center justify-center"
+            accessibilityLabel="Ara"
+            accessibilityRole="button"
+          >
+            <Ionicons name="call" size={20} color={theme.accent} />
+          </TouchableOpacity>
         </View>
-        <View className="mt-3">
+      </DetailSection>
+
+      {/* Requirements */}
+      <DetailSection title="Sahiplenme Şartları" icon="list-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
           {pet.requirements.map((req, index) => (
-            <View key={index} className="flex-row items-center bg-green-50 p-3 rounded-xl mb-2 gap-2">
-              <View className="w-8 h-8">
-                <Ionicons name="checkmark-circle" size={24} color="#4ADE80" />
+            <View key={index} style={{ backgroundColor: theme.bg }} className="flex-row items-center p-3 rounded-xl gap-3">
+              <View style={{ backgroundColor: theme.accentLight }} className="w-9 h-9 rounded-full items-center justify-center">
+                <Ionicons name="checkmark" size={18} color={theme.accent} />
               </View>
-              <Text className="text-base text-gray-800 font-medium flex-1">{req}</Text>
+              <Text style={{ color: theme.text, fontSize: 15, fontWeight: '500' }} className="flex-1">{req}</Text>
             </View>
           ))}
         </View>
+      </DetailSection>
 
-        {/* Warning Box */}
-        <View className="flex-row bg-orange-50 p-3 rounded-xl gap-2 mt-4 border-l-4 border-orange-400">
-          <Ionicons name="information-circle" size={24} color="#FB923C" />
-          <Text className="text-sm text-gray-800 leading-5 flex-1">
-            Sahiplenme başvurunuz, barınak yetkililerimiz tarafından değerlendirilecektir.
-            Onay sonrası ev ziyareti yapılacaktır.
-          </Text>
-        </View>
-      </View>
+      {/* Urgent Badge */}
+      {pet.urgent && (
+        <DetailSection title="Önemli Uyarı" icon="alert-circle-outline" iconColor="#EF4444" cardBg={theme.card} textColor={theme.text}>
+          <View style={{ backgroundColor: '#EF444420' }} className="p-4 rounded-xl flex-row items-center gap-3">
+            <View style={{ backgroundColor: '#EF4444' }} className="w-12 h-12 rounded-full items-center justify-center">
+              <Ionicons name="alert" size={24} color="#FFF" />
+            </View>
+            <View className="flex-1">
+              <Text style={{ color: '#EF4444', fontSize: 16, fontWeight: '700', marginBottom: 2 }}>Acil Sahiplenme</Text>
+              <Text style={{ color: theme.text, fontSize: 13 }}>Bu dostumuzun acilen yuva bulması gerekiyor</Text>
+            </View>
+          </View>
+        </DetailSection>
+      )}
     </View>
   );
 
-  const renderApplicationModal = () => (
-    <Modal
-      visible={showApplicationModal}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => setShowApplicationModal(false)}
-    >
-      <View className="flex-1 bg-black/50 justify-end">
-        <View className="bg-white rounded-t-3xl max-h-[90%]">
-          <View className="flex-row justify-between items-center p-4 border-b border-gray-200">
-            <Text className="text-xl font-bold text-gray-800">Sahiplenme Başvurusu</Text>
-            <TouchableOpacity onPress={() => setShowApplicationModal(false)}>
-              <Ionicons name="close" size={28} color="#1F2937" />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView className="p-4" showsVerticalScrollIndicator={false}>
-            <Text className="text-base text-gray-500 mb-4">
-              {pet.name} için sahiplenme başvurusu yapmak üzeresiniz
-            </Text>
-
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-gray-800 mb-2">Ad Soyad *</Text>
-              <TextInput
-                className="bg-gray-100 rounded-xl px-3 py-3 text-base text-gray-800 border border-gray-200"
-                placeholder="Adınız ve soyadınız"
-                value={applicationForm.name}
-                onChangeText={(text) => setApplicationForm({...applicationForm, name: text})}
-              />
-            </View>
-
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-gray-800 mb-2">Telefon *</Text>
-              <TextInput
-                className="bg-gray-100 rounded-xl px-3 py-3 text-base text-gray-800 border border-gray-200"
-                placeholder="+90 555 123 4567"
-                keyboardType="phone-pad"
-                value={applicationForm.phone}
-                onChangeText={(text) => setApplicationForm({...applicationForm, phone: text})}
-              />
-            </View>
-
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-gray-800 mb-2">Adres *</Text>
-              <TextInput
-                className="bg-gray-100 rounded-xl px-3 py-3 text-base text-gray-800 border border-gray-200 h-24"
-                placeholder="Tam adresiniz"
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-                value={applicationForm.address}
-                onChangeText={(text) => setApplicationForm({...applicationForm, address: text})}
-              />
-            </View>
-
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-gray-800 mb-2">Deneyiminiz</Text>
-              <TextInput
-                className="bg-gray-100 rounded-xl px-3 py-3 text-base text-gray-800 border border-gray-200 h-24"
-                placeholder="Daha önce evcil hayvan sahibi oldunuz mu?"
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-                value={applicationForm.experience}
-                onChangeText={(text) => setApplicationForm({...applicationForm, experience: text})}
-              />
-            </View>
-
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-gray-800 mb-2">Sahiplenme Nedeniniz *</Text>
-              <TextInput
-                className="bg-gray-100 rounded-xl px-3 py-3 text-base text-gray-800 border border-gray-200 h-28"
-                placeholder="Neden sahiplenmek istiyorsunuz?"
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-                value={applicationForm.reason}
-                onChangeText={(text) => setApplicationForm({...applicationForm, reason: text})}
-              />
-            </View>
-
-            <TouchableOpacity
-              className="rounded-xl overflow-hidden mb-6"
-              onPress={() => {
-                setShowApplicationModal(false);
-                // Başvuru gönderme işlemi
-              }}
-            >
-              <LinearGradient
-                colors={['#FB923C', '#F97316']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                className="flex-row items-center justify-center py-3 gap-2"
-              >
-                <Ionicons name="send" size={20} color="#FFF" />
-                <Text className="text-base font-bold text-white">Başvuruyu Gönder</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
-      </View>
-    </Modal>
-  );
-
   return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className="flex-1 bg-white">
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+    <SafeAreaContainer bgColor={theme.bg} edges={['bottom']}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
-      {/* Header */}
-      <View className="flex-row justify-between items-center px-4 pb-3">
-        <TouchableOpacity
-          className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center"
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
-        </TouchableOpacity>
-        <View className="flex-row gap-2">
-          <TouchableOpacity className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center">
-            <Ionicons name="share-outline" size={24} color="#1F2937" />
-          </TouchableOpacity>
-          <TouchableOpacity className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center">
-            <Ionicons name="heart-outline" size={24} color="#1F2937" />
-          </TouchableOpacity>
-        </View>
-      </View>
+      {/* Animated Header */}
+      <HeaderOverlay
+        scrollY={scrollY}
+        onBack={() => navigation.goBack()}
+        actions={[
+          { icon: 'share-outline', onPress: handleShare, accessibilityLabel: 'Paylaş' },
+          {
+            icon: isFavorite ? 'heart' : 'heart-outline',
+            onPress: handleFavorite,
+            accessibilityLabel: 'Favorilere ekle'
+          },
+        ]}
+        bgColor={theme.overlay}
+        iconColor={theme.text}
+        title={pet.name}
+      />
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Image Gallery */}
-        <View className="relative" style={{ width, height: 400 }}>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {/* Hero Gallery */}
+        <View style={{ height: HERO_HEIGHT }}>
           <ScrollView
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            onScroll={(e) => {
-              const index = Math.round(e.nativeEvent.contentOffset.x / width);
-              setCurrentImageIndex(index);
-            }}
+            onScroll={onGalleryScroll}
             scrollEventThrottle={16}
           >
-            {pet.images.map((image, index) => (
-              <Image key={index} source={{ uri: image }} style={{ width, height: 400 }} />
+            {pet.images.map((uri, i) => (
+              <View key={i} style={{ width, height: HERO_HEIGHT }}>
+                <Image
+                  source={{ uri }}
+                  style={{ width, height: HERO_HEIGHT, resizeMode: 'cover' }}
+                  accessibilityLabel={`${pet.name} fotoğrafı ${i + 1}`}
+                />
+              </View>
             ))}
           </ScrollView>
 
-          {/* Image Indicators */}
-          <View className="absolute bottom-5 left-0 right-0 flex-row justify-center gap-2">
-            {pet.images.map((_, index) => (
-              <View
-                key={index}
-                className={`h-2 rounded ${
-                  currentImageIndex === index ? 'w-6 bg-white' : 'w-2 bg-white/50'
-                }`}
-              />
-            ))}
-          </View>
+          {/* Bottom gradient */}
+          <LinearGradient
+            colors={['transparent', theme.bg]}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 100,
+            }}
+          />
 
-          {/* Urgent Badge */}
+          {/* Urgent badge & Image counter */}
           {pet.urgent && (
-            <View className="absolute top-5 left-5">
-              <LinearGradient
-                colors={['#EF4444', '#DC2626']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                className="flex-row items-center px-3 py-2 rounded-2xl gap-1.5"
-              >
-                <Ionicons name="alert-circle" size={16} color="#FFF" />
-                <Text className="text-sm font-bold text-white">ACİL DURUM</Text>
-              </LinearGradient>
+            <View
+              style={{
+                position: 'absolute',
+                left: 16,
+                top: 16,
+                backgroundColor: '#EF4444',
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 20,
+              }}
+            >
+              <Text style={{ color: '#FFF', fontSize: 12, fontWeight: '700' }}>ACİL</Text>
             </View>
           )}
+
+          <View
+            style={{
+              position: 'absolute',
+              right: 16,
+              bottom: 16,
+              backgroundColor: 'rgba(0,0,0,0.7)',
+              paddingHorizontal: 12,
+              paddingVertical: 6,
+              borderRadius: 20,
+            }}
+          >
+            <Text style={{ color: theme.text, fontSize: 12, fontWeight: '600' }}>
+              {activeImageIndex + 1} / {pet.images.length}
+            </Text>
+          </View>
         </View>
 
-        {/* Pet Info Header */}
-        <View className="p-4">
-          <View className="flex-row items-center gap-2 mb-3">
-            <Text className="text-4xl font-bold text-gray-800">{pet.name}</Text>
-            <View
-              className="w-8 h-8 rounded-full items-center justify-center"
-              style={{ backgroundColor: pet.gender === 'Erkek' ? '#EFF6FF' : '#FCE7F3' }}
-            >
-              <Ionicons
-                name={pet.gender === 'Erkek' ? 'male' : 'female'}
-                size={22}
-                color={pet.gender === 'Erkek' ? '#60A5FA' : '#EC4899'}
-              />
-            </View>
-          </View>
-
-          <View className="flex-row flex-wrap gap-2 mb-4">
-            <View className="flex-row items-center bg-orange-50 px-3 py-2 rounded-xl gap-1.5">
-              <Ionicons name="paw" size={16} color="#FB923C" />
-              <Text className="text-sm text-gray-800 font-medium">{pet.type} • {pet.breed}</Text>
-            </View>
-            <View className="flex-row items-center bg-orange-50 px-3 py-2 rounded-xl gap-1.5">
-              <Ionicons name="calendar" size={16} color="#FB923C" />
-              <Text className="text-sm text-gray-800 font-medium">{pet.age}</Text>
-            </View>
-            <View className="flex-row items-center bg-orange-50 px-3 py-2 rounded-xl gap-1.5">
-              <Ionicons name="location" size={16} color="#FB923C" />
-              <Text className="text-sm text-gray-800 font-medium">{pet.distance}</Text>
-            </View>
-          </View>
-
-          {/* Shelter Info */}
-          <View className="flex-row items-center justify-between bg-gray-100 p-3 rounded-xl">
-            <View className="flex-row items-center gap-2 flex-1">
-              <Ionicons name="home" size={20} color="#FB923C" />
+        {/* Content */}
+        <View style={{ paddingTop: 8 }}>
+          {/* Title Section */}
+          <View className="px-4 mb-4">
+            <View className="flex-row justify-between items-start mb-4">
               <View className="flex-1">
-                <Text className="text-base font-semibold text-gray-800 mb-1">{pet.shelter}</Text>
-                {pet.shelterVerified && (
-                  <View className="flex-row items-center gap-1">
-                    <Ionicons name="checkmark-circle" size={14} color="#4ADE80" />
-                    <Text className="text-xs text-green-500 font-medium">Onaylı Barınak</Text>
-                  </View>
-                )}
+                <Text
+                  style={{ color: theme.text, fontSize: 32, fontWeight: '700', marginBottom: 4 }}
+                  accessibilityRole="header"
+                >
+                  {pet.name}
+                </Text>
+                <Text style={{ color: theme.textSecondary, fontSize: 18 }}>
+                  {pet.breed} • {pet.type}
+                </Text>
+              </View>
+              <LinearGradient
+                colors={[theme.accent, theme.accent + 'DD']}
+                className="px-4 py-2 rounded-full"
+              >
+                <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '700' }}>{pet.age}</Text>
+              </LinearGradient>
+            </View>
+
+            {/* Quick Info */}
+            <View className="flex-row gap-4 flex-wrap">
+              <View className="flex-row items-center gap-2">
+                <Ionicons name="location-outline" size={18} color={theme.accent} />
+                <Text style={{ color: theme.textSecondary, fontSize: 14, fontWeight: '500' }}>
+                  {pet.location}
+                </Text>
+              </View>
+              <View className="flex-row items-center gap-2">
+                <Ionicons name="navigate-outline" size={18} color={theme.accent} />
+                <Text style={{ color: theme.textSecondary, fontSize: 14, fontWeight: '500' }}>
+                  {pet.distance} uzakta
+                </Text>
               </View>
             </View>
-            <TouchableOpacity className="w-11 h-11 rounded-full bg-green-500 items-center justify-center">
-              <Ionicons name="call" size={20} color="#FFF" />
-            </TouchableOpacity>
+          </View>
+
+          {/* Tabs */}
+          <View style={{ backgroundColor: theme.card, borderBottomWidth: 1, borderBottomColor: theme.border }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4">
+              <View className="flex-row gap-2 py-3">
+                {tabs.map((tab) => (
+                  <TouchableOpacity
+                    key={tab.id}
+                    style={{
+                      backgroundColor: activeTab === tab.id ? theme.accentLight : 'transparent',
+                      paddingHorizontal: 16,
+                      paddingVertical: 10,
+                      borderRadius: 12,
+                    }}
+                    className="flex-row items-center gap-2"
+                    onPress={() => setActiveTab(tab.id)}
+                    accessibilityLabel={tab.label}
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected: activeTab === tab.id }}
+                  >
+                    <Ionicons
+                      name={tab.icon}
+                      size={20}
+                      color={activeTab === tab.id ? theme.accent : theme.textSecondary}
+                    />
+                    <Text
+                      style={{
+                        color: activeTab === tab.id ? theme.accent : theme.textSecondary,
+                        fontSize: 15,
+                        fontWeight: activeTab === tab.id ? '700' : '500',
+                      }}
+                    >
+                      {tab.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+
+          {/* Tab Content */}
+          <View style={{ paddingTop: 16 }}>
+            {activeTab === 'story' && renderStoryTab()}
+            {activeTab === 'health' && renderHealthTab()}
+            {activeTab === 'requirements' && renderRequirementsTab()}
           </View>
         </View>
+      </Animated.ScrollView>
 
-        {/* Tabs */}
-        <View className="flex-row bg-gray-100 mx-4 rounded-xl p-1 mb-4">
-          {[
-            { key: 'story', label: 'Hikaye', icon: 'book' },
-            { key: 'health', label: 'Sağlık', icon: 'medical' },
-            { key: 'requirements', label: 'Koşullar', icon: 'list' },
-          ].map((tab) => (
-            <TouchableOpacity
-              key={tab.key}
-              className={`flex-1 flex-row items-center justify-center gap-1.5 py-2 rounded-lg ${
-                activeTab === tab.key ? 'bg-white' : ''
-              }`}
-              onPress={() => setActiveTab(tab.key)}
-            >
-              <Ionicons
-                name={tab.icon}
-                size={20}
-                color={activeTab === tab.key ? '#FB923C' : '#6B7280'}
-              />
-              <Text
-                className={`text-sm font-medium ${
-                  activeTab === tab.key ? 'text-orange-500 font-semibold' : 'text-gray-500'
-                }`}
-              >
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Tab Content */}
-        <View className="px-4">
-          {activeTab === 'story' && renderStoryTab()}
-          {activeTab === 'health' && renderHealthTab()}
-          {activeTab === 'requirements' && renderRequirementsTab()}
-        </View>
-      </ScrollView>
-
-      {/* Bottom Action Bar */}
+      {/* Sticky CTA Bar */}
       <View
-        className="flex-row bg-white px-4 pt-3 border-t border-gray-200 gap-2"
-        style={{ paddingBottom: insets.bottom + 12 }}
+        style={{
+          backgroundColor: theme.card,
+          borderTopWidth: 1,
+          borderTopColor: theme.border,
+          paddingTop: 14,
+          paddingBottom: insets.bottom + 14,
+          paddingHorizontal: 16,
+        }}
       >
-        <TouchableOpacity className="w-14 h-14 rounded-full bg-orange-50 items-center justify-center">
-          <Ionicons name="chatbubble-outline" size={24} color="#FB923C" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="flex-1 rounded-full overflow-hidden"
-          onPress={() => setShowApplicationModal(true)}
+        <LinearGradient
+          colors={[theme.accent, theme.accent + 'DD']}
+          style={{ height: 56, borderRadius: 28 }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
         >
-          <LinearGradient
-            colors={['#FB923C', '#F97316']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            className="flex-row items-center justify-center py-3 gap-2"
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            className="flex-row items-center justify-center gap-2"
+            onPress={() => setShowApplicationModal(true)}
+            accessibilityLabel="Sahiplenme başvurusu yap"
+            accessibilityRole="button"
           >
-            <Ionicons name="heart-circle" size={24} color="#FFF" />
-            <Text className="text-base font-bold text-white">Sahiplenmek İstiyorum</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+            <Ionicons name="heart" size={20} color="#FFF" />
+            <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>
+              Sahiplenme Başvurusu Yap
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </View>
 
-      {renderApplicationModal()}
+      {/* Application Modal */}
+      <Modal
+        visible={showApplicationModal}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowApplicationModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' }}>
+          <View style={{ backgroundColor: theme.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '90%' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: theme.border }}>
+              <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>Sahiplenme Başvurusu</Text>
+              <TouchableOpacity onPress={() => setShowApplicationModal(false)}>
+                <Ionicons name="close" size={28} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ padding: 16 }} showsVerticalScrollIndicator={false}>
+              <Text style={{ color: theme.textSecondary, fontSize: 14, marginBottom: 16 }}>
+                Lütfen aşağıdaki formu doldurun. En kısa sürede size dönüş yapılacaktır.
+              </Text>
+              {['name', 'phone', 'address', 'experience', 'reason'].map((field) => (
+                <View key={field} style={{ marginBottom: 16 }}>
+                  <Text style={{ color: theme.text, fontSize: 14, fontWeight: '600', marginBottom: 8 }}>
+                    {field === 'name' ? 'Ad Soyad' : field === 'phone' ? 'Telefon' : field === 'address' ? 'Adres' : field === 'experience' ? 'Deneyim' : 'Sahiplenme Nedeni'}
+                  </Text>
+                  <TextInput
+                    style={{
+                      backgroundColor: theme.bg,
+                      color: theme.text,
+                      padding: 12,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: theme.border,
+                      fontSize: 15,
+                      minHeight: field === 'reason' || field === 'experience' ? 100 : 48,
+                    }}
+                    multiline={field === 'reason' || field === 'experience'}
+                    placeholder={`${field === 'name' ? 'Ad Soyad' : field === 'phone' ? 'Telefon numaranız' : field === 'address' ? 'Adresiniz' : field === 'experience' ? 'Hayvan bakım deneyiminiz' : 'Neden sahiplenmek istiyorsunuz?'}`}
+                    placeholderTextColor={theme.textSecondary + '80'}
+                    value={applicationForm[field]}
+                    onChangeText={(text) => setApplicationForm({ ...applicationForm, [field]: text })}
+                  />
+                </View>
+              ))}
+              <LinearGradient
+                colors={[theme.accent, theme.accent + 'DD']}
+                style={{ borderRadius: 12, marginBottom: 24 }}
+              >
+                <TouchableOpacity
+                  style={{ paddingVertical: 16, alignItems: 'center' }}
+                  onPress={() => setShowApplicationModal(false)}
+                >
+                  <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>Başvuruyu Gönder</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaContainer>
   );
 };

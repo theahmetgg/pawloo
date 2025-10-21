@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import SafeAreaContainer from "../components/layout/SafeAreaContainer";
+import HomeHeader from "../components/home/HomeHeader";
 
 const HomeScreen = ({ navigation }) => {
   const quickFilters = [
@@ -68,22 +69,18 @@ const HomeScreen = ({ navigation }) => {
     },
   ];
 
-  const renderHeader = () => (
-    <View className='flex-row items-center px-4 py-12 gap-2'>
-      <View className='flex-1 flex-row items-center bg-gray-100 rounded-full px-4 py-3 gap-2'>
-        <Ionicons name='search-outline' size={20} color='#2DD4BF' />
-        <Text className='text-base text-gray-400'>Ara...</Text>
-      </View>
-      <TouchableOpacity className='flex-row items-center bg-primary rounded-full px-4 py-3 gap-1'>
-        <Ionicons name='location' size={16} color='#FFF' />
-        <Text className='text-sm text-white font-semibold'>İstanbul, 5 km</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className='flex-1 bg-gray-50'>
-      {renderHeader()}
+    <SafeAreaContainer edges={["top", "right", "left"]} className='flex-1 bg-gray-50'>
+      <HomeHeader
+        username='Ahmet'
+        locationText='İstanbul, 5 km'
+        onSearchPress={() => navigation.navigate("Search")}
+        onLocationPress={() => navigation.navigate("LocationPicker")}
+        onAvatarPress={() => navigation.navigate("Profile")}
+        placeholder='Can dostuna arkadaş ara, otel bul...'
+        avatarUri='https://i.pravatar.cc/120?img=68'
+      />
+
       <ScrollView
         className='flex-1'
         showsVerticalScrollIndicator={false}

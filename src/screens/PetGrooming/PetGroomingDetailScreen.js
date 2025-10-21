@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,275 +8,369 @@ import {
   Dimensions,
   Modal,
   StatusBar,
-} from "react-native";
-import SafeAreaContainer from "../../components/layout/SafeAreaContainer";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+  Animated,
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SafeAreaContainer from '../../components/shared/SafeAreaContainer';
+import HeaderOverlay from '../../components/shared/HeaderOverlay';
+import DetailSection from '../../components/shared/DetailSection';
+import useThemeColors from '../../hooks/useThemeColors';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
+const HERO_HEIGHT = Math.min(420, Math.round(width * 0.9));
 
 const PetGroomingDetailScreen = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState("packages");
+  const theme = useThemeColors('petGrooming');
+  const insets = useSafeAreaInsets();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [activeTab, setActiveTab] = useState('packages');
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const insets = useSafeAreaInsets();
 
   const groomer = {
-    name: "Pati Güzellik Salonu",
+    name: 'Pati Güzellik Salonu',
     rating: 4.8,
     reviewCount: 156,
-    distance: "1.5 km",
-    location: "İstanbul, Kadıköy",
-    address: "Caferağa Mah., Moda Cad. No: 12",
-    phone: "+90 555 999 8877",
+    distance: '1.5 km',
+    location: 'İstanbul, Kadıköy',
+    address: 'Caferağa Mah., Moda Cad. No: 12',
+    phone: '+90 555 999 8877',
     verified: true,
     mobile: true,
-    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
+    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800',
     packages: [
       {
         id: 1,
-        name: "Banyo Paketi",
+        name: 'Banyo Paketi',
         price: 150,
-        duration: "45 dk",
-        services: ["Şampuan", "Fırçalama", "Tırnak Kesimi"],
+        duration: '45 dk',
+        services: ['Şampuan', 'Fırçalama', 'Tırnak Kesimi'],
       },
-      { id: 2, name: "Tıraş Paketi", price: 200, duration: "60 dk", services: ["Banyo", "Tıraş", "Kulak Temizliği"] },
+      {
+        id: 2,
+        name: 'Tıraş Paketi',
+        price: 200,
+        duration: '60 dk',
+        services: ['Banyo', 'Tıraş', 'Kulak Temizliği'],
+      },
       {
         id: 3,
-        name: "Tam Bakım",
+        name: 'Tam Bakım',
         price: 350,
-        duration: "90 dk",
-        services: ["Banyo", "Tıraş", "Tırnak", "Kulak", "Diş Temizliği"],
+        duration: '90 dk',
+        services: ['Banyo', 'Tıraş', 'Tırnak', 'Kulak', 'Diş Temizliği'],
       },
     ],
-    features: ["Evde Hizmet", "Doğal Ürünler", "Deneyimli Ekip", "Özel Ürünler"],
-    workingHours: { weekdays: "09:00 - 19:00", saturday: "09:00 - 17:00", sunday: "Kapalı" },
+    features: ['Evde Hizmet', 'Doğal Ürünler', 'Deneyimli Ekip', 'Özel Ürünler'],
+    workingHours: { weekdays: '09:00 - 19:00', saturday: '09:00 - 17:00', sunday: 'Kapalı' },
     reviews: [
       {
-        id: "1",
-        user: "Selin A.",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
+        id: '1',
+        user: 'Selin A.',
         rating: 5,
-        date: "1 hafta önce",
-        comment: "Köpeğim çok memnun kaldı, harika bir hizmet!",
+        date: '1 hafta önce',
+        comment: 'Köpeğim çok memnun kaldı, harika bir hizmet!',
       },
     ],
   };
 
+  const handleShare = () => {};
+  const handleFavorite = () => setIsFavorite(!isFavorite);
+
+  const tabs = [
+    { id: 'packages', label: 'Paketler', icon: 'pricetag' },
+    { id: 'reviews', label: 'Yorumlar', icon: 'star' },
+  ];
+
   const renderPackagesTab = () => (
-    <View className='px-4 pt-4 pb-24'>
-      {groomer.packages.map(p => (
-        <TouchableOpacity
-          key={p.id}
-          className={`bg-gray-50 p-4 rounded-xl mb-4 border-2 ${
-            selectedPackage?.id === p.id ? "border-pink-500 bg-pink-50" : "border-transparent"
-          }`}
-          onPress={() => setSelectedPackage(p)}
-        >
-          <View className='flex-row justify-between items-start mb-2'>
-            <View>
-              <Text className='text-lg font-bold text-gray-900'>{p.name}</Text>
-              <Text className='text-sm text-gray-500 mt-0.5'>{p.duration}</Text>
-            </View>
-            <Text className='text-xl font-bold text-pink-500'>₺{p.price}</Text>
-          </View>
-          <View className='gap-1'>
-            {p.services.map((s, i) => (
-              <View key={i} className='flex-row items-center gap-1'>
-                <Ionicons name='checkmark-circle' size={16} color='#EC4899' />
-                <Text className='text-sm text-gray-900'>{s}</Text>
+    <View>
+      <DetailSection title="Hizmet Paketleri" icon="pricetag-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
+          {groomer.packages.map((p) => (
+            <TouchableOpacity
+              key={p.id}
+              style={{
+                backgroundColor: selectedPackage?.id === p.id ? theme.accentLight : theme.bg,
+                borderWidth: 2,
+                borderColor: selectedPackage?.id === p.id ? theme.accent : theme.border,
+                borderRadius: 16,
+                padding: 16,
+              }}
+              onPress={() => setSelectedPackage(p)}
+              accessibilityLabel={`${p.name} paketi`}
+              accessibilityRole="button"
+            >
+              <View className="flex-row justify-between items-start mb-3">
+                <View className="flex-1">
+                  <Text style={{ color: theme.text, fontSize: 17, fontWeight: '700', marginBottom: 4 }}>{p.name}</Text>
+                  <Text style={{ color: theme.textSecondary, fontSize: 13 }}>{p.duration}</Text>
+                </View>
+                <Text style={{ color: theme.accent, fontSize: 24, fontWeight: '700' }}>₺{p.price}</Text>
               </View>
-            ))}
-          </View>
-        </TouchableOpacity>
-      ))}
+              <View className="gap-2">
+                {p.services.map((s, i) => (
+                  <View key={i} className="flex-row items-center gap-2">
+                    <Ionicons name="checkmark-circle" size={16} color={theme.accent} />
+                    <Text style={{ color: theme.text, fontSize: 14, fontWeight: '500' }}>{s}</Text>
+                  </View>
+                ))}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </DetailSection>
+
+      <DetailSection title="Özellikler" icon="star-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="flex-row flex-wrap gap-2">
+          {groomer.features.map((f, i) => (
+            <View key={i} style={{ backgroundColor: theme.accentLight }} className="px-4 py-2 rounded-full">
+              <Text style={{ color: theme.accent, fontSize: 13, fontWeight: '700' }}>{f}</Text>
+            </View>
+          ))}
+        </View>
+      </DetailSection>
+
+      <DetailSection title="Çalışma Saatleri" icon="time-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View className="gap-3">
+          {[
+            { label: 'Hafta İçi', value: groomer.workingHours.weekdays },
+            { label: 'Cumartesi', value: groomer.workingHours.saturday },
+            { label: 'Pazar', value: groomer.workingHours.sunday },
+          ].map((item, i) => (
+            <View key={i} style={{ backgroundColor: theme.bg }} className="flex-row justify-between items-center p-3 rounded-xl">
+              <Text style={{ color: theme.textSecondary, fontSize: 15 }}>{item.label}</Text>
+              <Text style={{ color: theme.text, fontSize: 15, fontWeight: '700' }}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
+      </DetailSection>
     </View>
   );
 
   const renderReviewsTab = () => (
-    <View className='px-4 pt-4 pb-24'>
-      <View className='bg-gray-50 p-4 rounded-2xl mb-4 items-center'>
-        <Text className='text-4xl font-bold text-gray-900 mb-1'>{groomer.rating}</Text>
-        <View className='flex-row gap-1 mb-1'>
-          {[1, 2, 3, 4, 5].map(s => (
-            <Ionicons key={s} name='star' size={16} color='#F59E0B' />
+    <View>
+      <DetailSection title={`Değerlendirmeler (${groomer.reviewCount})`} icon="star-outline" iconColor={theme.accent} cardBg={theme.card} textColor={theme.text}>
+        <View style={{ backgroundColor: theme.accentLight }} className="p-4 rounded-xl mb-4 items-center">
+          <Text style={{ color: theme.accent, fontSize: 48, fontWeight: '700', marginBottom: 4 }}>{groomer.rating}</Text>
+          <View className="flex-row gap-1 mb-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Ionicons key={star} name="star" size={16} color="#F59E0B" />
+            ))}
+          </View>
+          <Text style={{ color: theme.textSecondary, fontSize: 13 }}>{groomer.reviewCount} değerlendirme</Text>
+        </View>
+
+        <View className="gap-3">
+          {groomer.reviews.map((r) => (
+            <View key={r.id} style={{ backgroundColor: theme.bg }} className="p-4 rounded-xl">
+              <View className="flex-row items-center mb-3">
+                <View style={{ backgroundColor: theme.accentLight }} className="w-11 h-11 rounded-full items-center justify-center mr-3">
+                  <Ionicons name="person" size={24} color={theme.accent} />
+                </View>
+                <View className="flex-1">
+                  <Text style={{ color: theme.text, fontSize: 15, fontWeight: '700', marginBottom: 4 }}>{r.user}</Text>
+                  <View className="flex-row items-center gap-2">
+                    <View className="flex-row gap-0.5">
+                      {[...Array(r.rating)].map((_, i) => (
+                        <Ionicons key={i} name="star" size={12} color="#F59E0B" />
+                      ))}
+                    </View>
+                    <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{r.date}</Text>
+                  </View>
+                </View>
+              </View>
+              <Text style={{ color: theme.textSecondary, fontSize: 14, lineHeight: 20 }}>{r.comment}</Text>
+            </View>
           ))}
         </View>
-        <Text className='text-sm text-gray-500'>{groomer.reviewCount} değerlendirme</Text>
-      </View>
-      {groomer.reviews.map(r => (
-        <View key={r.id} className='bg-gray-50 p-4 rounded-xl mb-4'>
-          <View className='flex-row mb-2'>
-            <Image source={{ uri: r.avatar }} className='w-11 h-11 rounded-full mr-2' />
-            <View className='flex-1'>
-              <Text className='text-base font-semibold text-gray-900'>{r.user}</Text>
-              <View className='flex-row items-center gap-2 mt-1'>
-                <View className='flex-row gap-0.5'>
-                  {[...Array(r.rating)].map((_, i) => (
-                    <Ionicons key={i} name='star' size={12} color='#F59E0B' />
-                  ))}
-                </View>
-                <Text className='text-xs text-gray-500'>{r.date}</Text>
-              </View>
-            </View>
-          </View>
-          <Text className='text-sm text-gray-900 leading-5'>{r.comment}</Text>
-        </View>
-      ))}
+      </DetailSection>
     </View>
   );
 
   return (
-    <SafeAreaContainer edges={['top', 'right', 'left']} className='flex-1 bg-white'>
-      <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
-      <View className='flex-row justify-between items-center px-4 pb-4'>
-        <TouchableOpacity
-          className='w-10 h-10 rounded-full bg-gray-100 items-center justify-center'
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name='arrow-back' size={24} color='#1F2937' />
-        </TouchableOpacity>
-        <View className='flex-row gap-2'>
-          <TouchableOpacity className='w-10 h-10 rounded-full bg-gray-100 items-center justify-center'>
-            <Ionicons name='share-outline' size={24} color='#1F2937' />
-          </TouchableOpacity>
-          <TouchableOpacity className='w-10 h-10 rounded-full bg-gray-100 items-center justify-center'>
-            <Ionicons name='heart-outline' size={24} color='#1F2937' />
-          </TouchableOpacity>
+    <SafeAreaContainer bgColor={theme.bg} edges={['bottom']}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+      <HeaderOverlay
+        scrollY={scrollY}
+        onBack={() => navigation.goBack()}
+        actions={[
+          { icon: 'share-outline', onPress: handleShare, accessibilityLabel: 'Paylaş' },
+          { icon: isFavorite ? 'heart' : 'heart-outline', onPress: handleFavorite, accessibilityLabel: 'Favorilere ekle' },
+        ]}
+        bgColor={theme.overlay}
+        iconColor={theme.text}
+        title={groomer.name}
+      />
+
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        <View style={{ height: HERO_HEIGHT }}>
+          <Image source={{ uri: groomer.image }} style={{ width, height: HERO_HEIGHT, resizeMode: 'cover' }} />
+          <LinearGradient colors={['transparent', theme.bg]} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 100 }} />
         </View>
-      </View>
 
-      <ScrollView className='flex-1' showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        <Image source={{ uri: groomer.image }} style={{ width, height: 300 }} />
+        <View style={{ paddingTop: 8 }}>
+          <View className="px-4 mb-4">
+            <View className="flex-row items-center gap-2 mb-2">
+              <Text style={{ color: theme.text, fontSize: 32, fontWeight: '700' }} accessibilityRole="header">
+                {groomer.name}
+              </Text>
+              {groomer.verified && <Ionicons name="checkmark-circle" size={26} color={theme.accent} />}
+            </View>
 
-        <View className='p-4 border-b border-gray-200'>
-          <View className='flex-row items-center gap-2 mb-2'>
-            <Text className='text-3xl font-bold text-gray-900'>{groomer.name}</Text>
-            {groomer.verified && <Ionicons name='checkmark-circle' size={22} color='#EC4899' />}
+            <View className="flex-row gap-4 flex-wrap mb-4">
+              <View className="flex-row items-center gap-2">
+                <Ionicons name="star" size={18} color="#F59E0B" />
+                <Text style={{ color: theme.textSecondary, fontSize: 14, fontWeight: '500' }}>
+                  {groomer.rating} ({groomer.reviewCount})
+                </Text>
+              </View>
+              <View className="flex-row items-center gap-2">
+                <Ionicons name="location-outline" size={18} color={theme.accent} />
+                <Text style={{ color: theme.textSecondary, fontSize: 14, fontWeight: '500' }}>{groomer.distance}</Text>
+              </View>
+              {groomer.mobile && (
+                <View className="flex-row items-center gap-2">
+                  <Ionicons name="home" size={18} color="#10B981" />
+                  <Text style={{ color: '#10B981', fontSize: 14, fontWeight: '500' }}>Evde Hizmet</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={{ backgroundColor: theme.card }} className="p-4 rounded-2xl">
+              <Text style={{ color: theme.textSecondary, fontSize: 14, marginBottom: 4 }}>{groomer.address}</Text>
+              <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600' }}>{groomer.phone}</Text>
+            </View>
           </View>
 
-          <View className='flex-row gap-2 mb-2'>
-            <View className='flex-row items-center gap-1 bg-pink-50 px-2 py-1.5 rounded-lg'>
-              <Ionicons name='star' size={16} color='#F59E0B' />
-              <Text className='text-sm text-gray-900'>
-                {groomer.rating} ({groomer.reviewCount})
-              </Text>
-            </View>
-            <View className='flex-row items-center gap-1 bg-pink-50 px-2 py-1.5 rounded-lg'>
-              <Ionicons name='location' size={16} color='#EC4899' />
-              <Text className='text-sm text-gray-900'>{groomer.distance}</Text>
-            </View>
-            {groomer.mobile && (
-              <View className='flex-row items-center gap-1 bg-pink-50 px-2 py-1.5 rounded-lg'>
-                <Ionicons name='home' size={16} color='#10B981' />
-                <Text className='text-sm text-gray-900'>Evde Hizmet</Text>
+          <View style={{ backgroundColor: theme.card, borderBottomWidth: 1, borderBottomColor: theme.border }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4">
+              <View className="flex-row gap-2 py-3">
+                {tabs.map((tab) => (
+                  <TouchableOpacity
+                    key={tab.id}
+                    style={{
+                      backgroundColor: activeTab === tab.id ? theme.accentLight : 'transparent',
+                      paddingHorizontal: 16,
+                      paddingVertical: 10,
+                      borderRadius: 12,
+                    }}
+                    className="flex-row items-center gap-2"
+                    onPress={() => setActiveTab(tab.id)}
+                    accessibilityLabel={tab.label}
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected: activeTab === tab.id }}
+                  >
+                    <Ionicons name={tab.icon} size={20} color={activeTab === tab.id ? theme.accent : theme.textSecondary} />
+                    <Text
+                      style={{
+                        color: activeTab === tab.id ? theme.accent : theme.textSecondary,
+                        fontSize: 15,
+                        fontWeight: activeTab === tab.id ? '700' : '500',
+                      }}
+                    >
+                      {tab.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
-            )}
+            </ScrollView>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName='gap-2'>
-            {groomer.features.map((f, i) => (
-              <View key={i} className='bg-pink-50 px-2 py-1.5 rounded-lg'>
-                <Text className='text-xs text-pink-500 font-medium'>{f}</Text>
-              </View>
-            ))}
-          </ScrollView>
+          <View style={{ paddingTop: 16 }}>
+            {activeTab === 'packages' && renderPackagesTab()}
+            {activeTab === 'reviews' && renderReviewsTab()}
+          </View>
         </View>
-
-        <View className='bg-gray-100 mx-4 mt-4 rounded-xl p-1'>
-          {[
-            { key: "packages", label: "Paketler", icon: "pricetag" },
-            { key: "reviews", label: "Yorumlar", icon: "star" },
-          ].map(t => (
-            <TouchableOpacity
-              key={t.key}
-              className={`flex-1 flex-row items-center justify-center gap-1.5 py-2 rounded-lg ${
-                activeTab === t.key ? "bg-white" : ""
-              }`}
-              onPress={() => setActiveTab(t.key)}
-            >
-              <Ionicons name={t.icon} size={20} color={activeTab === t.key ? "#EC4899" : "#6B7280"} />
-              <Text
-                className={`text-sm font-medium ${
-                  activeTab === t.key ? "text-pink-500 font-semibold" : "text-gray-500"
-                }`}
-              >
-                {t.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {activeTab === "packages" && renderPackagesTab()}
-        {activeTab === "reviews" && renderReviewsTab()}
-      </ScrollView>
+      </Animated.ScrollView>
 
       <View
-        className='absolute bottom-0 left-0 right-0 flex-row items-center bg-white px-4 pt-4 border-t border-gray-200 gap-4'
-        style={{ paddingBottom: insets.bottom + 16 }}
+        style={{
+          backgroundColor: theme.card,
+          borderTopWidth: 1,
+          borderTopColor: theme.border,
+          paddingTop: 14,
+          paddingBottom: insets.bottom + 14,
+          paddingHorizontal: 16,
+        }}
       >
-        <View className='flex-row items-baseline gap-1'>
-          <Text className='text-2xl font-bold text-pink-500'>₺{groomer.packages[0].price}</Text>
-          <Text className='text-xs text-gray-500'>'den başlayan</Text>
+        <View className="flex-row items-center gap-3">
+          <View className="flex-row items-baseline gap-1">
+            <Text style={{ color: theme.accent, fontSize: 24, fontWeight: '700' }}>₺{groomer.packages[0].price}</Text>
+            <Text style={{ color: theme.textSecondary, fontSize: 12 }}>'den başlayan</Text>
+          </View>
+          <LinearGradient colors={[theme.accent, theme.accent + 'DD']} style={{ flex: 1, height: 56, borderRadius: 28 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              className="flex-row items-center justify-center gap-2"
+              onPress={() => setShowBookingModal(true)}
+              accessibilityLabel="Randevu al"
+              accessibilityRole="button"
+            >
+              <Ionicons name="calendar" size={20} color="#FFF" />
+              <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>Randevu Al</Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
-        <LinearGradient
-          colors={["#EC4899", "#DB2777"]}
-          className='flex-1 rounded-xl overflow-hidden'
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <TouchableOpacity
-            className='flex-row items-center justify-center py-4 gap-2'
-            onPress={() => setShowBookingModal(true)}
-          >
-            <Ionicons name='calendar' size={20} color='#FFF' />
-            <Text className='text-base font-bold text-white'>Randevu Al</Text>
-          </TouchableOpacity>
-        </LinearGradient>
       </View>
 
-      <Modal
-        visible={showBookingModal}
-        animationType='slide'
-        transparent
-        onRequestClose={() => setShowBookingModal(false)}
-      >
-        <View className='flex-1 bg-black/50 justify-end'>
-          <View className='bg-white rounded-t-3xl max-h-[70%]'>
-            <View className='flex-row justify-between items-center p-4 border-b border-gray-200'>
-              <Text className='text-xl font-bold text-gray-900'>Randevu Al</Text>
+      <Modal visible={showBookingModal} animationType="slide" transparent onRequestClose={() => setShowBookingModal(false)}>
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' }}>
+          <View style={{ backgroundColor: theme.card, borderTopLeftRadius: 24, borderTopRightRadius: 24, maxHeight: '70%' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 16,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.border,
+              }}
+            >
+              <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>Randevu Al</Text>
               <TouchableOpacity onPress={() => setShowBookingModal(false)}>
-                <Ionicons name='close' size={28} color='#1F2937' />
+                <Ionicons name="close" size={28} color={theme.text} />
               </TouchableOpacity>
             </View>
-            <ScrollView className='p-4' showsVerticalScrollIndicator={false}>
-              <Text className='text-sm font-semibold text-gray-900 mb-2'>Paket Seç</Text>
-              {groomer.packages.map(p => (
+            <ScrollView style={{ padding: 16 }} showsVerticalScrollIndicator={false}>
+              <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>Paket Seç</Text>
+              <View className="gap-2 mb-6">
+                {groomer.packages.map((p) => (
+                  <TouchableOpacity
+                    key={p.id}
+                    style={{
+                      backgroundColor: selectedPackage?.id === p.id ? theme.accentLight : theme.bg,
+                      borderWidth: 2,
+                      borderColor: selectedPackage?.id === p.id ? theme.accent : theme.border,
+                      borderRadius: 12,
+                      padding: 16,
+                    }}
+                    className="flex-row justify-between items-center"
+                    onPress={() => setSelectedPackage(p)}
+                  >
+                    <View className="flex-1">
+                      <Text style={{ color: theme.text, fontSize: 15, fontWeight: '700' }}>{p.name}</Text>
+                      <Text style={{ color: theme.textSecondary, fontSize: 13, marginTop: 2 }}>{p.duration}</Text>
+                    </View>
+                    <Text style={{ color: theme.accent, fontSize: 18, fontWeight: '700' }}>₺{p.price}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <LinearGradient colors={[theme.accent, theme.accent + 'DD']} style={{ borderRadius: 12, marginBottom: 24 }}>
                 <TouchableOpacity
-                  key={p.id}
-                  className={`flex-row justify-between bg-gray-50 p-4 rounded-lg mb-2 border-2 ${
-                    selectedPackage?.id === p.id ? "border-pink-500 bg-pink-50" : "border-transparent"
-                  }`}
-                  onPress={() => setSelectedPackage(p)}
+                  style={{ paddingVertical: 16, alignItems: 'center' }}
+                  onPress={() => setShowBookingModal(false)}
+                  disabled={!selectedPackage}
                 >
-                  <Text className='text-base text-gray-900'>{p.name}</Text>
-                  <Text className='text-base font-bold text-pink-500'>₺{p.price}</Text>
-                </TouchableOpacity>
-              ))}
-              <Text className='text-sm font-semibold text-gray-900 mb-2 mt-4'>Tarih Seç</Text>
-              <TouchableOpacity className='flex-row items-center gap-2 bg-pink-50 p-4 rounded-xl border border-pink-500 mb-4'>
-                <Ionicons name='calendar-outline' size={20} color='#EC4899' />
-                <Text className='text-base text-gray-900'>Bugün - 15 Mayıs 2024</Text>
-              </TouchableOpacity>
-              <LinearGradient
-                colors={["#EC4899", "#DB2777"]}
-                className='rounded-xl overflow-hidden mb-6'
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <TouchableOpacity className='py-4 items-center' onPress={() => setShowBookingModal(false)}>
-                  <Text className='text-base font-bold text-white'>Randevuyu Onayla</Text>
+                  <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>Randevuyu Onayla</Text>
                 </TouchableOpacity>
               </LinearGradient>
             </ScrollView>
