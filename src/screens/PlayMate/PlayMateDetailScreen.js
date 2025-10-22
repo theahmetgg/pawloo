@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, StatusBar, Animated } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, StatusBar, Animated, Modal, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +19,21 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isFavorite, setIsFavorite] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Modal state'leri
+  const [showPlayRequestModal, setShowPlayRequestModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
+
+  // Oyun talebi state'leri
+  const [playDate, setPlayDate] = useState(null);
+  const [playTime, setPlayTime] = useState('');
+  const [activityType, setActivityType] = useState('Parkta koşma');
+  const [playLocation, setPlayLocation] = useState('');
+  const [playNotes, setPlayNotes] = useState('');
+
+  // Mesaj state'leri
+  const [messageSubject, setMessageSubject] = useState('');
+  const [messageContent, setMessageContent] = useState('');
 
   // Mock data
   const petDetails = {
@@ -45,6 +60,45 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
+  };
+
+  // Oyun talebi fonksiyonları
+  const formatDate = (date) => {
+    if (!date) return 'Tarih seçin';
+    return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
+  const setTodayAsPlayDate = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    setPlayDate(today);
+  };
+
+  const handleSendPlayRequest = () => {
+    if (!playDate || !playTime || !playLocation) {
+      alert('Lütfen tüm zorunlu alanları doldurun');
+      return;
+    }
+    alert('Oyun talebi başarıyla gönderildi!');
+    setShowPlayRequestModal(false);
+    // State'leri temizle
+    setPlayDate(null);
+    setPlayTime('');
+    setPlayLocation('');
+    setPlayNotes('');
+  };
+
+  // Mesaj fonksiyonları
+  const handleSendMessage = () => {
+    if (!messageSubject || !messageContent) {
+      alert('Lütfen tüm alanları doldurun');
+      return;
+    }
+    alert('Mesaj başarıyla gönderildi!');
+    setShowMessageModal(false);
+    // State'leri temizle
+    setMessageSubject('');
+    setMessageContent('');
   };
 
   return (
@@ -183,6 +237,7 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
                 className='w-11 h-11 rounded-full items-center justify-center'
                 accessibilityLabel='Mesaj gönder'
                 accessibilityRole='button'
+                onPress={() => setShowMessageModal(true)}
               >
                 <Ionicons name='chatbubble-outline' size={20} color={theme.accent} />
               </TouchableOpacity>
@@ -272,6 +327,7 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
             className='flex-row items-center justify-center gap-2'
             accessibilityLabel='Mesaj gönder'
             accessibilityRole='button'
+            onPress={() => setShowMessageModal(true)}
           >
             <Ionicons name='chatbubble-outline' size={20} color={theme.accent} />
             <Text style={{ color: theme.accent, fontSize: 15, fontWeight: "700" }}>Mesaj Gönder</Text>
@@ -288,6 +344,7 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
               className='flex-row items-center justify-center gap-2'
               accessibilityLabel='Oyun talebi gönder'
               accessibilityRole='button'
+              onPress={() => setShowPlayRequestModal(true)}
             >
               <Ionicons name='game-controller' size={20} color='#FFF' />
               <Text style={{ color: "#FFF", fontSize: 15, fontWeight: "700" }}>Oyun Talebi</Text>
@@ -295,6 +352,431 @@ const PlayMateDetailScreen = ({ route, navigation }) => {
           </LinearGradient>
         </View>
       </View>
+
+      {/* Oyun Talebi Modal */}
+      <Modal
+        visible={showPlayRequestModal}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowPlayRequestModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+              maxHeight: '90%',
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 16,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.border,
+              }}
+            >
+              <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>
+                Oyun Talebi Gönder
+              </Text>
+              <TouchableOpacity onPress={() => setShowPlayRequestModal(false)}>
+                <Ionicons name="close" size={28} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              <View style={{ padding: 16 }}>
+                {/* Tarih ve Saat Seçimi */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+                    Ne Zaman?
+                  </Text>
+
+                  <View style={{ marginBottom: 12 }}>
+                    <Text
+                      style={{
+                        color: theme.textSecondary,
+                        fontSize: 13,
+                        marginBottom: 8,
+                        fontWeight: '500',
+                      }}
+                    >
+                      Tarih *
+                    </Text>
+                    <TouchableOpacity
+                      onPress={setTodayAsPlayDate}
+                      style={{
+                        backgroundColor: theme.bg,
+                        padding: 14,
+                        borderRadius: 12,
+                        borderWidth: 1,
+                        borderColor: playDate ? theme.accent : theme.border,
+                      }}
+                    >
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={18}
+                          color={playDate ? theme.accent : theme.textSecondary}
+                        />
+                        <Text
+                          style={{
+                            color: playDate ? theme.text : theme.textSecondary,
+                            fontSize: 14,
+                            flex: 1,
+                          }}
+                        >
+                          {formatDate(playDate)}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View>
+                    <Text
+                      style={{
+                        color: theme.textSecondary,
+                        fontSize: 13,
+                        marginBottom: 8,
+                        fontWeight: '500',
+                      }}
+                    >
+                      Saat *
+                    </Text>
+                    <TextInput
+                      value={playTime}
+                      onChangeText={setPlayTime}
+                      placeholder="Örn: 14:00"
+                      placeholderTextColor={theme.textSecondary}
+                      style={{
+                        backgroundColor: theme.bg,
+                        padding: 14,
+                        borderRadius: 12,
+                        fontSize: 15,
+                        color: theme.text,
+                        borderWidth: 1,
+                        borderColor: playTime ? theme.accent : theme.border,
+                      }}
+                    />
+                  </View>
+                </View>
+
+                {/* Aktivite Türü */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+                    Aktivite
+                  </Text>
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                    {petDetails.favoriteActivities.map((activity) => (
+                      <TouchableOpacity
+                        key={activity}
+                        onPress={() => setActivityType(activity)}
+                        style={{
+                          backgroundColor: activityType === activity ? theme.accentLight : theme.bg,
+                          paddingHorizontal: 16,
+                          paddingVertical: 10,
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          borderColor: activityType === activity ? theme.accent : theme.border,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: activityType === activity ? theme.accent : theme.text,
+                            fontSize: 14,
+                            fontWeight: '600',
+                          }}
+                        >
+                          {activity}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Konum */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                    Konum *
+                  </Text>
+                  <Text
+                    style={{ color: theme.textSecondary, fontSize: 13, marginBottom: 8, lineHeight: 18 }}
+                  >
+                    Buluşma yerini belirtin
+                  </Text>
+                  <TextInput
+                    value={playLocation}
+                    onChangeText={setPlayLocation}
+                    placeholder="Örn: Maçka Parkı"
+                    placeholderTextColor={theme.textSecondary}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: playLocation ? theme.accent : theme.border,
+                    }}
+                  />
+                </View>
+
+                {/* Özel Notlar */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                    Özel Notlar (Opsiyonel)
+                  </Text>
+                  <TextInput
+                    value={playNotes}
+                    onChangeText={setPlayNotes}
+                    placeholder="Eklemek istediğiniz bir not var mı?"
+                    placeholderTextColor={theme.textSecondary}
+                    multiline
+                    numberOfLines={4}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: theme.border,
+                      minHeight: 100,
+                      textAlignVertical: 'top',
+                    }}
+                  />
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Gönder Butonu */}
+            <View style={{ padding: 16, paddingBottom: insets.bottom + 16 }}>
+              <LinearGradient
+                colors={[theme.accent, theme.accent + 'DD']}
+                style={{ borderRadius: 12 }}
+              >
+                <TouchableOpacity
+                  style={{ paddingVertical: 16, alignItems: 'center' }}
+                  onPress={handleSendPlayRequest}
+                  disabled={!playDate || !playTime || !playLocation}
+                >
+                  <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>
+                    Talebi Gönder
+                  </Text>
+                </TouchableOpacity>
+              </LinearGradient>
+              {(!playDate || !playTime || !playLocation) && (
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    textAlign: 'center',
+                    marginTop: 12,
+                  }}
+                >
+                  * Lütfen zorunlu alanları doldurun
+                </Text>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Mesaj Gönder Modal */}
+      <Modal
+        visible={showMessageModal}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowMessageModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' }}>
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+              maxHeight: '80%',
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 16,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.border,
+              }}
+            >
+              <Text style={{ color: theme.text, fontSize: 20, fontWeight: '700' }}>
+                Mesaj Gönder
+              </Text>
+              <TouchableOpacity onPress={() => setShowMessageModal(false)}>
+                <Ionicons name="close" size={28} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 400 }}>
+              <View style={{ padding: 16 }}>
+                {/* Alıcı Bilgisi */}
+                <View
+                  style={{
+                    backgroundColor: theme.accentLight,
+                    padding: 12,
+                    borderRadius: 12,
+                    marginBottom: 20,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                  }}
+                >
+                  <View
+                    style={{ backgroundColor: theme.card }}
+                    className='w-12 h-12 rounded-full items-center justify-center'
+                  >
+                    <Ionicons name='person' size={24} color={theme.accent} />
+                  </View>
+                  <View className='flex-1'>
+                    <Text style={{ color: theme.text, fontSize: 15, fontWeight: '600', marginBottom: 2 }}>
+                      Alıcı: {petDetails.owner}
+                    </Text>
+                    <Text style={{ color: theme.textSecondary, fontSize: 13 }}>
+                      {petDetails.name}'in sahibi
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Mesaj Konusu */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      marginBottom: 8,
+                      fontWeight: '500',
+                    }}
+                  >
+                    Konu *
+                  </Text>
+                  <TextInput
+                    value={messageSubject}
+                    onChangeText={setMessageSubject}
+                    placeholder="Mesajın konusu"
+                    placeholderTextColor={theme.textSecondary}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: messageSubject ? theme.accent : theme.border,
+                    }}
+                  />
+                </View>
+
+                {/* Mesaj İçeriği */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      marginBottom: 8,
+                      fontWeight: '500',
+                    }}
+                  >
+                    Mesajınız *
+                  </Text>
+                  <TextInput
+                    value={messageContent}
+                    onChangeText={setMessageContent}
+                    placeholder="Mesajınızı buraya yazın..."
+                    placeholderTextColor={theme.textSecondary}
+                    multiline
+                    numberOfLines={6}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: messageContent ? theme.accent : theme.border,
+                      minHeight: 150,
+                      textAlignVertical: 'top',
+                    }}
+                  />
+                </View>
+
+                {/* Hızlı Mesaj Şablonları */}
+                <View>
+                  <Text style={{ color: theme.text, fontSize: 14, fontWeight: '600', marginBottom: 10 }}>
+                    Hızlı Mesajlar
+                  </Text>
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                    {[
+                      'Merhaba! 👋',
+                      'Oyun arkadaşı arıyorum',
+                      'Parkta buluşalım mı?',
+                    ].map((template) => (
+                      <TouchableOpacity
+                        key={template}
+                        onPress={() => setMessageContent(messageContent + (messageContent ? ' ' : '') + template)}
+                        style={{
+                          backgroundColor: theme.bg,
+                          paddingHorizontal: 12,
+                          paddingVertical: 8,
+                          borderRadius: 16,
+                          borderWidth: 1,
+                          borderColor: theme.border,
+                        }}
+                      >
+                        <Text style={{ color: theme.text, fontSize: 13 }}>
+                          {template}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Gönder Butonu */}
+            <View style={{ padding: 16, paddingBottom: insets.bottom + 16 }}>
+              <LinearGradient
+                colors={[theme.accent, theme.accent + 'DD']}
+                style={{ borderRadius: 12 }}
+              >
+                <TouchableOpacity
+                  style={{ paddingVertical: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 8 }}
+                  onPress={handleSendMessage}
+                  disabled={!messageSubject || !messageContent}
+                >
+                  <Ionicons name="send" size={18} color="#FFF" />
+                  <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>
+                    Mesajı Gönder
+                  </Text>
+                </TouchableOpacity>
+              </LinearGradient>
+              {(!messageSubject || !messageContent) && (
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    textAlign: 'center',
+                    marginTop: 12,
+                  }}
+                >
+                  * Lütfen tüm alanları doldurun
+                </Text>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaContainer>
   );
 };
