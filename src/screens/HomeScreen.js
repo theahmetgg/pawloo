@@ -1,15 +1,6 @@
 import React, { useMemo, useRef, useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Pressable,
-  Animated,
-  Dimensions,
-  StatusBar,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Pressable, Animated, Dimensions, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import SafeAreaContainer from "../components/shared/SafeAreaContainer";
@@ -207,9 +198,7 @@ const HomeScreen = ({ navigation }) => {
                   borderRadius: 12,
                 }}
               >
-                <Text style={{ fontSize: 11, fontWeight: "700", color: item.color }}>
-                  {item.badge}
-                </Text>
+                <Text style={{ fontSize: 11, fontWeight: "700", color: item.color }}>{item.badge}</Text>
               </View>
             )}
 
@@ -252,7 +241,7 @@ const HomeScreen = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Ionicons name="arrow-forward" size={16} color={item.color} />
+              <Ionicons name='arrow-forward' size={16} color={item.color} />
             </View>
           </View>
         </Pressable>
@@ -298,28 +287,22 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaContainer bgColor="#F9FAFB" edges={["top"]}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+    <SafeAreaContainer bgColor='#F9FAFB' edges={["top"]}>
+      <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* HERO SECTION */}
         <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 24 }}>
           {/* Header */}
-          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}
+          >
             <View style={{ flex: 1, marginRight: 12 }}>
               <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                 <Text style={{ fontSize: 16, color: "#64748B" }}>Hoş geldin</Text>
-                <Animated.Text style={{ transform: [{ rotate }], fontSize: 18, marginLeft: 6 }}>
-                  👋
-                </Animated.Text>
+                <Animated.Text style={{ transform: [{ rotate }], fontSize: 18, marginLeft: 6 }}>👋</Animated.Text>
               </View>
-              <Text
-                style={{ fontSize: 28, fontWeight: "700", color: "#0F172A" }}
-                numberOfLines={1}
-              >
+              <Text style={{ fontSize: 28, fontWeight: "700", color: "#0F172A" }} numberOfLines={1}>
                 Ahmet
               </Text>
             </View>
@@ -338,11 +321,8 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 activeOpacity={0.8}
               >
-                <Ionicons name="location" size={16} color="#FFF" />
-                <Text
-                  style={{ fontSize: 13, color: "#FFF", fontWeight: "600", marginLeft: 4 }}
-                  numberOfLines={1}
-                >
+                <Ionicons name='location' size={16} color='#FFF' />
+                <Text style={{ fontSize: 13, color: "#FFF", fontWeight: "600", marginLeft: 4 }} numberOfLines={1}>
                   İstanbul
                 </Text>
               </TouchableOpacity>
@@ -364,7 +344,7 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 activeOpacity={0.8}
               >
-                <Ionicons name="person" size={20} color="#64748B" />
+                <Ionicons name='person' size={20} color='#64748B' />
               </TouchableOpacity>
             </View>
           </View>
@@ -387,10 +367,8 @@ const HomeScreen = ({ navigation }) => {
               elevation: 2,
             }}
           >
-            <Ionicons name="search-outline" size={20} color="#06B6D4" />
-            <Text style={{ fontSize: 15, color: "#94A3B8", marginLeft: 12 }}>
-              Can dostuna ne arıyorsun?
-            </Text>
+            <Ionicons name='search-outline' size={20} color='#06B6D4' />
+            <Text style={{ fontSize: 15, color: "#94A3B8", marginLeft: 12 }}>Can dostuna ne arıyorsun?</Text>
           </TouchableOpacity>
 
           {/* Stats Cards */}
@@ -444,9 +422,7 @@ const HomeScreen = ({ navigation }) => {
                   >
                     <Ionicons name={s.icon} size={16} color={s.color} />
                   </View>
-                  <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>
-                    {s.value}
-                  </Text>
+                  <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>{s.value}</Text>
                   <Text style={{ fontSize: 11, color: "#64748B" }} numberOfLines={1}>
                     {s.label}
                   </Text>
@@ -466,34 +442,32 @@ const HomeScreen = ({ navigation }) => {
               marginBottom: 16,
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A" }}>
-              Hızlı Erişim
-            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A" }}>Hızlı Erişim</Text>
           </View>
 
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <QuickActionCard
-              icon="heart-outline"
-              label="Favoriler"
-              color="#DB2777"
+              icon='heart-outline'
+              label='Favoriler'
+              color='#DB2777'
               onPress={() => navigation.navigate("Favorites")}
             />
             <QuickActionCard
-              icon="chatbubbles-outline"
-              label="Mesajlar"
-              color="#06B6D4"
+              icon='chatbubbles-outline'
+              label='Mesajlar'
+              color='#06B6D4'
               onPress={() => navigation.navigate("Messages")}
             />
             <QuickActionCard
-              icon="calendar-outline"
-              label="Randevular"
-              color="#8B5CF6"
+              icon='calendar-outline'
+              label='Randevular'
+              color='#8B5CF6'
               onPress={() => navigation.navigate("Appointments")}
             />
             <QuickActionCard
-              icon="notifications-outline"
-              label="Bildirimler"
-              color="#F59E0B"
+              icon='notifications-outline'
+              label='Bildirimler'
+              color='#F59E0B'
               onPress={() => navigation.navigate("Notifications")}
             />
           </View>
@@ -501,9 +475,7 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Category Tabs */}
         <View style={{ paddingHorizontal: 20, marginBottom: 16 }}>
-          <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A", marginBottom: 16 }}>
-            Kategoriler
-          </Text>
+          <Text style={{ fontSize: 20, fontWeight: "700", color: "#0F172A", marginBottom: 16 }}>Kategoriler</Text>
 
           <View
             style={{
@@ -525,16 +497,12 @@ const HomeScreen = ({ navigation }) => {
             ].map(cat => {
               const active = activeCat === cat.id;
               return (
-                <Pressable
-                  key={cat.id}
-                  onPress={() => setActiveCat(cat.id)}
-                  style={{ flex: 1 }}
-                >
+                <Pressable key={cat.id} onPress={() => setActiveCat(cat.id)} style={{ flex: 1 }}>
                   <View
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 16,
-                      borderRadius: 8,
+                      borderRadius: 12,
                       backgroundColor: active ? "#06B6D4" : "transparent",
                       alignItems: "center",
                     }}
@@ -565,11 +533,7 @@ const HomeScreen = ({ navigation }) => {
             }}
           >
             {filteredModules.map(item => (
-              <ModuleCard
-                key={item.id}
-                item={item}
-                onPress={() => navigation.navigate(item.route)}
-              />
+              <ModuleCard key={item.id} item={item} onPress={() => navigation.navigate(item.route)} />
             ))}
           </View>
         </View>
@@ -577,10 +541,7 @@ const HomeScreen = ({ navigation }) => {
 
       {/* FAB Button */}
       <View style={{ position: "absolute", right: 20, bottom: 90 }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("CreateListing")}
-          activeOpacity={0.9}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("CreateListing")} activeOpacity={0.9}>
           <LinearGradient
             colors={["#06B6D4", "#0891B2"]}
             style={{
@@ -596,7 +557,7 @@ const HomeScreen = ({ navigation }) => {
               elevation: 8,
             }}
           >
-            <Ionicons name="add" size={28} color="#FFF" />
+            <Ionicons name='add' size={28} color='#FFF' />
           </LinearGradient>
         </TouchableOpacity>
       </View>

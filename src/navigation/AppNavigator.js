@@ -25,6 +25,9 @@ import ForgotPasswordScreen from "../screens/Auth/ForgotPasswordScreen";
 // Home Screen
 import HomeScreen from "../screens/HomeScreen";
 
+// Profile Screen
+import ProfileScreen from "../screens/ProfileScreen";
+
 // Screens - PlayMate
 import PlayMateDiscoverScreen from "../screens/PlayMate/PlayMateDiscoverScreen";
 import PlayMateDetailScreen from "../screens/PlayMate/PlayMateDetailScreen";
@@ -183,6 +186,7 @@ const AppNavigator = () => {
         <RootStack.Screen name='Register' component={RegisterScreen} />
         <RootStack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
         <RootStack.Screen name='MainApp' component={TabNavigator} />
+        <RootStack.Screen name='Profile' component={ProfileScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
