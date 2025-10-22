@@ -123,7 +123,7 @@ const CreateListingScreen = ({ navigation }) => {
             colors={item.gradient}
             style={{
               borderRadius: 20,
-              padding: 20,
+              padding: 18,
               minHeight: 200,
               shadowColor: item.color,
               shadowOffset: { width: 0, height: 4 },
@@ -176,7 +176,7 @@ const CreateListingScreen = ({ navigation }) => {
             <View
               style={{
                 position: "absolute",
-                bottom: 20,
+                bottom: 10,
                 right: 20,
                 width: 36,
                 height: 36,

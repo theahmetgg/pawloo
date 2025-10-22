@@ -31,6 +31,17 @@ import ProfileScreen from "../screens/ProfileScreen";
 // Create Listing Screen
 import CreateListingScreen from "../screens/CreateListingScreen";
 
+// Create Listing Forms
+import CreatePlayMateScreen from "../screens/CreateListing/CreatePlayMateScreen";
+import CreateBreedingScreen from "../screens/CreateListing/CreateBreedingScreen";
+import CreateAdoptionScreen from "../screens/CreateListing/CreateAdoptionScreen";
+import CreateHotelCareScreen from "../screens/CreateListing/CreateHotelCareScreen";
+import CreateVeterinaryScreen from "../screens/CreateListing/CreateVeterinaryScreen";
+import CreateGroomingScreen from "../screens/CreateListing/CreateGroomingScreen";
+
+// Help Screen
+import HelpScreen from "../screens/HelpScreen";
+
 // Screens - PlayMate
 import PlayMateDiscoverScreen from "../screens/PlayMate/PlayMateDiscoverScreen";
 import PlayMateDetailScreen from "../screens/PlayMate/PlayMateDetailScreen";
@@ -191,6 +202,13 @@ const AppNavigator = () => {
         <RootStack.Screen name='MainApp' component={TabNavigator} />
         <RootStack.Screen name='Profile' component={ProfileScreen} />
         <RootStack.Screen name='CreateListing' component={CreateListingScreen} />
+        <RootStack.Screen name='CreatePlayMate' component={CreatePlayMateScreen} />
+        <RootStack.Screen name='CreateBreeding' component={CreateBreedingScreen} />
+        <RootStack.Screen name='CreateAdoption' component={CreateAdoptionScreen} />
+        <RootStack.Screen name='CreateHotelCare' component={CreateHotelCareScreen} />
+        <RootStack.Screen name='CreateVeterinary' component={CreateVeterinaryScreen} />
+        <RootStack.Screen name='CreateGrooming' component={CreateGroomingScreen} />
+        <RootStack.Screen name='Help' component={HelpScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
