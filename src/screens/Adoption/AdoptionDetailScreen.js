@@ -386,7 +386,7 @@ const AdoptionDetailScreen = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
       >
         {/* Hero Gallery */}
         <View style={{ height: HERO_HEIGHT }}>

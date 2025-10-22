@@ -375,7 +375,7 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
           useNativeDriver: false,
         })}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
       >
         <View style={{ height: HERO_HEIGHT }}>
           <ScrollView
