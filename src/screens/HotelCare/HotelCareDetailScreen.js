@@ -9,6 +9,7 @@ import {
   Modal,
   StatusBar,
   Animated,
+  TextInput,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -29,6 +30,13 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('about');
   const [showBookingModal, setShowBookingModal] = useState(false);
+
+  // Rezervasyon state'leri
+  const [checkInDate, setCheckInDate] = useState(null);
+  const [checkOutDate, setCheckOutDate] = useState(null);
+  const [petName, setPetName] = useState('');
+  const [petType, setPetType] = useState('Köpek');
+  const [specialRequests, setSpecialRequests] = useState('');
 
   // Mock data
   const service = {
@@ -94,6 +102,51 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
 
   const handleShare = () => {};
   const handleFavorite = () => setIsFavorite(!isFavorite);
+
+  // Rezervasyon fonksiyonları
+  const formatDate = (date) => {
+    if (!date) return 'Tarih seçin';
+    return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
+  const calculateDays = () => {
+    if (!checkInDate || !checkOutDate) return 0;
+    const diff = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+  };
+
+  const calculateTotalPrice = () => {
+    const days = calculateDays();
+    return days * service.pricePerDay;
+  };
+
+  const handleConfirmBooking = () => {
+    if (!checkInDate || !checkOutDate || !petName) {
+      alert('Lütfen tüm zorunlu alanları doldurun');
+      return;
+    }
+    // Rezervasyon işlemi burada yapılacak
+    alert('Rezervasyon başarıyla oluşturuldu!');
+    setShowBookingModal(false);
+    // State'leri temizle
+    setCheckInDate(null);
+    setCheckOutDate(null);
+    setPetName('');
+    setSpecialRequests('');
+  };
+
+  const setTodayAsCheckIn = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    setCheckInDate(today);
+  };
+
+  const setTomorrowAsCheckOut = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    setCheckOutDate(tomorrow);
+  };
 
   const tabs = [
     { id: 'about', label: 'Hakkında', icon: 'information-circle' },
@@ -485,7 +538,12 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
       >
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' }}>
           <View
-            style={{ backgroundColor: theme.card, borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
+            style={{
+              backgroundColor: theme.card,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+              maxHeight: '90%',
+            }}
           >
             <View
               style={{
@@ -504,23 +562,283 @@ const HotelCareDetailScreen = ({ navigation, route }) => {
                 <Ionicons name="close" size={28} color={theme.text} />
               </TouchableOpacity>
             </View>
-            <View style={{ padding: 16 }}>
-              <Text style={{ color: theme.textSecondary, fontSize: 14, marginBottom: 16 }}>
-                Tarih seçimi ve rezervasyon formu burada gösterilecek.
-              </Text>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              <View style={{ padding: 16 }}>
+                {/* Tarih Seçimi */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+                    Tarihler
+                  </Text>
+                  <View style={{ flexDirection: 'row', gap: 12 }}>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={{
+                          color: theme.textSecondary,
+                          fontSize: 13,
+                          marginBottom: 8,
+                          fontWeight: '500',
+                        }}
+                      >
+                        Giriş Tarihi
+                      </Text>
+                      <TouchableOpacity
+                        onPress={setTodayAsCheckIn}
+                        style={{
+                          backgroundColor: theme.bg,
+                          padding: 14,
+                          borderRadius: 12,
+                          borderWidth: 1,
+                          borderColor: checkInDate ? theme.accent : theme.border,
+                        }}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                          <Ionicons
+                            name="calendar-outline"
+                            size={18}
+                            color={checkInDate ? theme.accent : theme.textSecondary}
+                          />
+                          <Text
+                            style={{
+                              color: checkInDate ? theme.text : theme.textSecondary,
+                              fontSize: 14,
+                              flex: 1,
+                            }}
+                          >
+                            {formatDate(checkInDate)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={{
+                          color: theme.textSecondary,
+                          fontSize: 13,
+                          marginBottom: 8,
+                          fontWeight: '500',
+                        }}
+                      >
+                        Çıkış Tarihi
+                      </Text>
+                      <TouchableOpacity
+                        onPress={setTomorrowAsCheckOut}
+                        style={{
+                          backgroundColor: theme.bg,
+                          padding: 14,
+                          borderRadius: 12,
+                          borderWidth: 1,
+                          borderColor: checkOutDate ? theme.accent : theme.border,
+                        }}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                          <Ionicons
+                            name="calendar-outline"
+                            size={18}
+                            color={checkOutDate ? theme.accent : theme.textSecondary}
+                          />
+                          <Text
+                            style={{
+                              color: checkOutDate ? theme.text : theme.textSecondary,
+                              fontSize: 14,
+                              flex: 1,
+                            }}
+                          >
+                            {formatDate(checkOutDate)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+
+                {/* Evcil Hayvan Bilgileri */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+                    Evcil Hayvan Bilgileri
+                  </Text>
+
+                  <View style={{ marginBottom: 12 }}>
+                    <Text
+                      style={{
+                        color: theme.textSecondary,
+                        fontSize: 13,
+                        marginBottom: 8,
+                        fontWeight: '500',
+                      }}
+                    >
+                      Hayvan Türü
+                    </Text>
+                    <View style={{ flexDirection: 'row', gap: 8 }}>
+                      {['Köpek', 'Kedi'].map((type) => (
+                        <TouchableOpacity
+                          key={type}
+                          onPress={() => setPetType(type)}
+                          style={{
+                            flex: 1,
+                            backgroundColor: petType === type ? theme.accentLight : theme.bg,
+                            padding: 12,
+                            borderRadius: 12,
+                            borderWidth: 1,
+                            borderColor: petType === type ? theme.accent : theme.border,
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Ionicons
+                            name={type === 'Köpek' ? 'paw' : 'paw-outline'}
+                            size={20}
+                            color={petType === type ? theme.accent : theme.textSecondary}
+                          />
+                          <Text
+                            style={{
+                              color: petType === type ? theme.accent : theme.text,
+                              fontSize: 14,
+                              fontWeight: '600',
+                              marginTop: 4,
+                            }}
+                          >
+                            {type}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+
+                  <View>
+                    <Text
+                      style={{
+                        color: theme.textSecondary,
+                        fontSize: 13,
+                        marginBottom: 8,
+                        fontWeight: '500',
+                      }}
+                    >
+                      Evcil Hayvanınızın Adı *
+                    </Text>
+                    <TextInput
+                      value={petName}
+                      onChangeText={setPetName}
+                      placeholder="Örn: Pamuk"
+                      placeholderTextColor={theme.textSecondary}
+                      style={{
+                        backgroundColor: theme.bg,
+                        padding: 14,
+                        borderRadius: 12,
+                        fontSize: 15,
+                        color: theme.text,
+                        borderWidth: 1,
+                        borderColor: petName ? theme.accent : theme.border,
+                      }}
+                    />
+                  </View>
+                </View>
+
+                {/* Özel İstekler */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                    Özel İstekler (Opsiyonel)
+                  </Text>
+                  <Text
+                    style={{ color: theme.textSecondary, fontSize: 13, marginBottom: 8, lineHeight: 18 }}
+                  >
+                    Evcil hayvanınızın özel ihtiyaçları veya dikkat edilmesi gereken durumlar varsa
+                    belirtebilirsiniz.
+                  </Text>
+                  <TextInput
+                    value={specialRequests}
+                    onChangeText={setSpecialRequests}
+                    placeholder="Özel isteklerinizi buraya yazın..."
+                    placeholderTextColor={theme.textSecondary}
+                    multiline
+                    numberOfLines={4}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: theme.border,
+                      minHeight: 100,
+                      textAlignVertical: 'top',
+                    }}
+                  />
+                </View>
+
+                {/* Fiyat Özeti */}
+                {calculateDays() > 0 && (
+                  <View
+                    style={{
+                      backgroundColor: theme.accentLight,
+                      padding: 16,
+                      borderRadius: 16,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+                      Fiyat Özeti
+                    </Text>
+                    <View
+                      style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}
+                    >
+                      <Text style={{ color: theme.textSecondary, fontSize: 14 }}>
+                        ₺{service.pricePerDay} x {calculateDays()} gün
+                      </Text>
+                      <Text style={{ color: theme.text, fontSize: 14, fontWeight: '600' }}>
+                        ₺{calculateTotalPrice()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        height: 1,
+                        backgroundColor: theme.accent + '30',
+                        marginVertical: 8,
+                      }}
+                    />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <Text style={{ color: theme.text, fontSize: 16, fontWeight: '700' }}>
+                        Toplam
+                      </Text>
+                      <Text style={{ color: theme.accent, fontSize: 20, fontWeight: '700' }}>
+                        ₺{calculateTotalPrice()}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+
+            {/* Onay Butonu */}
+            <View style={{ padding: 16, paddingBottom: insets.bottom + 16 }}>
               <LinearGradient
                 colors={[theme.accent, theme.accent + 'DD']}
-                style={{ borderRadius: 12, marginBottom: 24 }}
+                style={{ borderRadius: 12 }}
               >
                 <TouchableOpacity
                   style={{ paddingVertical: 16, alignItems: 'center' }}
-                  onPress={() => setShowBookingModal(false)}
+                  onPress={handleConfirmBooking}
+                  disabled={!checkInDate || !checkOutDate || !petName}
                 >
                   <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>
-                    Rezervasyonu Onayla
+                    {calculateDays() > 0
+                      ? `Rezervasyonu Onayla - ₺${calculateTotalPrice()}`
+                      : 'Rezervasyonu Onayla'}
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
+              {(!checkInDate || !checkOutDate || !petName) && (
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    textAlign: 'center',
+                    marginTop: 12,
+                  }}
+                >
+                  * Lütfen zorunlu alanları doldurun
+                </Text>
+              )}
             </View>
           </View>
         </View>
