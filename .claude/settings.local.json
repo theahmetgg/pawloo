@@ -8,7 +8,9 @@
       "Bash(npx expo-doctor)",
       "Bash(npx expo install expo-font react-native-worklets)",
       "Bash(npx expo install:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(tree:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

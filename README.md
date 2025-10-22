@@ -1,14 +1,10 @@
-npm i -g eas-cli
-eas login
-eas build:configure
-
-
-eas build -p android --profile preview
-
-
 # 🐾 Pet Services App
 
 Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftleştirme, sahiplendirme, otel, veteriner ve kuaför hizmetleri.
+
+> **Proje Adı:** AnimalApp
+> **Platform:** React Native (Expo)
+> **Durum:** MVP Geliştirme Aşamasında
 
 ## ✅ Tamamlanan Özellikler
 
@@ -174,25 +170,155 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Harita filtreleme
 
 ### 8️⃣ Backend & API
-- [ ] **Firebase/Backend Setup**
-  - [ ] Firebase Authentication
-  - [ ] Firestore Database
-  - [ ] Firebase Storage (resimler)
-  - [ ] Cloud Functions
-  - [ ] Firebase Analytics
-- [ ] **API Entegrasyonu**
-  - [ ] REST API yapısı
-  - [ ] User management API
-  - [ ] İlan CRUD API
-  - [ ] Mesajlaşma API
-  - [ ] Bildirim API
-  - [ ] Arama & Filter API
-- [ ] **State Management**
-  - [ ] Redux/Context API
-  - [ ] Local storage
-  - [ ] Cache yönetimi
-  - [ ] Error handling
-  - [ ] Loading states
+
+#### 🎯 Önerilen Teknoloji Stack (Uzun Vadeli)
+
+**Backend Framework:**
+- [ ] **Node.js + NestJS** (TypeScript) - Yapılandırılmış, ölçeklenebilir mimari
+  - [ ] Modüler mimari kurulumu
+  - [ ] DTO & Validation (class-validator)
+  - [ ] Guards & Interceptors
+  - [ ] Swagger/OpenAPI dokümantasyonu
+  - [ ] Error handling & logging
+
+**Veritabanı:**
+- [ ] **PostgreSQL** - Güvenilir, güçlü SQL veritabanı
+  - [ ] PostGIS extension (konum bazlı sorgular için)
+  - [ ] Database design & schema
+  - [ ] Migration stratejisi
+  - [ ] Backup & recovery planı
+- [ ] **Prisma ORM** - Modern, type-safe ORM
+  - [ ] Schema tanımları
+  - [ ] Migrations
+  - [ ] Seed data
+  - [ ] Query optimization
+
+**Cache & Performance:**
+- [ ] **Redis** - Cache & session yönetimi
+  - [ ] Cache stratejisi
+  - [ ] Session storage
+  - [ ] Rate limiting
+  - [ ] Bull queue (background jobs)
+
+**File Storage:**
+- [ ] **Cloudinary** veya **AWS S3** - Resim yönetimi
+  - [ ] Upload endpoint
+  - [ ] Image optimization & transformation
+  - [ ] Multiple size/quality variants
+  - [ ] CDN entegrasyonu
+
+**Authentication & Authorization:**
+- [ ] **JWT + Passport.js** - Güvenli kimlik doğrulama
+  - [ ] Access & refresh token stratejisi
+  - [ ] Role-based access control (RBAC)
+  - [ ] OAuth providers (Google, Apple)
+  - [ ] 2FA (opsiyonel)
+
+**Real-time Communication:**
+- [ ] **Socket.io** - Gerçek zamanlı mesajlaşma
+  - [ ] Chat rooms yönetimi
+  - [ ] Typing indicators
+  - [ ] Online/offline status
+  - [ ] Message delivery status
+
+**API Architecture:**
+- [ ] **REST API** - Ana API yapısı
+  - [ ] RESTful endpoint tasarımı
+  - [ ] Versioning (v1, v2)
+  - [ ] Pagination & filtering
+  - [ ] CORS yapılandırması
+- [ ] **GraphQL** (Opsiyonel) - Gelişmiş sorgular için
+  - [ ] Schema definition
+  - [ ] Resolvers
+  - [ ] DataLoader (N+1 problemi)
+
+**Push Notifications:**
+- [ ] **Firebase Cloud Messaging (FCM)**
+  - [ ] Token yönetimi
+  - [ ] Notification service
+  - [ ] Topic-based notifications
+  - [ ] Scheduled notifications
+
+**Payment Integration:**
+- [ ] **Stripe** (Global) veya **iyzico** (Türkiye)
+  - [ ] Payment endpoint
+  - [ ] Webhook handling
+  - [ ] Subscription management
+  - [ ] Refund logic
+
+**Email Service:**
+- [ ] **SendGrid** veya **AWS SES**
+  - [ ] Email templates
+  - [ ] Transactional emails
+  - [ ] Email verification
+  - [ ] Newsletter (opsiyonel)
+
+**Search & Filtering:**
+- [ ] **Elasticsearch** veya **PostgreSQL Full-Text Search**
+  - [ ] Index stratejisi
+  - [ ] Fuzzy search
+  - [ ] Faceted search
+  - [ ] Geo-spatial queries (PostGIS)
+
+**Monitoring & Analytics:**
+- [ ] **Sentry** - Error tracking
+- [ ] **LogRocket** - Session replay
+- [ ] **Google Analytics** / **Mixpanel** - User analytics
+- [ ] **Prometheus + Grafana** - System monitoring
+
+**Deployment & DevOps:**
+- [ ] **Docker** - Container'laştırma
+- [ ] **Docker Compose** - Local development
+- [ ] **AWS** / **Google Cloud** / **DigitalOcean** - Cloud hosting
+- [ ] **Nginx** - Reverse proxy & load balancing
+- [ ] **PM2** - Process management
+- [ ] **GitHub Actions** / **GitLab CI** - CI/CD pipeline
+
+---
+
+#### 🚀 Alternatif: Serverless Yaklaşım (Hızlı Başlangıç)
+
+**BaaS Platform:**
+- [ ] **Supabase** - Open-source Firebase alternatifi
+  - [ ] PostgreSQL database (built-in)
+  - [ ] Authentication & user management
+  - [ ] Storage (resim/video)
+  - [ ] Real-time subscriptions
+  - [ ] Edge Functions (Deno)
+  - [ ] Row Level Security (RLS)
+
+**Avantajları:**
+- Hızlı geliştirme ve prototipleme
+- Düşük başlangıç maliyeti
+- Az DevOps yönetimi
+- Otomatik ölçeklendirme
+- Open-source (vendor lock-in riski düşük)
+
+---
+
+#### 📱 Frontend State Management
+- [ ] **Zustand** veya **Redux Toolkit** - Global state
+  - [ ] User state
+  - [ ] Authentication state
+  - [ ] Cache management
+- [ ] **React Query** / **TanStack Query** - Server state
+  - [ ] Data fetching
+  - [ ] Cache & invalidation
+  - [ ] Optimistic updates
+  - [ ] Offline support
+- [ ] **AsyncStorage** - Persistent storage
+  - [ ] Token storage
+  - [ ] User preferences
+  - [ ] Draft data
+
+#### 🔌 API Client & Error Handling
+- [ ] **Axios** - HTTP client
+  - [ ] Interceptors (auth token)
+  - [ ] Request/response logging
+  - [ ] Timeout handling
+- [ ] **Error Boundaries** - UI error handling
+- [ ] **Toast/Snackbar** - User feedback
+- [ ] **Retry Logic** - Network failure handling
 
 ### 9️⃣ UI/UX İyileştirmeleri
 - [ ] **Animasyonlar**
@@ -234,8 +360,8 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Sync when online
   - [ ] Offline indicator
 
-### 1️⃣1️⃣ Admin Panel
-- [ ] **Yönetim Paneli**
+### 1️⃣1️⃣ Admin Panel (Web)
+- [ ] **Web Dashboard**
   - [ ] Admin giriş sistemi
   - [ ] Dashboard (istatistikler)
   - [ ] Kullanıcı yönetimi
@@ -243,8 +369,12 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] İlan onay/red sistemi
   - [ ] Şikayet yönetimi
   - [ ] İçerik moderasyonu
-  - [ ] Raporlar
-  - [ ] Analitik
+  - [ ] Raporlar & Analitik
+- [ ] **Teknoloji (Admin Panel için)**
+  - [ ] React / Next.js (TypeScript)
+  - [ ] Tailwind CSS / Shadcn UI
+  - [ ] Recharts (grafikler)
+  - [ ] React Table / TanStack Table
 
 ### 1️⃣2️⃣ Test & QA
 - [ ] **Test Yazımı**
@@ -309,57 +439,193 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 
 ## 🛠️ Teknoloji Stack
 
+### Frontend (Mobile)
 - **Framework:** React Native (Expo)
+- **Language:** JavaScript / TypeScript (geçiş planlanıyor)
 - **Navigation:** React Navigation (Bottom Tabs + Stack)
+- **State Management:** Zustand / Redux Toolkit (planlı)
+- **Server State:** React Query / TanStack Query (planlı)
 - **Icons:** Ionicons
-- **Styling:** StyleSheet (Native)
+- **Styling:** StyleSheet (Native) + NativeWind (Tailwind, planlı)
 - **Gradients:** expo-linear-gradient
-- **Backend:** Firebase (planlı)
-- **Maps:** Google Maps API (planlı)
-- **Payment:** Stripe/iyzico (planlı)
+- **UI Components:** Custom components + React Native Paper (opsiyonel)
+- **Forms:** React Hook Form (planlı)
+- **Storage:** AsyncStorage / Expo SecureStore
+
+### Backend (Önerilen)
+- **Runtime:** Node.js 18+
+- **Framework:** NestJS (TypeScript)
+- **Database:** PostgreSQL 15+ (PostGIS extension)
+- **ORM:** Prisma
+- **Cache:** Redis
+- **Authentication:** JWT + Passport.js
+- **Real-time:** Socket.io
+- **File Storage:** Cloudinary / AWS S3
+- **Email:** SendGrid / AWS SES
+- **Push Notifications:** Firebase Cloud Messaging (FCM)
+- **Search:** PostgreSQL Full-Text / Elasticsearch
+- **Payment:** Stripe / iyzico
+
+### Alternatif Backend (Hızlı Başlangıç)
+- **Platform:** Supabase (PostgreSQL, Auth, Storage, Real-time)
+- **Functions:** Supabase Edge Functions (Deno)
+
+### DevOps & Cloud
+- **Containerization:** Docker
+- **Hosting:** AWS / Google Cloud / DigitalOcean
+- **CI/CD:** GitHub Actions / GitLab CI
+- **Monitoring:** Sentry, LogRocket, Prometheus
+- **Web Server:** Nginx
+- **Process Manager:** PM2
+
+### Third-party Services
+- **Maps:** Google Maps API / Mapbox
+- **Payment:** Stripe (Global) / iyzico (Türkiye)
+- **Analytics:** Google Analytics / Mixpanel
+- **Crash Reporting:** Sentry
+- **Image Processing:** Cloudinary
+- **SMS:** Twilio (opsiyonel)
 
 ## 📦 Kurulum
+
+### Geliştirme Ortamı
 
 ```bash
 # Bağımlılıkları yükle
 npm install
 
-# Uygulamayı başlat
+# Uygulamayı başlat (Development)
 npm start
 
-# Android
+# Android emülatör
 npm run android
 
-# iOS
+# iOS simulator (sadece macOS)
 npm run ios
 ```
+
+### Production Build (EAS)
+
+```bash
+# EAS CLI kurulumu (global)
+npm i -g eas-cli
+
+# EAS hesabına giriş
+eas login
+
+# EAS build yapılandırma (ilk kez)
+eas build:configure
+
+# Android build (preview profili)
+eas build -p android --profile preview
+
+# Android build (production profili)
+eas build -p android --profile production
+
+# iOS build (production profili)
+eas build -p ios --profile production
+```
+
+### Gereksinimler
+
+- **Node.js:** 18.x veya üzeri
+- **npm/yarn:** Son versiyon
+- **Expo CLI:** 6.x veya üzeri
+- **Android Studio:** Android geliştirme için (opsiyonel)
+- **Xcode:** iOS geliştirme için (sadece macOS)
 
 ## 📁 Proje Yapısı
 
 ```
-pawloo/
-├── src/
-│   ├── components/
-│   │   └── common/          # Ortak bileşenler
-│   ├── screens/
-│   │   ├── HomeScreen.js
-│   │   ├── WelcomeScreen.js
-│   │   ├── PlayMate/
-│   │   ├── Breeding/
-│   │   ├── Adoption/
-│   │   ├── HotelCare/
-│   │   ├── Veterinary/
-│   │   └── PetGrooming/
-│   ├── navigation/
+AnimalApp/
+├── assets/                          # Görseller ve ikonlar
+│   ├── icon.png
+│   ├── adaptive-icon.png
+│   ├── splash-icon.png
+│   └── favicon.png
+│
+├── src/                             # Kaynak kodlar
+│   ├── components/                  # React bileşenleri
+│   │   ├── common/                  # Ortak kullanılan bileşenler
+│   │   │   ├── Button.js
+│   │   │   ├── Card.js
+│   │   │   ├── SearchBar.js
+│   │   │   ├── StatusBadge.js
+│   │   │   └── index.js
+│   │   ├── layout/                  # Layout bileşenleri
+│   │   │   ├── AppLayout.js
+│   │   │   ├── FooterBar.js
+│   │   │   ├── SafeAreaContainer.js
+│   │   │   ├── SafeAreaTabPadded.js
+│   │   │   ├── SafeLayout.js
+│   │   │   └── ScreenWrapper.js
+│   │   ├── navigation/              # Navigasyon bileşenleri
+│   │   │   └── AnimatedFooterTabBar.js
+│   │   ├── shared/                  # Paylaşılan bileşenler
+│   │   │   ├── SafeAreaContainer.js
+│   │   │   ├── HeaderOverlay.js
+│   │   │   └── DetailSection.js
+│   │   └── home/                    # Ana sayfa bileşenleri
+│   │       └── HomeHeader.jsx
+│   │
+│   ├── screens/                     # Uygulama ekranları
+│   │   ├── Auth/                    # Kimlik doğrulama ekranları
+│   │   │   ├── LoginScreen.js
+│   │   │   ├── RegisterScreen.js
+│   │   │   └── ForgotPasswordScreen.js
+│   │   ├── PlayMate/                # Oyun arkadaşı modülü
+│   │   │   ├── PlayMateDiscoverScreen.js
+│   │   │   └── PlayMateDetailScreen.js
+│   │   ├── Breeding/                # Çiftleştirme modülü
+│   │   │   ├── BreedingDiscoverScreen.js
+│   │   │   └── BreedingDetailScreen.js
+│   │   ├── Adoption/                # Sahiplendirme modülü
+│   │   │   ├── AdoptionDiscoverScreen.js
+│   │   │   └── AdoptionDetailScreen.js
+│   │   ├── HotelCare/               # Hotel & Bakım modülü
+│   │   │   ├── HotelCareDiscoverScreen.js
+│   │   │   └── HotelCareDetailScreen.js
+│   │   ├── Veterinary/              # Veteriner modülü
+│   │   │   ├── VeterinaryDiscoverScreen.js
+│   │   │   └── VeterinaryDetailScreen.js
+│   │   ├── PetGrooming/             # Pet Kuaför modülü
+│   │   │   ├── PetGroomingDiscoverScreen.js
+│   │   │   └── PetGroomingDetailScreen.js
+│   │   ├── HomeScreen.js            # Ana sayfa
+│   │   └── WelcomeScreen.js         # Onboarding ekranı
+│   │
+│   ├── navigation/                  # Navigasyon yapılandırması
 │   │   └── AppNavigator.js
-│   └── theme/
-│       ├── colors.js
-│       ├── typography.js
-│       ├── spacing.js
-│       └── index.js
-├── App.js
-├── package.json
-└── README.md
+│   │
+│   ├── theme/                       # Tema ve stil tanımları
+│   │   ├── colors.js                # Renk paleti
+│   │   ├── typography.js            # Yazı tipleri
+│   │   ├── spacing.js               # Boşluk sistemi
+│   │   └── index.js                 # Tema export
+│   │
+│   ├── hooks/                       # Custom React hooks
+│   │   └── useThemeColors.js
+│   │
+│   └── utils/                       # Yardımcı fonksiyonlar
+│       └── contrast.js
+│
+├── android/                         # Android native dosyaları
+│   ├── app/
+│   ├── gradle/
+│   ├── gradlew
+│   └── gradlew.bat
+│
+├── App.js                           # Ana uygulama dosyası
+├── index.js                         # Uygulama giriş noktası
+├── app.json                         # Expo konfigürasyonu
+├── eas.json                         # EAS Build konfigürasyonu
+├── babel.config.js                  # Babel yapılandırması
+├── metro.config.js                  # Metro bundler yapılandırması
+├── tailwind.config.js               # Tailwind CSS yapılandırması
+├── global.css                       # Global stil tanımları
+├── package.json                     # NPM bağımlılıkları
+├── package-lock.json                # NPM lock dosyası
+└── README.md                        # Proje dokümantasyonu
 ```
 
 ## 🎨 Renk Paleti
@@ -387,20 +653,36 @@ pawloo/
 - Test yazımı
 
 ### Planlanan (📅)
-- Kullanıcı kimlik doğrulama
-- Mesajlaşma sistemi
+- Backend API entegrasyonu
+- Kullanıcı kimlik doğrulama (backend bağlantısı)
+- Gerçek zamanlı mesajlaşma sistemi
 - Ödeme entegrasyonu
-- Deployment
+- Konum bazlı filtreleme
+- Push notification servisi
+- App Store & Play Store deployment
 
 ---
 
-## 📝 Notlar
+## 📝 Geliştirme Notları
 
+### Mimari Kararlar
+- **Modüler Yapı:** Her servis için ayrı klasör ve ekranlar
+- **Tema Sistemi:** Merkezi tema yönetimi (colors, typography, spacing)
+- **Navigation:** React Navigation (Tab + Stack hybrid)
+- **Component Kütüphanesi:** Ortak bileşenler (Button, Card, SearchBar, StatusBadge)
+- **Code Style:** ESLint + Prettier (gelecekte eklenecek)
+
+### Best Practices
 - Her modül için ayrı detail screen mevcut
 - Filter chip'ler tüm sayfalarda tutarlı tasarıma sahip
 - Navigation yapısı modüler ve ölçeklenebilir
 - Theme sistemi merkezi ve kolay özelleştirilebilir
 - Checklistleri README'de işaretleyerek ilerleme takibi yapabilirsiniz
+
+### Katkıda Bulunma
+- Feature branch'lerinde çalışın (`feature/feature-name`)
+- Commit mesajları anlamlı olsun (`feat:`, `fix:`, `chore:` prefix kullanın)
+- Pull request açmadan önce kodu test edin
 
 ## 📄 Lisans
 
@@ -408,7 +690,7 @@ Bu proje özel bir projedir.
 
 ---
 
-**Son Güncelleme:** 2025-01-13
+**Son Güncelleme:** 2025-10-22
 
 
 
