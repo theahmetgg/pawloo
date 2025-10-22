@@ -1,5 +1,16 @@
 import React, { useState, useRef } from "react";
-import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions, StatusBar, Animated } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  StatusBar,
+  Animated,
+  Modal,
+  TextInput,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +30,14 @@ const BreedingDetailScreen = ({ route, navigation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("info");
+
+  // Modal state'leri
+  const [showContactModal, setShowContactModal] = useState(false);
+
+  // İletişim formu state'leri
+  const [contactSubject, setContactSubject] = useState("Çiftleştirme Talebi");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
 
   // Mock data
   const petDetails = {
@@ -48,7 +67,6 @@ const BreedingDetailScreen = ({ route, navigation }) => {
       pet.image,
       "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400",
       "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400",
-      "https://images.unsplash.com/photo-1592194996308-f265ec2b0d3a?w=400",
     ],
   };
 
@@ -64,6 +82,20 @@ const BreedingDetailScreen = ({ route, navigation }) => {
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
+  };
+
+  // İletişim fonksiyonları
+  const handleSendContact = () => {
+    if (!contactMessage) {
+      alert("Lütfen mesajınızı yazın");
+      return;
+    }
+    alert("Mesajınız başarıyla gönderildi! Yetiştirici en kısa sürede size dönüş yapacaktır.");
+    setShowContactModal(false);
+    // State'leri temizle
+    setContactSubject("Çiftleştirme Talebi");
+    setContactMessage("");
+    setContactPhone("");
   };
 
   const tabs = [
@@ -596,6 +628,7 @@ const BreedingDetailScreen = ({ route, navigation }) => {
               className='flex-row items-center justify-center gap-2'
               accessibilityLabel='İletişime geç'
               accessibilityRole='button'
+              onPress={() => setShowContactModal(true)}
             >
               <Ionicons name='chatbubble' size={20} color='#FFF' />
               <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "700" }}>İletişime Geç</Text>
@@ -619,6 +652,269 @@ const BreedingDetailScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* İletişim Modal */}
+      <Modal
+        visible={showContactModal}
+        animationType='slide'
+        transparent
+        onRequestClose={() => setShowContactModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "flex-end" }}>
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+              maxHeight: "85%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 16,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.border,
+              }}
+            >
+              <Text style={{ color: theme.text, fontSize: 20, fontWeight: "700" }}>İletişim Formu</Text>
+              <TouchableOpacity onPress={() => setShowContactModal(false)}>
+                <Ionicons name='close' size={28} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              <View style={{ padding: 16 }}>
+                {/* Yetiştirici Bilgisi */}
+                <View
+                  style={{
+                    backgroundColor: theme.accentLight,
+                    padding: 14,
+                    borderRadius: 16,
+                    marginBottom: 20,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
+                  <View
+                    style={{ backgroundColor: theme.accent }}
+                    className='w-14 h-14 rounded-full items-center justify-center'
+                  >
+                    <Ionicons name='person' size={28} color='#FFF' />
+                  </View>
+                  <View className='flex-1'>
+                    <Text style={{ color: theme.text, fontSize: 16, fontWeight: "700", marginBottom: 2 }}>
+                      {petDetails.owner}
+                    </Text>
+                    <Text style={{ color: theme.textSecondary, fontSize: 13, marginBottom: 4 }}>
+                      Sertifikalı Yetiştirici
+                    </Text>
+                    <View className='flex-row items-center gap-2'>
+                      <Ionicons name='ribbon' size={14} color={theme.accent} />
+                      <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{petDetails.name} sahibi</Text>
+                    </View>
+                  </View>
+                </View>
+
+                {/* Konu Seçimi */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      marginBottom: 8,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Konu
+                  </Text>
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                    {["Çiftleştirme Talebi", "Fiyat Bilgisi", "Genel Soru"].map(subject => (
+                      <TouchableOpacity
+                        key={subject}
+                        onPress={() => setContactSubject(subject)}
+                        style={{
+                          backgroundColor: contactSubject === subject ? theme.accentLight : theme.bg,
+                          paddingHorizontal: 16,
+                          paddingVertical: 10,
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          borderColor: contactSubject === subject ? theme.accent : theme.border,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: contactSubject === subject ? theme.accent : theme.text,
+                            fontSize: 14,
+                            fontWeight: "600",
+                          }}
+                        >
+                          {subject}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Telefon Numarası (Opsiyonel) */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      marginBottom: 8,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Telefon Numaranız (Opsiyonel)
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: theme.bg,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: contactPhone ? theme.accent : theme.border,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingHorizontal: 14,
+                    }}
+                  >
+                    <Ionicons name='call-outline' size={18} color={theme.textSecondary} />
+                    <TextInput
+                      value={contactPhone}
+                      onChangeText={setContactPhone}
+                      placeholder='5XX XXX XX XX'
+                      placeholderTextColor={theme.textSecondary}
+                      keyboardType='phone-pad'
+                      style={{
+                        flex: 1,
+                        padding: 14,
+                        fontSize: 15,
+                        color: theme.text,
+                        marginLeft: 8,
+                      }}
+                    />
+                  </View>
+                </View>
+
+                {/* Mesaj İçeriği */}
+                <View style={{ marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: 13,
+                      marginBottom: 8,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Mesajınız *
+                  </Text>
+                  <TextInput
+                    value={contactMessage}
+                    onChangeText={setContactMessage}
+                    placeholder='Mesajınızı buraya yazın...'
+                    placeholderTextColor={theme.textSecondary}
+                    multiline
+                    numberOfLines={6}
+                    style={{
+                      backgroundColor: theme.bg,
+                      padding: 14,
+                      borderRadius: 12,
+                      fontSize: 15,
+                      color: theme.text,
+                      borderWidth: 1,
+                      borderColor: contactMessage ? theme.accent : theme.border,
+                      minHeight: 140,
+                      textAlignVertical: "top",
+                    }}
+                  />
+                </View>
+
+                {/* Hızlı Mesaj Şablonları */}
+                <View>
+                  <Text style={{ color: theme.text, fontSize: 14, fontWeight: "600", marginBottom: 10 }}>
+                    Hızlı Mesajlar
+                  </Text>
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                    {[
+                      "Merhaba, çiftleştirme hakkında bilgi almak istiyorum.",
+                      "Sağlık testleri hakkında detaylı bilgi alabilir miyim?",
+                      "Uygun tarihleri öğrenmek istiyorum.",
+                    ].map((template, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => setContactMessage(contactMessage + (contactMessage ? " " : "") + template)}
+                        style={{
+                          backgroundColor: theme.bg,
+                          paddingHorizontal: 12,
+                          paddingVertical: 8,
+                          borderRadius: 16,
+                          borderWidth: 1,
+                          borderColor: theme.border,
+                        }}
+                      >
+                        <Text style={{ color: theme.text, fontSize: 12 }}>{template}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Bilgilendirme */}
+                <View
+                  style={{
+                    backgroundColor: theme.accentLight,
+                    padding: 12,
+                    borderRadius: 12,
+                    marginTop: 20,
+                    flexDirection: "row",
+                    gap: 10,
+                  }}
+                >
+                  <Ionicons name='information-circle' size={20} color={theme.accent} />
+                  <Text style={{ color: theme.textSecondary, fontSize: 12, lineHeight: 18, flex: 1 }}>
+                    Mesajınız doğrudan yetiştirici ile paylaşılacaktır. Yanıt süresi ortalama 2-4 saat içindedir.
+                  </Text>
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Gönder Butonu */}
+            <View style={{ padding: 16, paddingBottom: insets.bottom + 16 }}>
+              <LinearGradient colors={[theme.accent, theme.accent + "DD"]} style={{ borderRadius: 12 }}>
+                <TouchableOpacity
+                  style={{
+                    paddingVertical: 16,
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    gap: 8,
+                  }}
+                  onPress={handleSendContact}
+                  disabled={!contactMessage}
+                >
+                  <Ionicons name='send' size={18} color='#FFF' />
+                  <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "700" }}>Mesajı Gönder</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+              {!contactMessage && (
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    textAlign: "center",
+                    marginTop: 12,
+                  }}
+                >
+                  * Lütfen mesajınızı yazın
+                </Text>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaContainer>
   );
 };
