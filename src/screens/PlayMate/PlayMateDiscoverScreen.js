@@ -236,7 +236,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         className='mb-4 py-4'
-        style={{ height: 74 }}
+        style={{ height: 94 }}
         contentContainerStyle={{
           paddingHorizontal: 16,
           columnGap: 10,
