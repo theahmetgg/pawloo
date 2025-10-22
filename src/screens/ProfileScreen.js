@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StatusBar,
-  Switch,
-  Alert,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StatusBar, Switch, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -123,21 +115,17 @@ const ProfileScreen = ({ navigation }) => {
   ];
 
   const handleLogout = () => {
-    Alert.alert(
-      "Çıkış Yap",
-      "Hesabınızdan çıkış yapmak istediğinize emin misiniz?",
-      [
-        { text: "İptal", style: "cancel" },
-        {
-          text: "Çıkış Yap",
-          style: "destructive",
-          onPress: () => {
-            // Logout logic here
-            Alert.alert("Başarılı", "Çıkış yapıldı");
-          },
+    Alert.alert("Çıkış Yap", "Hesabınızdan çıkış yapmak istediğinize emin misiniz?", [
+      { text: "İptal", style: "cancel" },
+      {
+        text: "Çıkış Yap",
+        style: "destructive",
+        onPress: () => {
+          // Logout logic here
+          Alert.alert("Başarılı", "Çıkış yapıldı");
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const MenuItem = ({ item }) => {
@@ -173,16 +161,14 @@ const ProfileScreen = ({ navigation }) => {
             >
               <Ionicons name={item.icon} size={20} color={item.color} />
             </View>
-            <Text style={{ fontSize: 15, fontWeight: "600", color: "#0F172A", flex: 1 }}>
-              {item.label}
-            </Text>
+            <Text style={{ fontSize: 15, fontWeight: "600", color: "#0F172A", flex: 1 }}>{item.label}</Text>
           </View>
           <Switch
             value={item.value}
             onValueChange={item.onToggle}
             trackColor={{ false: "#E2E8F0", true: item.color + "40" }}
             thumbColor={item.value ? item.color : "#F1F5F9"}
-            ios_backgroundColor="#E2E8F0"
+            ios_backgroundColor='#E2E8F0'
           />
         </View>
       );
@@ -221,23 +207,18 @@ const ProfileScreen = ({ navigation }) => {
           >
             <Ionicons name={item.icon} size={20} color={item.color} />
           </View>
-          <Text style={{ fontSize: 15, fontWeight: "600", color: "#0F172A", flex: 1 }}>
-            {item.label}
-          </Text>
+          <Text style={{ fontSize: 15, fontWeight: "600", color: "#0F172A", flex: 1 }}>{item.label}</Text>
         </View>
-        <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
+        <Ionicons name='chevron-forward' size={20} color='#94A3B8' />
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaContainer bgColor="#F9FAFB" edges={["top"]}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+    <SafeAreaContainer bgColor='#F9FAFB' edges={["top"]}>
+      <StatusBar barStyle='light-content' backgroundColor='transparent' translucent />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Header with Gradient */}
         <LinearGradient
           colors={["#06B6D4", "#0891B2"]}
@@ -268,12 +249,10 @@ const ProfileScreen = ({ navigation }) => {
               }}
               activeOpacity={0.8}
             >
-              <Ionicons name="arrow-back" size={24} color="#FFF" />
+              <Ionicons name='arrow-back' size={24} color='#FFF' />
             </TouchableOpacity>
 
-            <Text style={{ fontSize: 18, fontWeight: "700", color: "#FFF" }}>
-              Profilim
-            </Text>
+            <Text style={{ fontSize: 18, fontWeight: "700", color: "#FFF" }}>Profilim</Text>
 
             <TouchableOpacity
               onPress={() => navigation.navigate("Settings")}
@@ -287,7 +266,7 @@ const ProfileScreen = ({ navigation }) => {
               }}
               activeOpacity={0.8}
             >
-              <Ionicons name="settings-outline" size={24} color="#FFF" />
+              <Ionicons name='settings-outline' size={24} color='#FFF' />
             </TouchableOpacity>
           </View>
 
@@ -310,7 +289,7 @@ const ProfileScreen = ({ navigation }) => {
                 elevation: 8,
               }}
             >
-              <Ionicons name="person" size={50} color="#06B6D4" />
+              <Ionicons name='person' size={50} color='#06B6D4' />
               {user.verified && (
                 <View
                   style={{
@@ -327,7 +306,7 @@ const ProfileScreen = ({ navigation }) => {
                     borderColor: "#06B6D4",
                   }}
                 >
-                  <Ionicons name="checkmark" size={18} color="#FFF" />
+                  <Ionicons name='checkmark' size={18} color='#FFF' />
                 </View>
               )}
             </View>
@@ -343,12 +322,8 @@ const ProfileScreen = ({ navigation }) => {
             >
               {user.name}
             </Text>
-            <Text style={{ fontSize: 14, color: "rgba(255, 255, 255, 0.8)", marginBottom: 2 }}>
-              {user.email}
-            </Text>
-            <Text style={{ fontSize: 13, color: "rgba(255, 255, 255, 0.7)" }}>
-              Üye: {user.memberSince}
-            </Text>
+            <Text style={{ fontSize: 14, color: "rgba(255, 255, 255, 0.8)", marginBottom: 2 }}>{user.email}</Text>
+            <Text style={{ fontSize: 13, color: "rgba(255, 255, 255, 0.7)" }}>Üye: {user.memberSince}</Text>
 
             {/* Edit Profile Button */}
             <TouchableOpacity
@@ -364,7 +339,7 @@ const ProfileScreen = ({ navigation }) => {
               }}
               activeOpacity={0.8}
             >
-              <Ionicons name="create-outline" size={18} color="#FFF" />
+              <Ionicons name='create-outline' size={18} color='#FFF' />
               <Text
                 style={{
                   fontSize: 14,
@@ -516,7 +491,7 @@ const ProfileScreen = ({ navigation }) => {
               marginBottom: 24,
             }}
           >
-            <Ionicons name="log-out-outline" size={20} color="#DC2626" />
+            <Ionicons name='log-out-outline' size={20} color='#DC2626' />
             <Text
               style={{
                 fontSize: 15,
@@ -538,7 +513,7 @@ const ProfileScreen = ({ navigation }) => {
               marginBottom: 8,
             }}
           >
-            AnimalApp v1.0.0
+            Pawloo v1.0.0
           </Text>
         </View>
       </ScrollView>

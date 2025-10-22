@@ -2,13 +2,14 @@
 
 Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftleştirme, sahiplendirme, otel, veteriner ve kuaför hizmetleri.
 
-> **Proje Adı:** AnimalApp
+> **Proje Adı:** Pawloo
 > **Platform:** React Native (Expo)
 > **Durum:** MVP Geliştirme Aşamasında
 
 ## ✅ Tamamlanan Özellikler
 
 ### Temel Yapı
+
 - ✅ Welcome Screen (6 adımlı onboarding)
 - ✅ Ana Sayfa (Keşfet) - İstatistikler ve hızlı filtreler
 - ✅ Bottom Tab Navigation (6 tab)
@@ -17,6 +18,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - ✅ Ortak bileşenler (Button, Card, SearchBar, StatusBadge)
 
 ### 6 Ana Servis Modülü
+
 - ✅ **Oyun Arkadaşı** - Keşfet & Detay ekranları
 - ✅ **Çiftleştirme** - 3 sekmeli detaylı profil sistemi
 - ✅ **Sahiplendirme** - Duygusal hikayeler, başvuru formu
@@ -25,6 +27,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - ✅ **Pet Kuaför** - Paket bazlı hizmet sistemi
 
 ### UI Bileşenleri
+
 - ✅ Filter Chips (Tüm sayfalarda)
 - ✅ Detail Screens (Her servis için)
 - ✅ Responsive tasarım
@@ -36,6 +39,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 ## 📋 Yapılacaklar Listesi
 
 ### 1️⃣ Kullanıcı Yönetimi
+
 - [x] **Giriş/Kayıt Sistemi**
   - [x] Email ile kayıt ekranı
   - [x] Email ile giriş ekranı
@@ -59,6 +63,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Çıkış yapma
 
 ### 2️⃣ İlan Yönetimi
+
 - [ ] **İlan Ekleme**
   - [ ] Form tasarımı (her modül için ayrı)
   - [ ] Çoklu resim yükleme (max 10)
@@ -83,6 +88,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Favori bildirimleri
 
 ### 3️⃣ Arama & Filtreleme
+
 - [ ] **Gelişmiş Arama**
   - [ ] Gerçek zamanlı arama
   - [ ] Arama geçmişi
@@ -100,6 +106,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Filtreleri kaydetme
 
 ### 4️⃣ İletişim & Sosyal
+
 - [ ] **Mesajlaşma Sistemi**
   - [ ] 1-1 chat
   - [ ] Mesaj listesi
@@ -125,6 +132,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Puanlama & Review
 
 ### 5️⃣ Randevu & Rezervasyon
+
 - [ ] **Randevu Sistemi**
   - [ ] Takvim görünümü
   - [ ] Saat seçimi
@@ -141,6 +149,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Rezervasyon geçmişi
 
 ### 6️⃣ Ödeme & Premium
+
 - [ ] **Ödeme Sistemi**
   - [ ] Kredi kartı entegrasyonu
   - [ ] Güvenli ödeme (Stripe/iyzico)
@@ -156,6 +165,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Gelişmiş istatistikler
 
 ### 7️⃣ Konum & Harita
+
 - [ ] **Konum Servisleri**
   - [ ] GPS entegrasyonu
   - [ ] Konum izni yönetimi
@@ -174,6 +184,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 #### 🎯 Önerilen Teknoloji Stack (Uzun Vadeli)
 
 **Backend Framework:**
+
 - [ ] **Node.js + NestJS** (TypeScript) - Yapılandırılmış, ölçeklenebilir mimari
   - [ ] Modüler mimari kurulumu
   - [ ] DTO & Validation (class-validator)
@@ -182,6 +193,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Error handling & logging
 
 **Veritabanı:**
+
 - [ ] **PostgreSQL** - Güvenilir, güçlü SQL veritabanı
   - [ ] PostGIS extension (konum bazlı sorgular için)
   - [ ] Database design & schema
@@ -194,6 +206,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Query optimization
 
 **Cache & Performance:**
+
 - [ ] **Redis** - Cache & session yönetimi
   - [ ] Cache stratejisi
   - [ ] Session storage
@@ -201,6 +214,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Bull queue (background jobs)
 
 **File Storage:**
+
 - [ ] **Cloudinary** veya **AWS S3** - Resim yönetimi
   - [ ] Upload endpoint
   - [ ] Image optimization & transformation
@@ -208,6 +222,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] CDN entegrasyonu
 
 **Authentication & Authorization:**
+
 - [ ] **JWT + Passport.js** - Güvenli kimlik doğrulama
   - [ ] Access & refresh token stratejisi
   - [ ] Role-based access control (RBAC)
@@ -215,6 +230,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] 2FA (opsiyonel)
 
 **Real-time Communication:**
+
 - [ ] **Socket.io** - Gerçek zamanlı mesajlaşma
   - [ ] Chat rooms yönetimi
   - [ ] Typing indicators
@@ -222,6 +238,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Message delivery status
 
 **API Architecture:**
+
 - [ ] **REST API** - Ana API yapısı
   - [ ] RESTful endpoint tasarımı
   - [ ] Versioning (v1, v2)
@@ -233,6 +250,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] DataLoader (N+1 problemi)
 
 **Push Notifications:**
+
 - [ ] **Firebase Cloud Messaging (FCM)**
   - [ ] Token yönetimi
   - [ ] Notification service
@@ -240,6 +258,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Scheduled notifications
 
 **Payment Integration:**
+
 - [ ] **Stripe** (Global) veya **iyzico** (Türkiye)
   - [ ] Payment endpoint
   - [ ] Webhook handling
@@ -247,6 +266,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Refund logic
 
 **Email Service:**
+
 - [ ] **SendGrid** veya **AWS SES**
   - [ ] Email templates
   - [ ] Transactional emails
@@ -254,6 +274,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Newsletter (opsiyonel)
 
 **Search & Filtering:**
+
 - [ ] **Elasticsearch** veya **PostgreSQL Full-Text Search**
   - [ ] Index stratejisi
   - [ ] Fuzzy search
@@ -261,12 +282,14 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Geo-spatial queries (PostGIS)
 
 **Monitoring & Analytics:**
+
 - [ ] **Sentry** - Error tracking
 - [ ] **LogRocket** - Session replay
 - [ ] **Google Analytics** / **Mixpanel** - User analytics
 - [ ] **Prometheus + Grafana** - System monitoring
 
 **Deployment & DevOps:**
+
 - [ ] **Docker** - Container'laştırma
 - [ ] **Docker Compose** - Local development
 - [ ] **AWS** / **Google Cloud** / **DigitalOcean** - Cloud hosting
@@ -279,6 +302,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 #### 🚀 Alternatif: Serverless Yaklaşım (Hızlı Başlangıç)
 
 **BaaS Platform:**
+
 - [ ] **Supabase** - Open-source Firebase alternatifi
   - [ ] PostgreSQL database (built-in)
   - [ ] Authentication & user management
@@ -288,6 +312,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Row Level Security (RLS)
 
 **Avantajları:**
+
 - Hızlı geliştirme ve prototipleme
 - Düşük başlangıç maliyeti
 - Az DevOps yönetimi
@@ -297,6 +322,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 ---
 
 #### 📱 Frontend State Management
+
 - [ ] **Zustand** veya **Redux Toolkit** - Global state
   - [ ] User state
   - [ ] Authentication state
@@ -312,6 +338,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Draft data
 
 #### 🔌 API Client & Error Handling
+
 - [ ] **Axios** - HTTP client
   - [ ] Interceptors (auth token)
   - [ ] Request/response logging
@@ -321,6 +348,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - [ ] **Retry Logic** - Network failure handling
 
 ### 9️⃣ UI/UX İyileştirmeleri
+
 - [ ] **Animasyonlar**
   - [ ] Sayfa geçiş animasyonları
   - [ ] Micro-interactions
@@ -340,6 +368,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Font scaling
 
 ### 🔟 Güvenlik & Performans
+
 - [ ] **Güvenlik**
   - [ ] Veri şifreleme
   - [ ] Secure storage
@@ -361,6 +390,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Offline indicator
 
 ### 1️⃣1️⃣ Admin Panel (Web)
+
 - [ ] **Web Dashboard**
   - [ ] Admin giriş sistemi
   - [ ] Dashboard (istatistikler)
@@ -377,6 +407,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] React Table / TanStack Table
 
 ### 1️⃣2️⃣ Test & QA
+
 - [ ] **Test Yazımı**
   - [ ] Unit tests (Jest)
   - [ ] Component tests
@@ -391,6 +422,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Accessibility tests
 
 ### 1️⃣3️⃣ Deployment & Yayın
+
 - [ ] **iOS**
   - [ ] iOS build yapılandırma
   - [ ] TestFlight setup
@@ -414,6 +446,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
   - [ ] Release notes
 
 ### 1️⃣4️⃣ Ekstra Özellikler
+
 - [ ] **Blog & İçerik**
   - [ ] Blog sayfası
   - [ ] Evcil hayvan bakım rehberleri
@@ -440,6 +473,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 ## 🛠️ Teknoloji Stack
 
 ### Frontend (Mobile)
+
 - **Framework:** React Native (Expo)
 - **Language:** JavaScript / TypeScript (geçiş planlanıyor)
 - **Navigation:** React Navigation (Bottom Tabs + Stack)
@@ -453,6 +487,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - **Storage:** AsyncStorage / Expo SecureStore
 
 ### Backend (Önerilen)
+
 - **Runtime:** Node.js 18+
 - **Framework:** NestJS (TypeScript)
 - **Database:** PostgreSQL 15+ (PostGIS extension)
@@ -467,10 +502,12 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - **Payment:** Stripe / iyzico
 
 ### Alternatif Backend (Hızlı Başlangıç)
+
 - **Platform:** Supabase (PostgreSQL, Auth, Storage, Real-time)
 - **Functions:** Supabase Edge Functions (Deno)
 
 ### DevOps & Cloud
+
 - **Containerization:** Docker
 - **Hosting:** AWS / Google Cloud / DigitalOcean
 - **CI/CD:** GitHub Actions / GitLab CI
@@ -479,6 +516,7 @@ Evcil hayvanlar için kapsamlı hizmet platformu - Oyun arkadaşı bulma, çiftl
 - **Process Manager:** PM2
 
 ### Third-party Services
+
 - **Maps:** Google Maps API / Mapbox
 - **Payment:** Stripe (Global) / iyzico (Türkiye)
 - **Analytics:** Google Analytics / Mixpanel
@@ -537,7 +575,7 @@ eas build -p ios --profile production
 ## 📁 Proje Yapısı
 
 ```
-AnimalApp/
+Pawloo/
 ├── assets/                          # Görseller ve ikonlar
 │   ├── icon.png
 │   ├── adaptive-icon.png
@@ -641,6 +679,7 @@ AnimalApp/
 **Genel İlerleme:** UI/UX %100 | Backend %0 | Deployment %0
 
 ### Tamamlanan (✅)
+
 - Tüm UI ekranları ve navigasyon
 - 6 modül (Oyun Arkadaşı, Çiftleştirme, Sahiplendirme, Hotel, Veteriner, Kuaför)
 - Onboarding sistemi
@@ -648,11 +687,13 @@ AnimalApp/
 - Tema sistemi
 
 ### Devam Eden (🔄)
+
 - Backend entegrasyonu
 - API geliştirme
 - Test yazımı
 
 ### Planlanan (📅)
+
 - Backend API entegrasyonu
 - Kullanıcı kimlik doğrulama (backend bağlantısı)
 - Gerçek zamanlı mesajlaşma sistemi
@@ -666,6 +707,7 @@ AnimalApp/
 ## 📝 Geliştirme Notları
 
 ### Mimari Kararlar
+
 - **Modüler Yapı:** Her servis için ayrı klasör ve ekranlar
 - **Tema Sistemi:** Merkezi tema yönetimi (colors, typography, spacing)
 - **Navigation:** React Navigation (Tab + Stack hybrid)
@@ -673,6 +715,7 @@ AnimalApp/
 - **Code Style:** ESLint + Prettier (gelecekte eklenecek)
 
 ### Best Practices
+
 - Her modül için ayrı detail screen mevcut
 - Filter chip'ler tüm sayfalarda tutarlı tasarıma sahip
 - Navigation yapısı modüler ve ölçeklenebilir
@@ -680,6 +723,7 @@ AnimalApp/
 - Checklistleri README'de işaretleyerek ilerleme takibi yapabilirsiniz
 
 ### Katkıda Bulunma
+
 - Feature branch'lerinde çalışın (`feature/feature-name`)
 - Commit mesajları anlamlı olsun (`feat:`, `fix:`, `chore:` prefix kullanın)
 - Pull request açmadan önce kodu test edin
@@ -691,6 +735,3 @@ Bu proje özel bir projedir.
 ---
 
 **Son Güncelleme:** 2025-10-22
-
-
-

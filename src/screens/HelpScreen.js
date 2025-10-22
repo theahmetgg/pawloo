@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -37,14 +31,12 @@ const HelpScreen = ({ navigation }) => {
         {
           id: "q3",
           question: "İlanımı nasıl düzenleyebilirim?",
-          answer:
-            "Profil > İlanlarım bölümünden ilanlarınızı görebilir, düzenleyebilir veya silebilirsiniz.",
+          answer: "Profil > İlanlarım bölümünden ilanlarınızı görebilir, düzenleyebilir veya silebilirsiniz.",
         },
         {
           id: "q4",
           question: "Kaç tane ilan oluşturabilirim?",
-          answer:
-            "Ücretsiz hesaplarda eş zamanlı 5 ilan, premium hesaplarda sınırsız ilan oluşturabilirsiniz.",
+          answer: "Ücretsiz hesaplarda eş zamanlı 5 ilan, premium hesaplarda sınırsız ilan oluşturabilirsiniz.",
         },
       ],
     },
@@ -57,8 +49,7 @@ const HelpScreen = ({ navigation }) => {
         {
           id: "q5",
           question: "Kaç fotoğraf yükleyebilirim?",
-          answer:
-            "Her ilan için en fazla 5 fotoğraf yükleyebilirsiniz. İlk fotoğraf kapak fotoğrafı olarak görünür.",
+          answer: "Her ilan için en fazla 5 fotoğraf yükleyebilirsiniz. İlk fotoğraf kapak fotoğrafı olarak görünür.",
         },
         {
           id: "q6",
@@ -69,8 +60,7 @@ const HelpScreen = ({ navigation }) => {
         {
           id: "q7",
           question: "Fotoğraflarımı nasıl silerim?",
-          answer:
-            "İlan düzenleme ekranında fotoğrafların üzerindeki X işaretine tıklayarak silebilirsiniz.",
+          answer: "İlan düzenleme ekranında fotoğrafların üzerindeki X işaretine tıklayarak silebilirsiniz.",
         },
       ],
     },
@@ -95,8 +85,7 @@ const HelpScreen = ({ navigation }) => {
         {
           id: "q10",
           question: "Spam mesajları nasıl bildirebilirim?",
-          answer:
-            "Mesaj penceresinde sağ üstteki üç nokta ikonuna tıklayın ve 'Bildir' seçeneğini seçin.",
+          answer: "Mesaj penceresinde sağ üstteki üç nokta ikonuna tıklayın ve 'Bildir' seçeneğini seçin.",
         },
       ],
     },
@@ -136,13 +125,12 @@ const HelpScreen = ({ navigation }) => {
           id: "q14",
           question: "Ücretsiz mi kullanabilirim?",
           answer:
-            "Evet! AnimalApp tamamen ücretsizdir. İlan oluşturmak, mesajlaşmak ve diğer tüm özellikler ücretsiz kullanılabilir.",
+            "Evet! Pawloo tamamen ücretsizdir. İlan oluşturmak, mesajlaşmak ve diğer tüm özellikler ücretsiz kullanılabilir.",
         },
         {
           id: "q15",
           question: "Premium özellikler var mı?",
-          answer:
-            "Şu an için tüm özellikler ücretsizdir. Gelecekte ek özellikler için premium paketler sunabiliriz.",
+          answer: "Şu an için tüm özellikler ücretsizdir. Gelecekte ek özellikler için premium paketler sunabiliriz.",
         },
       ],
     },
@@ -186,11 +174,7 @@ const HelpScreen = ({ navigation }) => {
           >
             {question.question}
           </Text>
-          <Ionicons
-            name={isExpanded ? "chevron-up" : "chevron-down"}
-            size={20}
-            color="#64748B"
-          />
+          <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={20} color='#64748B' />
         </View>
 
         {isExpanded && (
@@ -218,13 +202,10 @@ const HelpScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaContainer bgColor="#F9FAFB" edges={["top"]}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+    <SafeAreaContainer bgColor='#F9FAFB' edges={["top"]}>
+      <StatusBar barStyle='light-content' backgroundColor='transparent' translucent />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Header */}
         <LinearGradient
           colors={["#06B6D4", "#0891B2"]}
@@ -253,12 +234,10 @@ const HelpScreen = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Ionicons name="arrow-back" size={24} color="#FFF" />
+              <Ionicons name='arrow-back' size={24} color='#FFF' />
             </TouchableOpacity>
 
-            <Text style={{ fontSize: 18, fontWeight: "700", color: "#FFF" }}>
-              Yardım Merkezi
-            </Text>
+            <Text style={{ fontSize: 18, fontWeight: "700", color: "#FFF" }}>Yardım Merkezi</Text>
 
             <View style={{ width: 40 }} />
           </View>
@@ -276,7 +255,7 @@ const HelpScreen = ({ navigation }) => {
                 marginBottom: 16,
               }}
             >
-              <Ionicons name="help-circle" size={50} color="#FFF" />
+              <Ionicons name='help-circle' size={50} color='#FFF' />
             </View>
             <Text
               style={{
@@ -333,7 +312,7 @@ const HelpScreen = ({ navigation }) => {
                   marginBottom: 8,
                 }}
               >
-                <Ionicons name="mail-outline" size={24} color="#3B82F6" />
+                <Ionicons name='mail-outline' size={24} color='#3B82F6' />
               </View>
               <Text
                 style={{
@@ -345,9 +324,7 @@ const HelpScreen = ({ navigation }) => {
               >
                 E-posta
               </Text>
-              <Text style={{ fontSize: 12, color: "#64748B" }}>
-                support@animalapp.com
-              </Text>
+              <Text style={{ fontSize: 12, color: "#64748B" }}>support@Pawloo.com</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -375,7 +352,7 @@ const HelpScreen = ({ navigation }) => {
                   marginBottom: 8,
                 }}
               >
-                <Ionicons name="call-outline" size={24} color="#10B981" />
+                <Ionicons name='call-outline' size={24} color='#10B981' />
               </View>
               <Text
                 style={{
@@ -387,16 +364,14 @@ const HelpScreen = ({ navigation }) => {
               >
                 Telefon
               </Text>
-              <Text style={{ fontSize: 12, color: "#64748B" }}>
-                0850 XXX XX XX
-              </Text>
+              <Text style={{ fontSize: 12, color: "#64748B" }}>0850 XXX XX XX</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* FAQ Categories */}
         <View style={{ paddingHorizontal: 20 }}>
-          {helpCategories.map((category) => (
+          {helpCategories.map(category => (
             <View key={category.id} style={{ marginBottom: 24 }}>
               <View
                 style={{
@@ -429,7 +404,7 @@ const HelpScreen = ({ navigation }) => {
                 </Text>
               </View>
 
-              {category.questions.map((question) => (
+              {category.questions.map(question => (
                 <FAQItem key={question.id} question={question} />
               ))}
             </View>
@@ -446,7 +421,7 @@ const HelpScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <Ionicons name="chatbubbles" size={40} color="#F59E0B" />
+            <Ionicons name='chatbubbles' size={40} color='#F59E0B' />
             <Text
               style={{
                 fontSize: 18,
