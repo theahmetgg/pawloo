@@ -80,7 +80,7 @@ const AnimatedFooterTabBar = ({ state, descriptors, navigation }) => {
               <Ionicons
                 name={getIconName(route.name, isFocused)}
                 size={24}
-                color={isFocused ? "#14B8A6" : "#6B7280"}
+                color={isFocused ? "#8B5CF6" : "#6B7280"}
               />
               {isFocused && (
                 <Text style={styles.label} numberOfLines={1}>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 10,
-    color: "#14B8A6",
+    color: "#8B5CF6",
     marginTop: 4,
     fontWeight: "500",
   },

@@ -128,7 +128,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
           <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
             {pet.name}
           </Text>
-          {pet.ownerVerified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
+          {pet.ownerVerified && <Ionicons name='checkmark-circle' size={16} color='#8B5CF6' />}
         </View>
 
         {/* Breed */}
@@ -138,8 +138,8 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
 
         {/* Info Row */}
         <View className='flex-row items-center mb-2 gap-2'>
-          <View className='bg-teal-100 px-2 py-1 rounded-md'>
-            <Text className='text-[10px] font-semibold text-teal-700'>{pet.age} yaş</Text>
+          <View className='bg-purple-100 px-2 py-1 rounded-md'>
+            <Text className='text-[10px] font-semibold text-purple-700'>{pet.age} yaş</Text>
           </View>
           <View className='flex-1 flex-row items-center gap-1'>
             <Ionicons name='location' size={12} color='#6B7280' />
@@ -152,8 +152,8 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
         {/* Badges */}
         <View className='flex-row gap-1'>
           {pet.friendly && (
-            <View className='w-5 h-5 rounded-full bg-teal-100 items-center justify-center'>
-              <Ionicons name='happy' size={10} color='#14B8A6' />
+            <View className='w-5 h-5 rounded-full bg-purple-100 items-center justify-center'>
+              <Ionicons name='happy' size={10} color='#8B5CF6' />
             </View>
           )}
           {pet.vaccinated && (
@@ -188,7 +188,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
         </View>
 
         <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
-          <LinearGradient colors={["#14B8A6", "#0D9488"]} className='flex-1 items-center justify-center'>
+          <LinearGradient colors={["#8B5CF6", "#7C3AED"]} className='flex-1 items-center justify-center'>
             <Ionicons name='paw' size={24} color='#FFF' />
           </LinearGradient>
         </View>
@@ -196,7 +196,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
 
       {/* Stats Banner */}
       <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
-        <LinearGradient colors={["#14B8A6", "#0D9488"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
+        <LinearGradient colors={["#8B5CF6", "#7C3AED"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
           <View className='flex-row justify-around'>
             <View className='items-center'>
               <Text className='text-white text-3xl font-bold'>{mockPlayMates.length}</Text>
@@ -226,7 +226,7 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
           <Ionicons name='search' size={20} color='#9CA3AF' />
           <Text className='text-sm text-gray-400'>Cins veya mesafe ara...</Text>
         </View>
-        <TouchableOpacity className='w-12 h-12 rounded-xl bg-teal-500 items-center justify-center shadow-md'>
+        <TouchableOpacity className='w-12 h-12 rounded-xl bg-purple-500 items-center justify-center shadow-md'>
           <Ionicons name='options' size={20} color='#FFF' />
         </TouchableOpacity>
       </View>
@@ -251,18 +251,18 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
               key={filter.id}
               onPress={() => setSelectedFilter(filter.id)}
               android_ripple={{
-                color: active ? "rgba(255,255,255,0.15)" : "rgba(20,184,166,0.10)",
+                color: active ? "rgba(255,255,255,0.15)" : "rgba(139,92,246,0.10)",
                 borderless: false,
               }}
               className={[
                 "flex-row items-center rounded-full px-4",
                 "min-h-[36px] mr-1.5 border",
-                active ? "bg-teal-500 border-teal-500" : "bg-teal-50 border-teal-200",
+                active ? "bg-purple-500 border-purple-500" : "bg-purple-50 border-purple-200",
               ].join(" ")}
               style={({ pressed }) => [
                 { opacity: pressed ? 0.9 : 1 },
                 active && {
-                  shadowColor: "#14B8A6",
+                  shadowColor: "#8B5CF6",
                   shadowOpacity: 0.25,
                   shadowRadius: 12,
                   shadowOffset: { width: 0, height: 6 },
@@ -274,11 +274,11 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
               <Ionicons
                 name={filter.icon}
                 size={16}
-                color={active ? "#FFFFFF" : "#0F766E"}
+                color={active ? "#FFFFFF" : "#7C3AED"}
                 style={{ marginRight: 6 }}
               />
               <Text
-                className={["text-[13px] font-semibold", active ? "text-white" : "text-teal-700"].join(" ")}
+                className={["text-[13px] font-semibold", active ? "text-white" : "text-purple-700"].join(" ")}
                 numberOfLines={1}
               >
                 {filter.label}
@@ -289,9 +289,9 @@ const PlayMateDiscoverScreen = ({ navigation }) => {
       </ScrollView>
 
       {/* Info Banner */}
-      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
-        <Ionicons name='information-circle' size={20} color='#14B8A6' />
-        <Text className='flex-1 text-xs text-teal-900 font-medium'>
+      <View className='flex-row items-center bg-purple-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-purple-500'>
+        <Ionicons name='information-circle' size={20} color='#8B5CF6' />
+        <Text className='flex-1 text-xs text-purple-900 font-medium'>
           Tüm evcil hayvanlar aşılı ve sosyalleşme eğitimi almıştır
         </Text>
       </View>

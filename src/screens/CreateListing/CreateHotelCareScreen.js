@@ -25,7 +25,7 @@ const CreateHotelCareScreen = ({ navigation }) => {
 
       {/* Header */}
       <LinearGradient
-        colors={["#06B6D4", "#0891B2"]}
+        colors={["#8B5CF6", "#7C3AED"]}
         style={{
           paddingTop: insets.top + 16,
           paddingBottom: 20,
@@ -66,8 +66,8 @@ const CreateHotelCareScreen = ({ navigation }) => {
       {/* Form */}
       <CreateListingForm
         categoryName="Otel & Bakım"
-        categoryColor="#06B6D4"
-        categoryGradient={["#06B6D4", "#0891B2"]}
+        categoryColor="#8B5CF6"
+        categoryGradient={["#8B5CF6", "#7C3AED"]}
         categoryIcon="bed"
         navigation={navigation}
         customFields={customFields}

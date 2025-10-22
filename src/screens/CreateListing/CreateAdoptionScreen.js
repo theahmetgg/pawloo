@@ -26,7 +26,7 @@ const CreateAdoptionScreen = ({ navigation }) => {
 
       {/* Header */}
       <LinearGradient
-        colors={["#0891B2", "#0E7490"]}
+        colors={["#8B5CF6", "#7C3AED"]}
         style={{
           paddingTop: insets.top + 16,
           paddingBottom: 20,
@@ -67,8 +67,8 @@ const CreateAdoptionScreen = ({ navigation }) => {
       {/* Form */}
       <CreateListingForm
         categoryName="Sahiplendirme"
-        categoryColor="#0891B2"
-        categoryGradient={["#0891B2", "#0E7490"]}
+        categoryColor="#8B5CF6"
+        categoryGradient={["#8B5CF6", "#7C3AED"]}
         categoryIcon="home"
         navigation={navigation}
         customFields={customFields}

@@ -19,7 +19,6 @@
       "barStyle": "light-content"
     },
     "androidNavigationBar": {
-      "visible": "immersive",
       "barStyle": "dark-content",
       "backgroundColor": "#FFFFFF"
     },
@@ -45,8 +44,6 @@
         "projectId": "e2c2887a-9a18-45d4-b4d0-94defa00d8c4"
       }
     },
-    "plugins": [
-      "expo-font"
-    ]
+    "plugins": ["expo-font"]
   }
 }

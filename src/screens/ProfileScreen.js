@@ -21,9 +21,9 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const stats = [
-    { id: "1", label: "İlanlarım", value: "5", icon: "grid-outline", color: "#06B6D4" },
+    { id: "1", label: "İlanlarım", value: "5", icon: "grid-outline", color: "#8B5CF6" },
     { id: "2", label: "Favoriler", value: "12", icon: "heart-outline", color: "#DB2777" },
-    { id: "3", label: "Mesajlar", value: "8", icon: "chatbubble-outline", color: "#8B5CF6" },
+    { id: "3", label: "Mesajlar", value: "8", icon: "chatbubble-outline", color: "#A78BFA" },
   ];
 
   const menuSections = [
@@ -34,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
           icon: "person-outline",
           label: "Profil Bilgilerim",
           route: "EditProfile",
-          color: "#06B6D4",
+          color: "#8B5CF6",
         },
         {
           icon: "paw-outline",
@@ -46,7 +46,7 @@ const ProfileScreen = ({ navigation }) => {
           icon: "document-text-outline",
           label: "İlanlarım",
           route: "MyListings",
-          color: "#0891B2",
+          color: "#7C3AED",
         },
         {
           icon: "bookmark-outline",
@@ -221,7 +221,7 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Header with Gradient */}
         <LinearGradient
-          colors={["#06B6D4", "#0891B2"]}
+          colors={["#8B5CF6", "#7C3AED"]}
           style={{
             paddingTop: insets.top + 16,
             paddingBottom: 32,
@@ -289,7 +289,7 @@ const ProfileScreen = ({ navigation }) => {
                 elevation: 8,
               }}
             >
-              <Ionicons name='person' size={50} color='#06B6D4' />
+              <Ionicons name='person' size={50} color='#8B5CF6' />
               {user.verified && (
                 <View
                   style={{
@@ -303,7 +303,7 @@ const ProfileScreen = ({ navigation }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     borderWidth: 3,
-                    borderColor: "#06B6D4",
+                    borderColor: "#8B5CF6",
                   }}
                 >
                   <Ionicons name='checkmark' size={18} color='#FFF' />
@@ -456,7 +456,7 @@ const ProfileScreen = ({ navigation }) => {
                 icon: "help-circle-outline",
                 label: "Yardım Merkezi",
                 route: "Help",
-                color: "#06B6D4",
+                color: "#8B5CF6",
               }}
             />
             <MenuItem

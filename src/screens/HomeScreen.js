@@ -44,8 +44,8 @@ const HomeScreen = ({ navigation }) => {
         desc: "Yeni bir yuva ver",
         icon: "home",
         iconOutline: "home-outline",
-        color: "#0891B2",
-        colorLight: "#CFFAFE",
+        color: "#8B5CF6",
+        colorLight: "#F3E8FF",
         route: "Adoption",
         badge: "76",
         group: "topluluk",
@@ -56,8 +56,8 @@ const HomeScreen = ({ navigation }) => {
         desc: "Güvenli konaklama",
         icon: "bed",
         iconOutline: "bed-outline",
-        color: "#06B6D4",
-        colorLight: "#CFFAFE",
+        color: "#8B5CF6",
+        colorLight: "#F3E8FF",
         route: "HotelCare",
         badge: "4.7★",
         group: "hizmet",
@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
         icon: "medical",
         iconOutline: "medical-outline",
         color: "#2563EB",
-        colorLight: "#DBEAFE",
+        colorLight: "#EDE9FE",
         route: "Veterinary",
         badge: "4.9★",
         group: "hizmet",
@@ -314,7 +314,7 @@ const HomeScreen = ({ navigation }) => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  backgroundColor: "#06B6D4",
+                  backgroundColor: "#8B5CF6",
                   paddingHorizontal: 12,
                   paddingVertical: 8,
                   borderRadius: 12,
@@ -367,7 +367,7 @@ const HomeScreen = ({ navigation }) => {
               elevation: 2,
             }}
           >
-            <Ionicons name='search-outline' size={20} color='#06B6D4' />
+            <Ionicons name='search-outline' size={20} color='#8B5CF6' />
             <Text style={{ fontSize: 15, color: "#94A3B8", marginLeft: 12 }}>Can dostuna ne arıyorsun?</Text>
           </TouchableOpacity>
 
@@ -379,7 +379,7 @@ const HomeScreen = ({ navigation }) => {
                 label: "Toplam İlan",
                 value: loadingStats ? "..." : String(stats.total),
                 icon: "grid-outline",
-                color: "#06B6D4",
+                color: "#8B5CF6",
               },
               {
                 id: "s2",
@@ -455,7 +455,7 @@ const HomeScreen = ({ navigation }) => {
             <QuickActionCard
               icon='chatbubbles-outline'
               label='Mesajlar'
-              color='#06B6D4'
+              color='#8B5CF6'
               onPress={() => navigation.navigate("Messages")}
             />
             <QuickActionCard
@@ -503,7 +503,7 @@ const HomeScreen = ({ navigation }) => {
                       paddingVertical: 10,
                       paddingHorizontal: 16,
                       borderRadius: 12,
-                      backgroundColor: active ? "#06B6D4" : "transparent",
+                      backgroundColor: active ? "#8B5CF6" : "transparent",
                       alignItems: "center",
                     }}
                   >
@@ -543,14 +543,14 @@ const HomeScreen = ({ navigation }) => {
       <View style={{ position: "absolute", right: 20, bottom: 90 }}>
         <TouchableOpacity onPress={() => navigation.navigate("CreateListing")} activeOpacity={0.9}>
           <LinearGradient
-            colors={["#06B6D4", "#0891B2"]}
+            colors={["#8B5CF6", "#7C3AED"]}
             style={{
               width: 56,
               height: 56,
               borderRadius: 28,
               alignItems: "center",
               justifyContent: "center",
-              shadowColor: "#06B6D4",
+              shadowColor: "#8B5CF6",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.4,
               shadowRadius: 12,

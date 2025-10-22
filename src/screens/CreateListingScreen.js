@@ -45,9 +45,9 @@ const CreateListingScreen = ({ navigation }) => {
       title: "Sahiplendirme",
       description: "Evcil hayvan sahiplendir veya sahiplen",
       icon: "home",
-      color: "#0891B2",
-      gradient: ["#0891B2", "#0E7490"],
-      colorLight: "#CFFAFE",
+      color: "#8B5CF6",
+      gradient: ["#8B5CF6", "#7C3AED"],
+      colorLight: "#F3E8FF",
       route: "CreateAdoption",
     },
     {
@@ -55,9 +55,9 @@ const CreateListingScreen = ({ navigation }) => {
       title: "Otel & Bakım",
       description: "Otel veya bakım hizmeti ver",
       icon: "bed",
-      color: "#06B6D4",
-      gradient: ["#06B6D4", "#0891B2"],
-      colorLight: "#CFFAFE",
+      color: "#8B5CF6",
+      gradient: ["#8B5CF6", "#7C3AED"],
+      colorLight: "#F3E8FF",
       route: "CreateHotelCare",
     },
     {
@@ -67,7 +67,7 @@ const CreateListingScreen = ({ navigation }) => {
       icon: "medical",
       color: "#2563EB",
       gradient: ["#2563EB", "#1D4ED8"],
-      colorLight: "#DBEAFE",
+      colorLight: "#EDE9FE",
       route: "CreateVeterinary",
     },
     {
@@ -204,7 +204,7 @@ const CreateListingScreen = ({ navigation }) => {
       >
         {/* Header with Gradient */}
         <LinearGradient
-          colors={["#06B6D4", "#0891B2"]}
+          colors={["#8B5CF6", "#7C3AED"]}
           style={{
             paddingTop: insets.top + 16,
             paddingBottom: 32,
@@ -286,7 +286,7 @@ const CreateListingScreen = ({ navigation }) => {
         <View style={{ paddingHorizontal: 20, marginTop: 24, marginBottom: 8 }}>
           <View
             style={{
-              backgroundColor: "#DBEAFE",
+              backgroundColor: "#EDE9FE",
               borderRadius: 16,
               padding: 16,
               flexDirection: "row",
@@ -380,7 +380,7 @@ const CreateListingScreen = ({ navigation }) => {
               {
                 icon: "document-text-outline",
                 text: "Detaylı ve açıklayıcı bilgi verin",
-                color: "#06B6D4",
+                color: "#8B5CF6",
               },
               {
                 icon: "checkmark-circle-outline",
@@ -454,13 +454,13 @@ const CreateListingScreen = ({ navigation }) => {
                   width: 40,
                   height: 40,
                   borderRadius: 12,
-                  backgroundColor: "#DBEAFE",
+                  backgroundColor: "#EDE9FE",
                   alignItems: "center",
                   justifyContent: "center",
                   marginRight: 12,
                 }}
               >
-                <Ionicons name="help-circle-outline" size={24} color="#3B82F6" />
+                <Ionicons name="help-circle-outline" size={24} color="#8B5CF6" />
               </View>
               <View style={{ flex: 1 }}>
                 <Text

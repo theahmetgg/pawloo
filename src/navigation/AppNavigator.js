@@ -169,12 +169,12 @@ const AppNavigator = () => {
     ...NavTheme,
     colors: {
       ...NavTheme.colors,
-      primary: "#14B8A6",
+      primary: "#8B5CF6",
       background: "#FFFFFF",
       card: "#FFFFFF",
       text: "#111827",
       border: "#E5E7EB",
-      notification: "#14B8A6",
+      notification: "#8B5CF6",
     },
     fonts: fontConfig,
   };

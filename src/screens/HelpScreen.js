@@ -14,7 +14,7 @@ const HelpScreen = ({ navigation }) => {
       id: "listing",
       title: "İlan Oluşturma",
       icon: "add-circle-outline",
-      color: "#06B6D4",
+      color: "#8B5CF6",
       questions: [
         {
           id: "q1",
@@ -208,7 +208,7 @@ const HelpScreen = ({ navigation }) => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Header */}
         <LinearGradient
-          colors={["#06B6D4", "#0891B2"]}
+          colors={["#8B5CF6", "#7C3AED"]}
           style={{
             paddingTop: insets.top + 16,
             paddingBottom: 32,
@@ -306,13 +306,13 @@ const HelpScreen = ({ navigation }) => {
                   width: 48,
                   height: 48,
                   borderRadius: 14,
-                  backgroundColor: "#DBEAFE",
+                  backgroundColor: "#EDE9FE",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: 8,
                 }}
               >
-                <Ionicons name='mail-outline' size={24} color='#3B82F6' />
+                <Ionicons name='mail-outline' size={24} color='#8B5CF6' />
               </View>
               <Text
                 style={{

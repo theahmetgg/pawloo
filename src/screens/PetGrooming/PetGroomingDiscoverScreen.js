@@ -116,7 +116,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
           <Text className='text-base font-bold text-gray-800 flex-1' numberOfLines={1}>
             {salon.name}
           </Text>
-          {salon.verified && <Ionicons name='checkmark-circle' size={16} color='#14B8A6' />}
+          {salon.verified && <Ionicons name='checkmark-circle' size={16} color='#8B5CF6' />}
         </View>
 
         {/* Address */}
@@ -140,8 +140,8 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
         {/* Badges */}
         <View className='flex-row gap-1'>
           {salon.haircut && (
-            <View className='w-5 h-5 rounded-full bg-cyan-100 items-center justify-center'>
-              <Ionicons name='cut' size={10} color='#06B6D4' />
+            <View className='w-5 h-5 rounded-full bg-purple-100 items-center justify-center'>
+              <Ionicons name='cut' size={10} color='#8B5CF6' />
             </View>
           )}
           {salon.spa && (
@@ -176,7 +176,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
         </View>
 
         <View className='w-12 h-12 rounded-full overflow-hidden shadow-lg'>
-          <LinearGradient colors={["#06B6D4", "#0891B2"]} className='flex-1 items-center justify-center'>
+          <LinearGradient colors={["#8B5CF6", "#7C3AED"]} className='flex-1 items-center justify-center'>
             <Ionicons name='cut' size={24} color='#FFF' />
           </LinearGradient>
         </View>
@@ -184,7 +184,7 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
 
       {/* Stats Banner */}
       <View className='mx-5 mb-5 rounded-2xl overflow-hidden shadow-md'>
-        <LinearGradient colors={["#06B6D4", "#0891B2"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
+        <LinearGradient colors={["#8B5CF6", "#7C3AED"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className='p-5'>
           <View className='flex-row justify-around'>
             <View className='items-center'>
               <Text className='text-white text-3xl font-bold'>{mockSalons.length}</Text>
@@ -237,18 +237,18 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
               key={filter.id}
               onPress={() => setSelectedFilter(filter.id)}
               android_ripple={{
-                color: active ? "rgba(255,255,255,0.15)" : "rgba(6,182,212,0.10)",
+                color: active ? "rgba(255,255,255,0.15)" : "rgba(139,92,246,0.10)",
                 borderless: false,
               }}
               className={[
                 "flex-row items-center rounded-full px-4",
                 "min-h-[36px] mr-1.5 border",
-                active ? "bg-cyan-500 border-cyan-500" : "bg-cyan-50 border-cyan-200",
+                active ? "bg-purple-500 border-purple-500" : "bg-purple-50 border-purple-200",
               ].join(" ")}
               style={({ pressed }) => [
                 { opacity: pressed ? 0.9 : 1 },
                 active && {
-                  shadowColor: "#06B6D4",
+                  shadowColor: "#8B5CF6",
                   shadowOpacity: 0.25,
                   shadowRadius: 12,
                   shadowOffset: { width: 0, height: 6 },
@@ -260,11 +260,11 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
               <Ionicons
                 name={filter.icon}
                 size={16}
-                color={active ? "#FFFFFF" : "#0891B2"}
+                color={active ? "#FFFFFF" : "#7C3AED"}
                 style={{ marginRight: 6 }}
               />
               <Text
-                className={["text-[13px] font-semibold", active ? "text-white" : "text-cyan-700"].join(" ")}
+                className={["text-[13px] font-semibold", active ? "text-white" : "text-purple-700"].join(" ")}
                 numberOfLines={1}
               >
                 {filter.label}
@@ -275,9 +275,9 @@ const PetGroomingDiscoverScreen = ({ navigation }) => {
       </ScrollView>
 
       {/* Info Banner */}
-      <View className='flex-row items-center bg-teal-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-teal-500'>
-        <Ionicons name='information-circle' size={20} color='#14B8A6' />
-        <Text className='flex-1 text-xs text-teal-900 font-medium'>
+      <View className='flex-row items-center bg-purple-50 mx-5 mb-5 p-3 rounded-xl gap-2 border-l-4 border-purple-500'>
+        <Ionicons name='information-circle' size={20} color='#8B5CF6' />
+        <Text className='flex-1 text-xs text-purple-900 font-medium'>
           Tüm kuaförler sertifikalı ve hijyenik ekipman kullanır
         </Text>
       </View>

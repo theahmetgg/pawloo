@@ -31,8 +31,8 @@ const THEME_COLORS = {
   },
   hotelCare: {
     bg: "#F9FAFB",
-    accent: "#06B6D4",
-    accentLight: "#CFFAFE",
+    accent: "#8B5CF6",
+    accentLight: "#F3E8FF",
     card: "#FFFFFF",
     text: "#0F172A",
     textSecondary: "#475569",
